@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Research | Dawit Chun</title>
+  <meta name="description" content="Robot learning research by Dawit Chun: VLA and world models, imitation learning, and human-in-the-loop RL on real robots.">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <script>document.documentElement.classList.add('js')</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Rubik:ital,wght@0,400;0,500;0,600;1,400;1,600&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/main.js" defer></script>
+</head>
+<body id="top">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html">Dawit Chun</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+      <nav class="nav" id="site-nav" aria-label="Primary">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="index.html">Home</a></li>
+          <li><a class="nav__link" href="research.html" aria-current="page">Research</a></li>
+          <li><a class="nav__link" href="publications.html">Publications</a></li>
+          <li><a class="nav__link" href="honors.html">Honors</a></li>
+          <li><a class="nav__link" href="teaching.html">Teaching &amp; Service</a></li>
+          <li><a class="nav__link" href="journey.html">My Journey (&amp; Taejae)</a></li>
+          <li><a class="nav__link nav__link--cv" href="assets/CV_DawitChun.pdf" target="_blank" rel="noopener">CV</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="page-head">
+      <div class="container">
+        <h1 class="display reveal">Research</h1>
+        <p class="lead reveal">I work on robot learning (vision-language-action models, world models, and manipulation) and test my ideas on real robots. Before that, I built and published systems in hardware, brain-computer interfaces, and assistive technology.</p>
+      </div>
+    </section>
+
+    <section class="group" id="robot-learning">
+      <div class="container">
+        <header class="group__head reveal">
+          <h2 class="h2">Robot learning</h2>
+        </header>
+
+        <article class="entry" id="robotis">
+          <header class="entry__head reveal">
+            <h3 class="entry__title">ROBOTIS</h3>
+            <p class="entry__date">Jun – Aug 2026</p>
+            <p class="entry__role">Research Intern · Humanoid Software Team</p>
+          </header>
+          <p class="entry__summary reveal">Nine weeks on three robots: the 5-DOF OMX, the 6-DOF OMY, and the 22-DOF bimanual AI Worker. I framed the internship around one question: how can a robot map patterns of the world onto its own embodiment? That took me from imitation learning to 2026’s newest VLA and world models, then to learning from simulated rollouts and human corrections.</p>
+          <div class="entry__links reveal"><a class="pill-link" href="https://docs.google.com/presentation/d/1xTGit7ij44TkGRPYSBr8vcCXuYEcbLonywKxGcM0kDM/edit?usp=sharing" target="_blank" rel="noopener">Slides</a><a class="pill-link" href="https://www.youtube.com/watch?v=lZhRQvXYnh8" target="_blank" rel="noopener">Video</a><a class="pill-link" href="https://docs.robotis.com/docs/systems/omy/resources/technical_story/vla_lerobotnative" target="_blank" rel="noopener">Docs</a></div>
+
+          <div class="rcards">
+            <a class="rcard" href="#benchmarking"><span class="rcard__media"><img src="https://i.ytimg.com/vi/lZhRQvXYnh8/hq720.jpg" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">ROBOTIS · 01</span><span class="rcard__title">Benchmarking 2026 VLA and world models</span><span class="rcard__desc">GR00T N1.7, MolmoAct2, VLA-JEPA, and FastWAM on a new embodiment, which became ROBOTIS’s AI MANIPULATOR #13.</span><span class="rcard__more">Read more</span></span></a>
+            <a class="rcard" href="#prior-act"><span class="rcard__media"><img src="assets/figures/robotis/prior-act-omx-poster.jpg" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">ROBOTIS · 02</span><span class="rcard__title">Prior-ACT</span><span class="rcard__desc">A DINOv3 scene prior for ACT’s latent action: 6/10 against vanilla ACT’s 4/10, and 10-20%+ higher success across three robots.</span><span class="rcard__more">Read more</span></span></a>
+            <a class="rcard" href="#off-policy-rl"><span class="rcard__media"><img src="assets/figures/robotis/isaacsim.jpg" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">ROBOTIS · 03</span><span class="rcard__title">Off-policy reinforcement learning</span><span class="rcard__desc">Sim-to-real on Physical Intelligence’s RLT: TD3+BC raised Prior-ACT from 60% to about 82% on the real robot, and TurboVLA from 16% to about 30%.</span><span class="rcard__more">Read more</span></span></a>
+            <a class="rcard" href="#hg-dagger"><span class="rcard__media"><img src="assets/figures/robotis/hg-dagger-operation-poster.jpg" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">ROBOTIS · 04</span><span class="rcard__title">Human-in-the-loop and HG-DAgger</span><span class="rcard__desc">A teleoperation system for human corrections, and a long-horizon screwing task learned from 30 demos plus 13 interventions.</span><span class="rcard__more">Read more</span></span></a>
+          </div>
+
+          <p class="entry__more reveal"><a class="link-arrow" href="#open-source">Open-source contributions: 6 pull requests to ROBOTIS, 5 merged</a></p>
+
+          <ul class="tags reveal">
+            <li>VLA models</li><li>World models</li><li>Imitation learning</li><li>Off-policy RL</li><li>Human-in-the-loop RL</li><li>Isaac Sim</li><li>ROS 2</li><li>LeRobot</li>
+          </ul>
+        </article>
+
+        <article class="entry" id="ubion">
+          <header class="entry__head reveal">
+            <h3 class="entry__title">Ubion Corporation</h3>
+            <p class="entry__date">Dec 2024 – Aug 2025</p>
+            <p class="entry__role">Research Intern · DeepCo AI education kits</p>
+          </header>
+          <p class="entry__summary reveal">Ubion makes DeepCo, a line of AI education kits. I rebuilt its self-driving car around the Raspberry Pi 5 with a completely new design and layout for better performance, and designed the next product, the DeepCo Board, from market analysis to a working smart-home demo at COEX.</p>
+
+          <div class="rcards">
+            <a class="rcard" href="#deepco-car"><span class="rcard__media"><img src="assets/figures/ubion/ubion-car.jpg" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Ubion · 01</span><span class="rcard__title">The DeepCo self-driving car</span><span class="rcard__desc">Rebuilt on the Raspberry Pi 5, driven by a LeNet classifier, a steering regressor, and an object detector.</span><span class="rcard__more">Read more</span></span></a>
+            <a class="rcard" href="#deepco-board"><span class="rcard__media"><img src="assets/figures/ubion/ubion-smart-home.jpg" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Ubion · 02</span><span class="rcard__title">The DeepCo Board</span><span class="rcard__desc">An ESP32-S3 AI education board, demonstrated as a two-floor smart home at COEX Education Fair 2025.</span><span class="rcard__more">Read more</span></span></a>
+          </div>
+
+          <ul class="tags reveal">
+            <li>Autonomous driving</li><li>Computer vision</li><li>Embedded systems</li><li>ESP32</li><li>Raspberry Pi</li><li>IoT</li>
+          </ul>
+        </article>
+
+      </div>
+    </section>
+
+    <section class="group" id="published">
+      <div class="container">
+        <header class="group__head reveal">
+          <h2 class="h2">Published research</h2>
+          <p class="lead">Before and alongside robotics, I built and published systems in computer architecture, brain-computer interfaces, assistive technology, and disaster response. Looking back, each is a small version of the same question about intelligence. PDPM is a processor that adapts itself to its workload, iPhoneme reads intent from the brain, and Watch-Out and the Smart Emergency Window sense danger and decide when to step in. Full citations are on the <a class="text-link" href="publications.html">Publications</a> page.</p>
+        </header>
+        <div class="rcards">
+            <a class="rcard rcard--wide" href="#pdpm"><span class="rcard__media"><img src="assets/figures/pdpm/pdpm-architecture.png" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Computer architecture · 2026</span><span class="rcard__title">PDPM</span><span class="rcard__desc">A RISC-V processor that changes its own pipeline depth while it runs, steered by a perceptron.</span><span class="rcard__meta">IEEE ICCD 2026 · First author <span class="badge">Accepted (26% acceptance)</span></span><span class="rcard__more">Read more</span></span></a>
+            <a class="rcard" href="#iphoneme"><span class="rcard__media"><img src="assets/figures/iphoneme/slide-to-unlock.jpg" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Brain-computer interfaces · 2026</span><span class="rcard__title">iPhoneme</span><span class="rcard__desc">Turning brain signals into text for people with ALS.</span><span class="rcard__meta">arXiv preprint · Equal-contribution first author</span><span class="rcard__more">Read more</span></span></a>
+            <a class="rcard" href="#watch-out"><span class="rcard__media"><img src="https://i.ytimg.com/vi/kLx5tlmOcdU/hq720.jpg" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Human-computer interaction · 2025</span><span class="rcard__title">Watch-Out</span><span class="rcard__desc">A wearable safety system for people with Alzheimer’s who wander.</span><span class="rcard__meta">ACM CHI 2025 Extended Abstracts · Student Design Competition <span class="badge">1st Place (1 in 84)</span></span><span class="rcard__more">Read more</span></span></a>
+            <a class="rcard" href="#smart-window"><span class="rcard__media"><img src="assets/figures/window/window-demo-poster.jpg" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">IoT · Disaster response · 2025</span><span class="rcard__title">Smart Emergency Window</span><span class="rcard__desc">A security window that opens itself in any disaster situation.</span><span class="rcard__meta">JKSCI 2025 · two papers · Korean patent application <span class="badge">Excellence Paper Award</span></span><span class="rcard__more">Read more</span></span></a>
+            <a class="rcard" href="#shower"><span class="rcard__media"><img src="assets/figures/shower/shower-module-cad.png" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">IoT · Sustainability · 2023</span><span class="rcard__title">Hydroelectric Shower Module</span><span class="rcard__desc">Generating electricity from a running shower.</span><span class="rcard__meta">Korea Association for Science and Creativity, 2023</span><span class="rcard__more">Read more</span></span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="group" id="future">
+      <div class="container">
+        <header class="group__head reveal">
+          <h2 class="h2">Future research</h2>
+          <p class="lead">In IGEN, a parent raises a child agent across generations. The child knows the world only by what it does to its own body, feels what an action will cost before taking it, and forms an internal state because it has a body to lose. These are the three things I think robots are missing, built into one small agent I can test piece by piece.</p>
+        </header>
+        <div class="rcards">
+          <a class="rcard rcard--wide" href="#igen"><span class="rcard__media"><img src="assets/figures/igen/igen-architecture.png" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Ongoing · reinforcement learning</span><span class="rcard__title">IGEN</span><span class="rcard__desc">A parent agent that raises a child across generations: first on Atari games, and now in a world where the child has a body it can lose.</span><span class="rcard__more">Read more</span></span></a>
+        </div>
+      </div>
+    </section>
+
+  <dialog class="modal" id="benchmarking" aria-label="Benchmarking 2026 VLA and world models">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <p class="modal__kicker">ROBOTIS · Jun – Aug 2026</p>
+<section class="stream reveal">
+        <div class="stream__text">
+          <h4 class="thread__title"><span class="thread__num">01</span>Benchmarking 2026 VLA and world models</h4>
+          <p>I benchmarked 2026’s newest VLA and world models (GR00T N1.7, MolmoAct2, VLA-JEPA, and FastWAM) on long-horizon manipulation. LeRobot couldn’t drive OMY directly, so I ran its native policies through the lerobot-robot-ros2-zenoh bridge on a three-camera, 90-demo plate-organizing task, fixing NaN losses, camera and proprioception mismatches, and the gap of a new embodiment.</p>
+          <figure class="fig"><a href="assets/figures/robotis/omy-architecture.png" target="_blank" rel="noopener"><img src="assets/figures/robotis/omy-architecture.png" width="2820" height="1062" loading="lazy" alt="System diagram: the OMY-F3M arm sends joint states and camera images over Zenoh to a LeRobot ROS 2 bridge on an RTX 4090 PC; the LeRobot policy runtime runs GR00T N1.7, MolmoAct2, VLA-JEPA, or FastWAM and sends smoothed joint trajectories back to the arm"></a><figcaption>The OMY setup: joint states and three camera streams go over Zenoh to the LeRobot ROS 2 bridge on an RTX 4090 PC, where the policy predicts 40 future joint positions for 7 DoF, sent back to the arm as smoothed, rate-limited trajectories.</figcaption></figure>
+          <p>VLAs such as GR00T N1.7 and MolmoAct2 <em>observe and execute</em>; world-action models such as VLA-JEPA (latent-space prediction) and FastWAM (video diffusion) <em>observe, imagine, choose, and execute</em>. For each, I compared world-model prediction on and off, attention kernels, training length, and full versus partial fine-tuning.</p>
+          <p>GR00T N1.7 led; the others stayed around 60% success and vanilla ACT around 40%. Attention maps showed how much camera placement, cropping, and augmentation matter. Latency made GR00T stutter between action chunks, so I adapted ACT’s temporal ensembling to run asynchronously with age-weighted predictions, raising success by 20% and smoothing the motion. The evaluations became ROBOTIS’s <a class="text-link" href="https://www.youtube.com/watch?v=lZhRQvXYnh8" target="_blank" rel="noopener">AI MANIPULATOR #13</a> video and a <a class="text-link" href="https://docs.robotis.com/docs/systems/omy/resources/technical_story/vla_lerobotnative" target="_blank" rel="noopener">technical story</a> in the ROBOTIS docs.</p>
+          <figure class="video-figure">
+                <div class="video" data-yt="lZhRQvXYnh8">
+                  <img class="video__thumb" src="https://i.ytimg.com/vi/lZhRQvXYnh8/hqdefault.jpg" alt="" loading="lazy">
+                  <a class="video__play" href="https://www.youtube.com/watch?v=lZhRQvXYnh8" target="_blank" rel="noopener" aria-label="Play video: AI MANIPULATOR #13, Running Next-Generation LeRobot Policies on OMY"></a>
+                </div>
+                <figcaption>AI MANIPULATOR #13: Running Next-Generation LeRobot Policies on OMY (ROBOTIS Open Source Team)</figcaption>
+              </figure>
+        </div>
+      </section>
+    </div>
+  </dialog>
+  <dialog class="modal" id="prior-act" aria-label="Prior-ACT">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <p class="modal__kicker">ROBOTIS · Jun – Aug 2026</p>
+<section class="stream reveal">
+        <div class="stream__text">
+          <h4 class="thread__title"><span class="thread__num">02</span>New policy architectures: Prior-ACT</h4>
+          <p>People often choose how to act at a glance. Prior-ACT builds that into ACT (Action Chunking with Transformers). ACT’s CVAE learns a latent “style” vector from each demonstration but fixes it at zero at inference, so the policy cannot adapt to the scene. Prior-ACT learns a scene prior instead: a frozen DINOv3 ViT-L/16 encodes the image, and a small MLP predicts a distribution over the latent, trained with a KL term toward the CVAE’s latent. At inference, the latent is sampled from this prior, so the robot chooses its behavior from what it sees.</p>
+          <figure class="fig"><a href="assets/figures/robotis/prior-act.png" target="_blank" rel="noopener"><img src="assets/figures/robotis/prior-act.png" width="1992" height="804" loading="lazy" alt="Prior-ACT architecture: a frozen DINOv3 encoder and MLP produce a scene prior over the CVAE latent during training; at inference the latent is taken from the scene prior and passed to the ACT decoder"></a><figcaption>Prior-ACT. Training (left): a frozen DINOv3 encoder learns a scene prior over ACT’s CVAE latent. Inference (right): the latent is seeded directly from the scene.</figcaption></figure>
+          <p>Prior-ACT succeeded 6/10 times against vanilla ACT’s 4/10, and across OMX, OMY, and AI Worker it improved success by 10-20%+. I delivered it to the ROBOTIS Intelligence Team. I also designed an MoE-Diffusion policy and developed Gate-as-Potential, a potential-based shaping method for behavior cloning.</p>
+          <figure class="fig"><video controls muted playsinline preload="none" width="1280" height="720" poster="assets/figures/robotis/prior-act-omx-poster.jpg" aria-label="Prior-ACT on the OMX arm, picking up a cube and placing it in a drawer"><source src="assets/figures/robotis/prior-act-omx.mp4" type="video/mp4"></video><figcaption>Prior-ACT on the OMX, placing a cube in a drawer (3× speed).</figcaption></figure>
+          <p>Prior-ACT is still ACT underneath, though. The scene prior picks a behavior mode from the whole image, but nothing tells the policy which object or region matters at the current step. On longer-horizon, harder manipulation, where the relevant part of the scene shifts from one subtask to the next, even slightly out-of-distribution placements broke it.</p>
+          <p>The language-conditioned VLAs I benchmarked handled this differently. In GR00T N1.7, instruction tokens condition each camera’s attention map, so the same image is read differently depending on the task: language acts as a query that says where to look. A scene prior compresses the image into a single latent and cannot point at a region. This is also why a vision-aligned text encoder such as CLIP or SigLIP matters: the instruction only directs attention well if it lives in the same space as the visual tokens.</p>
+          <div class="stream__links"><a class="pill-link" href="https://github.com/da-dawit/prior-act" target="_blank" rel="noopener">Code</a></div>
+        </div>
+      </section>
+    </div>
+  </dialog>
+  <dialog class="modal" id="off-policy-rl" aria-label="Off-policy reinforcement learning">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <p class="modal__kicker">ROBOTIS · Jun – Aug 2026</p>
+<section class="stream reveal">
+        <div class="stream__text">
+          <h4 class="thread__title"><span class="thread__num">03</span>Off-policy reinforcement learning</h4>
+          <p>TurboVLA came out in the first week of August 2026, and I tried it as a lighter, language-conditioned alternative to ACT: 17 ms inference and under 1 GB of VRAM. It encodes the instruction with BERT and cross-attends between visual features and the language vectors in both directions. One choice puzzled me: BERT is trained on text alone, so its embeddings are not aligned with images, while an encoder such as CLIP or SigLIP would give vision and language a shared space from the start.</p>
+          <p>On a bimanual two-bottle pick-and-place on the AI Worker, TurboVLA reached only 16%: although its 90 demos covered the whole square, it only succeeded with bottles within 1-2 cm of the center. To help it generalize, I rebuilt the task in Isaac Sim with physics and cameras calibrated to the real robot, randomized the background, lighting, and bottle placement every episode, trained a small residual actor on the frozen policy with off-policy RL, and transferred it back to the real robot. After RL, it succeeded 72% of the time with bottles 2-3 cm off center and 50% at 4-5 cm.</p>
+          <figure class="fig"><a href="assets/figures/robotis/sim2real.png" target="_blank" rel="noopener"><img src="assets/figures/robotis/sim2real.png" width="1898" height="742" loading="lazy" alt="Left: the AI Worker at the two-bottle task, labeled SC 16%. Right: top view of the two target squares; the vanilla policy works within plus or minus 1-2 cm of the center at about 90% success, and after RL within plus or minus 4-5 cm at about 50%, with an action-loss curve"></a><figcaption>TurboVLA on the real AI Worker, 16% overall (left). The vanilla policy only handled bottles within ±1-2 cm of the center (about 90% there); after RL it reached about 50% at ±4-5 cm (right).</figcaption></figure>
+          <figure class="fig fig-pair" style="--cols: 1.589fr 1.367fr"><a href="assets/figures/robotis/isaacsim.jpg" target="_blank" rel="noopener"><img src="assets/figures/robotis/isaacsim.jpg" width="1049" height="660" loading="lazy" alt="The two-bottle task rebuilt in Isaac Sim: the AI Worker in front of a table with two bottles in marked squares and a blue basket"></a><a href="assets/figures/robotis/realsim.jpg" target="_blank" rel="noopener"><img src="assets/figures/robotis/realsim.jpg" width="1206" height="882" loading="lazy" alt="Simulated head and wrist camera views above the matching real camera views at the start of an episode"></a><figcaption>The task rebuilt in Isaac Sim (left), and the simulated head and wrist cameras matched against the real robot’s at the start of an episode (right).</figcaption></figure>
+          <p>Since TurboVLA is essentially ACT with language added, I also trained ACT-based policies on the same task as a comparison group, with the same 90 demos and about the same number of training steps. On the real robot, vanilla ACT started at 50% overall and Prior-ACT at 60%, so I carried Prior-ACT forward. TD3+BC pushed it to about 82%, succeeding even with bottles placed in the corners of the square.</p>
+          <figure class="fig"><video controls muted playsinline preload="none" width="960" height="540" poster="assets/figures/robotis/prior-act-td3-rollout-poster.jpg" aria-label="Prior-ACT with TD3+BC running on the real robot, placing a bottle in the basket"><source src="assets/figures/robotis/prior-act-td3-rollout.mp4" type="video/mp4"></video><figcaption>Prior-ACT with TD3+BC running on the real robot. Its joint trajectories stayed within about 0.03-0.05 rad of an open-loop replay of the closest demo (episode 85).</figcaption></figure>
+          <p>Both methods build on Physical Intelligence’s <a class="text-link" href="https://arxiv.org/abs/2604.23073" target="_blank" rel="noopener">RL Token (RLT)</a>: the frozen TurboVLA exposes a compact RL token, and a tiny actor-critic (token size 16, 64 hidden units) adds a bounded correction to its action, <em>a</em> = <em>a</em><sub>ref</sub> + <em>r</em><sub>trust</sub>·tanh(Δ). With <strong>TD3+BC</strong>, a double-Q critic trains the correction and a BC term keeps it close to the original policy. After sim-to-real transfer, real-robot success rose from 16% to about 30%, and LIBERO-10 from 35% to 59%.</p>
+          <figure class="fig"><video controls playsinline preload="none" width="1348" height="418" poster="assets/figures/robotis/isaac-sim-td3-poster.jpg" aria-label="Isaac Sim rollouts of the two-bottle task: frozen TurboVLA and TurboVLA with a TD3 residual actor"><source src="assets/figures/robotis/isaac-sim-td3.mp4" type="video/mp4"></video><figcaption>Isaac Sim rollouts with randomized scenes, right arm only: frozen TurboVLA (left) and with the TD3+BC residual actor (right).</figcaption></figure>
+          <figure class="fig"><a href="assets/figures/robotis/libero-base-vs-td3.gif" target="_blank" rel="noopener"><img src="assets/figures/robotis/libero-base-vs-td3.gif" width="720" height="330" loading="lazy" alt="Animated LIBERO rollouts comparing the base policy with the TD3+BC residual policy"></a><figcaption>LIBERO rollouts: TurboVLA (left) and TD3+BC (right).</figcaption></figure>
+          <p>The second method, <strong>AWR + RECAP</strong>, changes only the actor objective. Following RECAP, the method behind Physical Intelligence’s <a class="text-link" href="https://www.pi.website/blog/pistar06" target="_blank" rel="noopener">π*0.6</a>, a value function learned from all rollouts, failures included, scores each action by its advantage <em>A</em> = <em>Q</em>(<em>s</em>, <em>a</em><sub>demo</sub>) − <em>Q</em>(<em>s</em>, <em>a</em><sub>base</sub>), with a −1 per-step reward so faster successes count more, and AWR weights the actions by it. It reached 20% on the real robot (from 16%) and 52% on LIBERO-10 (from 35%).</p>
+          <p>In the end, neither RL nor more demonstrations made TurboVLA robust. Its action loss converged cleanly, consistent with the training behavior its paper reports, but that did not carry over to bottles even a few centimeters from where they were in training. The same data and the same RL recipe lifted Prior-ACT from 60% to about 82%, which suggests the limit is TurboVLA’s base representation rather than the data or the fine-tuning.</p>
+          <div class="stream__links"><a class="pill-link" href="https://github.com/da-dawit/figures/tree/main/turbovla" target="_blank" rel="noopener">Figures and rollouts</a></div>
+        </div>
+      </section>
+    </div>
+  </dialog>
+  <dialog class="modal" id="hg-dagger" aria-label="Human-in-the-loop and HG-DAgger">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <p class="modal__kicker">ROBOTIS · Jun – Aug 2026</p>
+<section class="stream reveal">
+                    <div class="stream__text">
+                      <h4 class="thread__title"><span class="thread__num">04</span>Human-in-the-loop and HG-DAgger</h4>
+                      <p>Imitation learning never sees the robot’s own mistakes, so it never learns to recover. In HG-DAgger, a human takes over from the failing state and shows the correction. On RLinf, I tested HG-DAgger and HIL-SERL with GR00T N1.7 and built the ROS 2 teleoperation system around them for the AI Worker.</p>
+                      <p>While the policy runs, the operator holds the leader arms: dragging the joystick down pauses the policy and hands over control, and pressing it hands control back. Base and head motion is locked out. Data is auto-labeled as demo, expert, or policy and re-weighted 0.6 / 0.3 / 0.1 for retraining, with the two seconds at each hand-off excluded, and saved in LeRobot format. A teleop UI in Cyclo Intelligence shows the task, a bar counting only real intervention, and each episode’s outcome. HIL-SERL was implemented but not fully validated.</p>
+                      <figure class="fig"><video controls playsinline preload="none" width="1920" height="1080" poster="assets/figures/robotis/hg-dagger-operation-poster.jpg" aria-label="Operating the HG-DAgger system on the AI Worker"><source src="assets/figures/robotis/hg-dagger-operation.mp4" type="video/mp4"></video><figcaption>How to operate the HG-DAgger system: control passes between the policy and a human on the leader arms.</figcaption></figure>
+                      <figure class="fig"><a href="assets/figures/robotis/hg-dagger-architecture.png" target="_blank" rel="noopener"><img src="assets/figures/robotis/hg-dagger-architecture.png" width="1556" height="848" loading="lazy" alt="HG-DAgger system architecture: the AI Worker leader and follower hardware and teleoperation nodes, a GR00T N1.7 inference server, Cyclo Intelligence orchestration and recording nodes, and a browser operator interface"></a><figcaption>System architecture: AI Worker teleoperation, the GR00T N1.7 server, Cyclo Intelligence, and the operator UI.</figcaption></figure>
+                      <p>GR00T letterboxes camera images, and its attention drifted to the black padding. Square-cropping the wrist cameras and padding the head camera fixed it, better than cropping to a region of interest. Wrist cameras mattered most for precise steps.</p>
+                      <figure class="fig"><a href="assets/figures/robotis/gr00t-attention.jpg" target="_blank" rel="noopener"><img src="assets/figures/robotis/gr00t-attention.jpg" width="1956" height="666" loading="lazy" alt="GR00T N1.7 camera inputs and attention maps with square cropping (left) and uniform letterbox padding (right)"></a><figcaption>GR00T N1.7 attention: with letterbox padding (right) it drifts toward the black bars; square-cropping the wrist cameras (left) keeps it on the task.</figcaption></figure>
+                    </div>
+                  </section>
+      <section class="stream stream--cont reveal">
+                    <div class="stream__text">
+                      <p>The AI Worker learned a long-horizon peg-and-screw task from only 30 real demos (GR00T N1.7, 60k steps on 2× H100) plus one HG-DAgger round of 13 intervention episodes (6k more steps on 2× A100), far fewer than the 100+ demos VLAs usually need. It reached 100% on peg-in-hole, grabbing the screw, and place-and-return, 85% on grabbing the driver, and 40% on screwing, with emergent recovery such as re-finding the hole and checking that a peg was fully inserted.</p>
+                      <figure class="fig"><video controls playsinline preload="none" width="1098" height="376" poster="assets/figures/robotis/hg-dagger-success-poster.jpg" aria-label="The AI Worker completing the long-horizon screwing task, seen from its head and wrist cameras"><source src="assets/figures/robotis/hg-dagger-success.mp4" type="video/mp4"></video><figcaption>The full screwing task after one HG-DAgger round, from the robot’s head and wrist cameras (3× speed).</figcaption></figure>
+                      <figure class="fig"><a href="assets/figures/robotis/hg-dagger-results.jpg" target="_blank" rel="noopener"><img src="assets/figures/robotis/hg-dagger-results.jpg" width="2058" height="702" loading="lazy" alt="The AI Worker performing the peg-and-screw task, with subtask success rates: place and return 100%, screwing 40%, grab driver 85%, peg-in-hole 100%, grab screw 100%"></a><figcaption>Subtask success after one HG-DAgger round.</figcaption></figure>
+                      <div class="stream__links"><a class="pill-link" href="https://github.com/da-dawit/hg-dagger" target="_blank" rel="noopener">HG-DAgger code</a><a class="pill-link" href="https://github.com/da-dawit/aiw_hg_dagger" target="_blank" rel="noopener">AI Worker pipeline</a><a class="pill-link" href="https://github.com/da-dawit/cyclo_intelligence_hg_dagger" target="_blank" rel="noopener">Cyclo Intelligence fork</a><a class="pill-link" href="https://drive.google.com/drive/folders/15QwIDUiLEHWsbQtJYkK7RNKXCdkpzGy3?usp=drive_link" target="_blank" rel="noopener">Videos and resources</a></div>
+                    </div>
+                  </section>
+    </div>
+  </dialog>
+  <dialog class="modal" id="open-source" aria-label="Open-source contributions to ROBOTIS">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <p class="modal__kicker">ROBOTIS · Jun – Aug 2026</p>
+<div class="oss reveal">
+        <h4 class="thread__title">Open-source contributions to ROBOTIS</h4>
+        <ul class="oss__list">
+          <li><a class="oss__row" href="https://github.com/ROBOTIS-GIT/open_manipulator/pull/375" target="_blank" rel="noopener"><span class="oss__repo">open_manipulator #375</span><span class="oss__desc"><strong>OMX Port Identifier</strong>: a GUI that works out which USB port is the leader arm, the follower arm, and the camera, writes the ports into the launch files, and generates the <code>lerobot-record</code> command; plus a servo-tolerance fix for mid-sequence stalls.</span><span class="oss__state oss__state--open">Open</span></a></li>
+          <li><a class="oss__row" href="https://github.com/ROBOTIS-GIT/cyclo_intelligence/pull/44" target="_blank" rel="noopener"><span class="oss__repo">cyclo_intelligence #44</span><span class="oss__desc">Moved Cyclo Intelligence to LeRobot 0.6.1 and added MolmoAct2, VLA-JEPA, and FastWAM.</span><span class="oss__state oss__state--merged">Merged</span></a></li>
+          <li><a class="oss__row" href="https://github.com/ROBOTIS-GIT/lerobot-cyclo/pull/2" target="_blank" rel="noopener"><span class="oss__repo">lerobot-cyclo #2</span><span class="oss__desc">Upgraded the LeRobot submodule to v0.6.1.</span><span class="oss__state oss__state--merged">Merged</span></a></li>
+          <li><a class="oss__row" href="https://github.com/ROBOTIS-GIT/docs/pull/56" target="_blank" rel="noopener"><span class="oss__repo">docs #56</span><span class="oss__desc">The OMY technical story: running next-generation policies with LeRobot.</span><span class="oss__state oss__state--merged">Merged</span></a></li>
+          <li><a class="oss__row" href="https://github.com/ROBOTIS-GIT/docs/pull/50" target="_blank" rel="noopener"><span class="oss__repo">docs #50</span><span class="oss__desc">Documentation for MolmoAct2, FastWAM, and VLA-JEPA.</span><span class="oss__state oss__state--merged">Merged</span></a></li>
+          <li><a class="oss__row" href="https://github.com/ROBOTIS-GIT/docs/pull/40" target="_blank" rel="noopener"><span class="oss__repo">docs #40</span><span class="oss__desc">Expanded and clarified the Cyclo Intelligence guides.</span><span class="oss__state oss__state--merged">Merged</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </dialog>
+  <dialog class="modal" id="deepco-car" aria-label="The DeepCo self-driving car">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <p class="modal__kicker">Ubion · Dec 2024 – Aug 2025</p>
+<section class="stream reveal">
+        <div class="stream__text">
+          <h4 class="thread__title"><span class="thread__num">01</span>The DeepCo self-driving car</h4>
+          <p>I moved the car from the Raspberry Pi 4 to the Pi 5 and redesigned it around the new board: PCB layout, servo driver, battery pack, and a laser distance sensor, which needed a second I²C bus on spare GPIO pins.</p>
+          <figure class="fig fig-pair" style="--cols: 1.346fr 1.344fr .748fr"><a href="assets/figures/ubion/ubion-car.jpg" target="_blank" rel="noopener"><img src="assets/figures/ubion/ubion-car.jpg" width="1400" height="1040" loading="lazy" alt="The finished DeepCo car: a camera on a ribbon cable, a Raspberry Pi 5 with a battery pack, and a servo-steered chassis"></a><a href="assets/figures/ubion/ubion-car-build.jpg" target="_blank" rel="noopener"><img src="assets/figures/ubion/ubion-car-build.jpg" width="1400" height="1042" loading="lazy" alt="The car during assembly: the PCB with a steering servo, camera mount, and jumper wires, next to the battery pack"></a><a href="assets/figures/ubion/ubion-car-detection.jpg" target="_blank" rel="noopener"><img src="assets/figures/ubion/ubion-car-detection.jpg" width="1047" height="1400" loading="lazy" alt="The car in front of a monitor showing its camera view with object detection boxes"></a><figcaption>The rebuilt car, the build in progress, and the on-board object detector running live.</figcaption></figure>
+          <p>For steering, a LeNet classifier learns left, straight, or right from keyboard-driven laps. A 2D CNN regression model learns continuous steering angles from joystick driving, with front and rear cameras for both directions. A lightweight object detector (YOLOv8-lite) trained on my own labeled images stops the car for stop signs, traffic lights, and pedestrians.</p>
+          <figure class="fig"><div class="video-pair"><video controls muted playsinline preload="none" width="720" height="1280" poster="assets/figures/ubion/ubion-car1-poster.jpg" aria-label="The DeepCo car driving itself around a numbered race track"><source src="assets/figures/ubion/ubion-car1.mp4" type="video/mp4"></video><video controls muted playsinline preload="none" width="720" height="1280" poster="assets/figures/ubion/ubion-car2-poster.jpg" aria-label="The DeepCo car following a line track and stopping at signs and crossing gates"><source src="assets/figures/ubion/ubion-car2.mp4" type="video/mp4"></video></div><figcaption>Autonomous runs: a race track with a traffic light and a gravel section (left), and a line track with stop signs and crossing gates (right).</figcaption></figure>
+          <p>I also wrote the new model’s build and training manual.</p>
+          <div class="stream__links"><a class="pill-link" href="https://drive.google.com/drive/folders/1-YOxDdsaClQogzEsYMYF6sLGPIPiiMzc?usp=sharing" target="_blank" rel="noopener">Code</a></div>
+        </div>
+      </section>
+    </div>
+  </dialog>
+  <dialog class="modal" id="deepco-board" aria-label="The DeepCo Board">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <p class="modal__kicker">Ubion · Dec 2024 – Aug 2025</p>
+<section class="stream reveal">
+        <div class="stream__text">
+          <h4 class="thread__title"><span class="thread__num">02</span>The DeepCo Board</h4>
+          <p>I started by comparing four AI education kits: all let students use AI more than understand it, and none made it easy to turn a trained model into a working app.</p>
+          <p>My proposal was a custom ESP32-S3 board with an on-board camera and microphones, where students train models in the browser, deploy them over Bluetooth, and build a phone app around them.</p>
+          <figure class="fig"><a href="assets/figures/ubion/ubion-app-inventor.png" target="_blank" rel="noopener"><img src="assets/figures/ubion/ubion-app-inventor.png" width="728" height="374" loading="lazy" alt="The DeepCo app inventor in a browser: a phone screen preview with a camera login screen, a layer list, and a properties panel"></a><figcaption>Designing the smart home’s camera login screen in the DeepCo app inventor.</figcaption></figure>
+          <p>To demonstrate it, I built a two-floor miniature smart home on two DeepCo boards with a dozen sensors and actuators, after checking every sensor’s timing under worst-case load. A small custom classification neural net decided when to activate the lights, Face ID, the fan, and mini appliances. It was exhibited at COEX Education Fair 2025.</p>
+          <figure class="fig fig-pair" style="--cols: 1.137fr .929fr .745fr"><a href="assets/figures/ubion/ubion-smart-home.jpg" target="_blank" rel="noopener"><img src="assets/figures/ubion/ubion-smart-home.jpg" width="1400" height="1231" loading="lazy" alt="The two-floor miniature smart home with a living room, kitchen, and bedroom, lit by LED strips, with sensors mounted on the walls"></a><a href="assets/figures/ubion/ubion-smart-home-wiring.jpg" target="_blank" rel="noopener"><img src="assets/figures/ubion/ubion-smart-home-wiring.jpg" width="1301" height="1400" loading="lazy" alt="The back of the smart-home model, with two DeepCo boards, a servo, a rain sensor, and many jumper wires"></a><a href="assets/figures/ubion/ubion-coex.jpg" target="_blank" rel="noopener"><img src="assets/figures/ubion/ubion-coex.jpg" width="1043" height="1400" loading="lazy" alt="Dawit at the DeepCo booth at COEX, holding a phone next to the smart-home model in a glass case"></a><figcaption>The smart-home demo on two DeepCo Boards, the wiring behind it, and the DeepCo booth at COEX Education Fair 2025.</figcaption></figure>
+          <div class="stream__links"><a class="pill-link" href="https://studio.deepco.co.kr/" target="_blank" rel="noopener">DeepCo Studio</a><a class="pill-link" href="https://github.com/da-dawit/deepco_app_smart-home-demonstration_Phone1" target="_blank" rel="noopener">App code (phone 1)</a><a class="pill-link" href="https://github.com/da-dawit/deepco_app_smart-home-demonstration_Phone2" target="_blank" rel="noopener">App code (phone 2)</a><a class="pill-link" href="https://drive.google.com/file/d/1HCkNrBPjDYVveMMtWwdi3sGAQvAI279f/view?usp=sharing" target="_blank" rel="noopener">Demo video</a></div>
+        </div>
+      </section>
+    </div>
+  </dialog>
+  <dialog class="modal" id="pdpm" aria-label="PDPM">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <article class="project">
+        <header class="project__meta reveal">
+          <p class="project__kicker">Computer architecture · 2026</p>
+          <h3 class="project__title">PDPM</h3>
+          <p class="project__tagline">A RISC-V processor that changes its own pipeline depth while it runs, steered by a perceptron.</p>
+          <p class="project__venue">IEEE ICCD 2026 · First author</p>
+          <div class="project__badges"><span class="badge">Accepted (26% acceptance)</span></div>
+          <div class="project__links"><a class="pill-link" href="assets/papers/PDPM_ICCD2026.pdf" target="_blank" rel="noopener">Paper</a><a class="pill-link" href="https://github.com/da-dawit/pdpm-riscv" target="_blank" rel="noopener">Code</a><a class="pill-link" href="publications.html#pdpm">Citation</a></div>
+        </header>
+        <div class="project__body reveal">
+          <figure class="fig"><a href="assets/figures/pdpm/pdpm-architecture.png" target="_blank" rel="noopener"><img src="assets/figures/pdpm/pdpm-architecture.png" width="3767" height="1629" loading="lazy" alt="PDPM block diagram: a seven-stage RISC-V datapath with bypass multiplexers, and the ratio-regression predictor that selects pipeline mode and clock"></a><figcaption>(a) The morphable datapath. Blue stages exist only in the 7-stage mode; bypass multiplexers collapse the rest. (b) The 10-weight ratio-regression head that picks the depth.</figcaption></figure>
+          <h4 class="project__h">The problem</h4>
+          <p>Pipeline depth is fixed when a processor is designed, but the depth that runs a program fastest changes with the workload, and even between phases of one program. Deeper pipelines allow faster clocks but pay more for every branch; shallower ones do the opposite.</p>
+          <h4 class="project__h">Approach</h4>
+          <p>I built an RV32IM core as a seven-stage superset whose four bypass multiplexers collapse it to 3, 5, or 7 stages at runtime, with architectural state preserved. Every 200 instructions, a 10-weight int8 perceptron head reads four counters (how often branches flush the pipeline, how sensitive the program is to depth, how often loads stall, and how long the program has run), predicts two cycle ratios between depths, and picks the depth with the lowest predicted execution time. A confidence gate and a 16-entry phase memory stop it from switching back and forth.</p>
+          <p>Instead of a configuration label, the head learns the quantity the runtime actually optimizes. Because it predicts ratios, moving to a new clock plan changes two constants, with no retraining. An ablation shows this is where the gain comes from: a 3-class depth classifier reaches 90.73%, and swapping its labels for the two ratio targets lifts it to 94.28% with fewer weights.</p>
+          <p>The predictor fits in 478 LUTs, 0.75% of the Artix-7 FPGA. The core can also reconfigure its own clock through the FPGA’s clock manager, relocking in about 21.5 µs. The full artifact is open source, with 71 automated checks that reproduce every number in the paper.</p>
+          <h4 class="project__h">Results</h4>
+          <ul class="bullets">
+            <li><strong>94.28%</strong> configuration accuracy at +0.107% mean overhead on 301 benchmarks, with 10 weights instead of a 12-class classifier’s 60. Using only features a deployed chip can observe: 89.40% at +0.255%.</li>
+            <li>On 340 edge-inference programs (attention, GEMM, state-space models, VLA heads), it matched the per-phase oracle depth on <strong>313 of 315</strong> phases and finished 0.44% faster than the best fixed depth per program.</li>
+            <li>Against the strongest static configuration, always running five stages at 1.3× clock, PDPM cuts mean overhead from +2.57% to +0.107%. The static choice exceeds 5% overhead on 94 of 301 benchmarks (up to 48.7%); PDPM exceeds it on none.</li>
+            <li>Runs closed-loop on a Xilinx Artix-7 at 87.1 MHz with the three-depth head (the CPU was first brought up on a Lattice iCE40). Its committed state is byte-identical to a fixed-depth reference on all 641 programs.</li>
+          </ul>
+          <figure class="fig fig--center" style="--maxw: 460px"><a href="assets/figures/pdpm/pdpm-overhead.png" target="_blank" rel="noopener"><img src="assets/figures/pdpm/pdpm-overhead.png" width="1204" height="982" loading="lazy" alt="Charts comparing PDPM with always running five stages: per-benchmark overhead by oracle class, and the number of benchmarks above each overhead threshold"></a><figcaption>Against always running five stages at 1.3× clock, PDPM keeps overhead near zero: 2 of 301 benchmarks exceed 2%, and none exceed 5%.</figcaption></figure>
+          <div class="project__role"><span>My role</span>Everything from RTL to results: the Verilog core and controller, the benchmark suites, training and evaluation, and FPGA bring-up.</div>
+        </div>
+      </article>
+    </div>
+  </dialog>
+  <dialog class="modal" id="iphoneme" aria-label="iPhoneme">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <article class="project">
+        <header class="project__meta reveal">
+          <p class="project__kicker">Brain-computer interfaces · 2026</p>
+          <h3 class="project__title">iPhoneme</h3>
+          <p class="project__tagline">Turning brain signals into text for people with ALS.</p>
+          <p class="project__venue">arXiv preprint · Equal-contribution first author</p>
+          <div class="project__badges"></div>
+          <div class="project__links"><a class="pill-link" href="assets/papers/iPhoneme_arXiv-2604.16441.pdf" target="_blank" rel="noopener">Paper</a><a class="pill-link" href="https://drive.google.com/drive/folders/1yQLW10b3dPMFkCVjcitYJG7A2rD2iTMz?usp=sharing" target="_blank" rel="noopener">Code</a><a class="pill-link" href="https://arxiv.org/abs/2604.16441" target="_blank" rel="noopener">arXiv</a><a class="pill-link" href="publications.html#iphoneme">Citation</a></div>
+        </header>
+        <div class="project__body reveal">
+          <figure class="fig"><a href="assets/figures/iphoneme/conformerxl.png" target="_blank" rel="noopener"><img src="assets/figures/iphoneme/conformerxl.png" width="1114" height="462" loading="lazy" alt="ConformerXL architecture: 512-channel input, dilated Conv1D layers and a BiGRU, 8x subsampling, twelve Conformer blocks, RMSNorm, and a linear head"></a><figcaption>ConformerXL: a temporal prenet (dilated convolutions + BiGRU), 8× GELU subsampling, and 12 Conformer blocks, from 512 input channels to 42 phoneme classes.</figcaption></figure>
+          <h4 class="project__h">The problem</h4>
+          <p>Roughly 173,000-232,500 people with ALS cannot speak, yet only 22-31 people have ever received a speech BCI implant. Decoders still make about one error per ten phonemes, and the low-cost alternative, eye-tracking keyboards, manages 5-10 words per minute because every glance risks an accidental click.</p>
+          <h4 class="project__h">Approach</h4>
+          <p>We trained on the T15 dataset: 45 sessions and 8,071 trials of 256-electrode recordings over four speech-motor areas, filtered, binned into 20 ms windows, and normalized per session. <strong>ConformerXL</strong> adapts the Conformer speech-recognition architecture to these 512-channel signals: a prenet of dilated convolutions and a bidirectional GRU corrects neural timing jitter, 8× subsampling stabilizes CTC training, and Pre-RMSNorm keeps training stable. A 6-gram phoneme language model (3.1M sequences from the CMU Dictionary, LibriSpeech, and T15) then corrects the output through WFST beam search, tuned over 150 Optuna trials.</p>
+          <p>Eye-tracking keyboards confuse pointing with selecting: every glance is a possible click (the “Midas touch” problem), so users must stare at a key for 500-1000 ms. <strong>“Slide to Unlock”</strong> separates the two, like holding Ctrl while clicking: gaze only points, and a silently spoken phoneme, detected by the same implant in 100-180 ms, confirms. That is 3-10× faster than dwell time, and a stray glance never clicks.</p>
+          <figure class="fig fig--center" style="--maxw: 560px"><a href="assets/figures/iphoneme/slide-to-unlock.jpg" target="_blank" rel="noopener"><img src="assets/figures/iphoneme/slide-to-unlock.jpg" width="1270" height="700" loading="lazy" alt="Left: a user stares at a grid of icons, which light up by accident. Right: the same user looks at one button and silently says OH, and it is selected with a check mark"></a><figcaption>Dwell-time gaze typing selects whatever you look at (left). Slide to Unlock waits for a silent phoneme (right).</figcaption></figure>
+          <p>The phoneme also carries gestures. Holding a trigger such as “Oh” while sweeping your gaze swipes the screen: onset starts the gesture, the gaze path sets its direction and distance, and release ends it. A different trigger, “Ah”, anchors a text selection where you look, stretches it with your gaze, and copies it on release, which dwell-time interfaces cannot do.</p>
+          <figure class="fig fig--center" style="--maxw: 560px"><a href="assets/figures/iphoneme/gaze-phoneme.png" target="_blank" rel="noopener"><img src="assets/figures/iphoneme/gaze-phoneme.png" width="1068" height="566" loading="lazy" alt="Illustration of gaze-and-phoneme gestures: a sustained silent phoneme with gaze moving left swipes the screen; with gaze moving across text it selects and copies"></a><figcaption>“Slide to Unlock”: a silently spoken phoneme starts and ends a gesture while gaze sets its direction, to swipe between screens or select text.</figcaption></figure>
+          <p>A trigger phoneme must be detected reliably yet rarely spoken, or it fires mid-conversation. We scored every phoneme as precision × recall ÷ its frequency in natural speech, over 365M phonemes of LibriSpeech. The rarest (ZH, OY) lose because the decoder confuses them; the top five, DH, HH, Y, W, and TH, reach over 94% validation precision at under 3.5% of everyday speech. High-stakes actions, like sending a message or a medical decision, can require one specific high-confidence trigger.</p>
+          <figure class="fig"><a href="assets/figures/iphoneme/trigger-phonemes.png" target="_blank" rel="noopener"><img src="assets/figures/iphoneme/trigger-phonemes.png" width="1310" height="580" loading="lazy" alt="Two scatter plots of precision against frequency in speech for every phoneme, training and validation, with DH, HH, TH, Y, and W in the high-precision, low-frequency corner"></a><figcaption>Choosing triggers: the best phonemes sit in the upper left, detected precisely but rarely spoken (DH, HH, TH, Y, W).</figcaption></figure>
+          <h4 class="project__h">Results</h4>
+          <ul class="bullets">
+            <li><strong>92.14%</strong> phoneme accuracy and 73.39% word accuracy on the T15 dataset, about 3 points above the prior state of the art (89%).</li>
+            <li>Beam search added 2.76 points over greedy decoding, after we fixed a backoff bug that had made the language model worse than none.</li>
+            <li>Runs on a CPU at 180 ms latency.</li>
+            <li>Accuracy falls to about 80.8% on the 2025 sessions, which bring new vocabulary after a 7-month gap; continual learning is the next step.</li>
+          </ul>
+          <div class="project__role"><span>My role</span>Built the model end to end: preprocessing, the ConformerXL decoder, and the language model and WFST decoder. For the gaze-phoneme interface, my teammate built the UI and backend, and we designed together which phonemes, combined with which gaze direction and location, trigger which actions.</div>
+        </div>
+      </article>
+    </div>
+  </dialog>
+  <dialog class="modal" id="watch-out" aria-label="Watch-Out">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <article class="project">
+        <header class="project__meta reveal">
+          <p class="project__kicker">Human-computer interaction · 2025</p>
+          <h3 class="project__title">Watch-Out</h3>
+          <p class="project__tagline">A wearable safety system for people with Alzheimer’s who wander.</p>
+          <p class="project__venue">ACM CHI 2025 Extended Abstracts · Student Design Competition</p>
+          <div class="project__badges"><span class="badge">1st Place (1 in 84)</span></div>
+          <div class="project__links"><a class="pill-link" href="assets/papers/CHI-EA_2025_Watch-Out.pdf" target="_blank" rel="noopener">Paper</a><a class="pill-link" href="https://www.youtube.com/watch?v=kLx5tlmOcdU" target="_blank" rel="noopener">Video</a><a class="pill-link" href="https://canva.link/0rjo6xtdm4evdsc" target="_blank" rel="noopener">Poster</a><a class="pill-link" href="https://canva.link/oq0awu4n8qpalov" target="_blank" rel="noopener">Slides</a><a class="pill-link" href="https://doi.org/10.1145/3706599.3720308" target="_blank" rel="noopener">DOI</a><a class="pill-link" href="publications.html#watch-out">Citation</a></div>
+        </header>
+        <div class="project__body reveal">
+          <figure class="video-figure">
+            <div class="video" data-yt="kLx5tlmOcdU">
+              <img class="video__thumb" src="https://i.ytimg.com/vi/kLx5tlmOcdU/hqdefault.jpg" alt="" loading="lazy">
+              <a class="video__play" href="https://www.youtube.com/watch?v=kLx5tlmOcdU" target="_blank" rel="noopener" aria-label="Play video: Our presentation at CHI 2025 in Yokohama (Taejae University livestream)"></a>
+            </div>
+            <figcaption>Our presentation at CHI 2025 in Yokohama (Taejae University livestream)</figcaption>
+          </figure>
+          <h4 class="project__h">The problem</h4>
+          <p>Six in ten people with dementia wander, and about 30% of wandering cases end in death; the chance of being found alive drops to 20% after three to five days. Our interviews with the CEO of an elderly-care institute and a man caring for his mother showed the other side: caregivers have to be ready at every moment, and many can no longer live normal lives. The usual fixes do not help much. Patients take off GPS shoes and clothing, and locking the door keeps them safe only by isolating them, which can worsen their dementia. We wanted caregivers to live without constant worry, and people nearby to help a lost patient directly, instead of city-wide missing-person alerts that are vague and easy to ignore.</p>
+          <h4 class="project__h">Approach</h4>
+          <figure class="fig"><a href="assets/figures/watchout/gradual-intervention.png" target="_blank" rel="noopener"><img src="assets/figures/watchout/gradual-intervention.png" width="1642" height="926" loading="lazy" alt="Chart of four levels of intervention rising with urgency: 1, NFC door lock; 2, geofencing and digital compass; 3, QuickCall and bystander help request; 4, emergency call and GPS sharing"></a><figcaption>Gradual intervention: each level adds more help only as urgency rises.</figcaption></figure>
+          <p>Watch-Out escalates one step at a time, and calling the authorities, who are often busy and may struggle to find a lost patient, is the last resort. The door lock lets the patient leave on purpose. Outside, geofencing and the watch track whether they stay in their safe zone. If they leave it, the watch’s digital compass guides them back; if they are still out, nearby bystanders are asked to help; if no one does, the caregiver steps in with QuickCall; and only then are the authorities called.</p>
+          <figure class="fig fig--center" style="--maxw: 360px"><a href="assets/figures/watchout/door.png" target="_blank" rel="noopener"><img src="assets/figures/watchout/door.png" width="824" height="668" loading="lazy" alt="The smart door and a close-up of its lock, labeled: speaker and mic, NFC tags with LED guides, and a fingerprint reader on the door handle"></a><figcaption>The smart door lock: speaker and mic, NFC tag with LED guides, and a fingerprint handle for caregivers.</figcaption></figure>
+          <p>At the door, a smart lock allows a “conscious exit.” The patient can leave after two steps: a speaker asks short, calm questions (where are you going, what are you wearing?), and LED guides show where to tap their smartwatch on the NFC reader. Caregivers get the destination, exit time, and answers right away, can bypass the lock with a fingerprint, and exits are held back in extreme weather. Because the door opens only when the watch is tapped, the patient always leaves wearing it, and a watch is harder to take off than shoes or clothing.</p>
+          <figure class="fig fig--center" style="--maxw: 560px"><a href="assets/figures/watchout/smartwatch.png" target="_blank" rel="noopener"><img src="assets/figures/watchout/smartwatch.png" width="1244" height="600" loading="lazy" alt="Smartwatch showing a navigation arrow, and a phone receiving an AirDrop with a lost patient's details"></a><figcaption>The watch points the way back; if the patient is lost, it shares their details with nearby phones.</figcaption></figure>
+          <p>The compass guides with vibration and voice. The bystander request is an SOS sent by AirDrop or Quick Share to phones within 10 m, with the patient’s appearance, what might upset them, and a caregiver contact, and first responders can tap the watch (QuickScan) for medical details. QuickCall lets the caregiver talk through the watch without the patient having to answer. If the watch comes off outside the home zone, it asks to be put back on, then sounds a louder alarm after three minutes.</p>
+          <figure class="fig"><a href="assets/figures/watchout/caregiver-app.jpg" target="_blank" rel="noopener"><img src="assets/figures/watchout/caregiver-app.jpg" width="1600" height="776" loading="lazy" alt="The caregiver web app: patient information, a live map, vital signs, and safe-zone settings, with a close-up of the map showing drawn safe zones and a movement heatmap"></a><figcaption>The caregiver app: live location, vital signs, and safe zones drawn on a map, with a movement heatmap (right).</figcaption></figure>
+          <p>The caregiver app shows location, vital signs and movement history at all times. Caregivers draw customizable safe zones directly on the map, from a wide area around home to one place such as a supermarket the patient often visits, and a heatmap shows the places and landmarks the patient has wandered to. Wandering arrives as a quiet notification; a real alarm, the kind that pulls a caregiver away from work, comes only when the patient is in danger or the situation reaches QuickCall.</p>
+          <h4 class="project__h">Results</h4>
+          <ul class="bullets">
+            <li>A design proposal grounded in interviews with a caregiver and the CEO of an elderly-care institute.</li>
+            <li>Won <strong>1st Place</strong> (1 in 84) at the ACM CHI 2025 Student Design Competition in Yokohama.</li>
+            <li>Testing with patients is the next step.</li>
+          </ul>
+          <div class="project__role"><span>My role</span>Ideation, 3D design, and the system and sensor design for the smart door lock and smartwatch, plus part of the code. Presented at CHI 2025 with another teammate.</div>
+        </div>
+      </article>
+    </div>
+  </dialog>
+  <dialog class="modal" id="smart-window" aria-label="Smart Emergency Window">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <article class="project">
+        <header class="project__meta reveal">
+          <p class="project__kicker">IoT · Disaster response · 2025</p>
+          <h3 class="project__title">Smart Emergency Window</h3>
+          <p class="project__tagline">A security window that opens itself in any disaster situation.</p>
+          <p class="project__venue">JKSCI 2025 · two papers · Korean patent application</p>
+          <div class="project__badges"><span class="badge">Excellence Paper Award</span></div>
+          <div class="project__links"><a class="pill-link" href="assets/papers/JKSCI_2025_Smart-Emergency-Window.pdf" target="_blank" rel="noopener">Paper I</a><a class="pill-link" href="assets/papers/JKSCI_2025_AI-Smart-Window.pdf" target="_blank" rel="noopener">Paper II</a><a class="pill-link" href="publications.html#window-evac">Citations</a></div>
+        </header>
+        <div class="project__body reveal">
+          <figure class="fig"><video controls muted playsinline preload="metadata" width="1280" height="720" poster="assets/figures/window/window-demo-poster.jpg"><source src="assets/figures/window/window-demo.mp4" type="video/mp4"></video><figcaption>The prototype in action. (The motor’s torque was later increased considerably with a stronger motor. In testing, hazards were simulated physically, such as a lighter held in front of the flame sensor, and the BERT model was given danger messages.)</figcaption></figure>
+          <h4 class="project__h">The problem</h4>
+          <p>Many people in Korea live in <em>banjiha</em>, semi-basement homes whose windows are covered with fixed security bars. Since 2022, people have died trapped behind those bars during flash floods and fires. The bars need tools to remove, and existing openable designs are manual, take up indoor space, or stop working when the power fails.</p>
+          <figure class="fig fig--center" style="--maxw: 440px"><a href="assets/figures/window/isometric.png" target="_blank" rel="noopener"><img src="assets/figures/window/isometric.png" width="694" height="574" loading="lazy" alt="SolidWorks isometric view of the window: a frame with vertical security bars and a crossbar"></a><figcaption>The window design in SolidWorks.</figcaption></figure>
+          <h4 class="project__h">Approach</h4>
+      <p>In Paper I, two parts of the window move at once. A motor lifts the upper frame on a rack-and-pinion, freeing the tops of the bars, while a metallic bevel gear rotates the lower cylindrical base. The bars and the rotating base are inclined, so a small turn lines every bar up with its opening and gravity swings them out, with enough torque and deceleration that no one outside gets hurt. The bars clear the window within three seconds.</p>
+      <figure class="fig fig-pair" style="--cols: 1.13fr 1.177fr"><a href="assets/figures/window/open.png" target="_blank" rel="noopener"><img src="assets/figures/window/open.png" width="696" height="616" loading="lazy" alt="SolidWorks render of the window with its bars in place"></a><a href="assets/figures/window/open2.png" target="_blank" rel="noopener"><img src="assets/figures/window/open2.png" width="732" height="622" loading="lazy" alt="SolidWorks render of the window with the bars released and dropped out of the frame, leaving the opening clear"></a><figcaption>The SolidWorks design, before (left) and after (right) the bars release from the frame.</figcaption></figure>
+      <p>If the power is cut or a motor fails, an LED next to the lever tells the occupant to release the window by hand: they push the release forward and up, and inclined surfaces pass that force on to free the upper frame. A spring mechanism holds the gear in place, so the bars stay released once the user lets go. The release is reachable only from inside, so it does not weaken the window’s security.</p>
+      <p>Flame, heat (triggering at about 57 °C), smoke, and multispectral flame sensors watch for fire, and conductivity and float sensors watch for water rising near the floor. A Raspberry Pi reads them and switches battery power to the upper and lower motors through an isolating relay and an L298N driver. A phone app shows live readings and controls the window over Bluetooth and MQTT, with sensor data logged to the cloud. If the network drops, the Pi keeps deciding locally; if the power fails, a backup battery runs it for 24 hours in low-power mode.</p>
+      <p>Paper II adds AI so the window can act before local sensors detect danger. A classifier learns the home’s normal sensor patterns and flags deviations early; a BERT model reads weather forecasts and government disaster alerts, using haversine distance and magnitude to judge whether a warning applies to this home; and a decision layer combines both with news broadcasts, weighing threat probability, urgency, time to impact, and harm. Redundant sensors cross-check each other, and when the AI is unsure, it asks for manual confirmation instead of acting.</p>
+      <figure class="fig fig-pair" style="--cols: 1.505fr 1.453fr"><a href="assets/figures/window/window-iot.png" target="_blank" rel="noopener"><img src="assets/figures/window/window-iot.png" width="906" height="602" loading="lazy" alt="Wiring diagram: a Raspberry Pi connected to flame, temperature, gas, and ultrasonic sensors, a Bluetooth module and phone, a motor driver with two motors, and a battery"></a><a href="assets/figures/window/window-ai-system.png" target="_blank" rel="noopener"><img src="assets/figures/window/window-ai-system.png" width="982" height="676" loading="lazy" alt="Flowchart of the AI system: disaster alerts and weather feed a danger analysis, temperature, gas, fire, and motion sensors feed a situation analysis, and if the home is not safe the window opens; IoT devices or a manual switch can also open it"></a><figcaption>Left: the IoT system (Paper I). A Raspberry Pi reads the sensors and drives both motors through an L298N driver; a phone connects over Bluetooth. Right: the AI system (Paper II). Disaster alerts and weather feed a danger analysis, the home sensors feed a situation analysis, and the window opens when the home is not safe.</figcaption></figure>
+      <p>Compared with the first prototype, the final version replaced the acrylic frame with plastic. The design called for spur gears, but the first prototype used bevel gears because they were what we could source; the next design moved to spur gears, which transmit power more efficiently, paired with stronger motors for more torque.</p>
+          <figure class="fig fig-pair" style="--cols: 2.011fr .75fr"><a href="assets/figures/window/window-build.jpg" target="_blank" rel="noopener"><img src="assets/figures/window/window-build.jpg" width="1400" height="696" loading="lazy" alt="Dawit coding on a laptop while his teammate adjusts the acrylic prototype of the window with its metal bars"></a><a href="assets/figures/window/window-mechanism.jpg" target="_blank" rel="noopener"><img src="assets/figures/window/window-mechanism.jpg" width="1200" height="1600" loading="lazy" alt="Close-up of the prototype: a 12 V DC gear motor driving a bevel gear at the corner of the aluminum and acrylic frame"></a><figcaption>Left: building the first prototype, with its acrylic frame, with my teammate. Right: the prototype’s motor and bevel gear.</figcaption></figure>
+      <h4 class="project__h">Results</h4>
+          <ul class="bullets">
+            <li>Paper I: the bars release within three seconds, cutting evacuation time by <strong>89.5%</strong> (84.2% in manual mode), with 98% reliability across 100 simulated fires and 100 of 100 manual releases, tested with elderly users, children, and users with limited mobility.</li>
+            <li>Held 97% reliability over about 150 repeated cycles and 95% from −10 to 50 °C.</li>
+        <li>Sensors detected flame at 95% accuracy within 5 m and smoke at 94% in enclosed spaces, read temperature to ±1 °C, and caught water-level changes as small as 1 cm (98%).</li>
+            <li>Paper II: threats detected <strong>127 seconds earlier</strong> than conventional systems, with 98.7% decision accuracy (vs. 85.3% for sensor thresholds).</li>
+            <li>Excellence Paper Award for Paper I; Korean patent application filed in 2026.</li>
+          </ul>
+          <div class="project__role"><span>My role</span>Paper I: SolidWorks design, including the gear assembly for the upper rack-and-pinion section and its manual emergency release, building and assembling the acrylic prototype, and programming the IoT sensors. Paper II (first author): the AI system, a neural-network classifier on the home sensor data and a BERT model with haversine-distance and magnitude features for forecasts and alerts, combined with news broadcasts into one threat assessment.</div>
+        </div>
+      </article>
+    </div>
+  </dialog>
+  <dialog class="modal" id="shower" aria-label="Hydroelectric Shower Module">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <article class="project">
+        <header class="project__meta reveal">
+          <p class="project__kicker">IoT · Sustainability · 2023</p>
+          <h3 class="project__title">Hydroelectric Shower Module</h3>
+          <p class="project__tagline">Generating electricity from a running shower.</p>
+          <p class="project__venue">Korea Association for Science and Creativity, 2023</p>
+          <div class="project__badges"></div>
+          <div class="project__links"><a class="pill-link" href="assets/papers/KASC_2023_Hydroelectric-Shower-Module.pdf" target="_blank" rel="noopener">Paper (English)</a><a class="pill-link" href="https://github.com/da-dawit/iot_shower_faucet" target="_blank" rel="noopener">Code</a><a class="pill-link" href="publications.html#shower">Citation</a></div>
+          <p class="project__note">Originally published in Korean; the linked PDF is my English version with larger, updated figures.</p>
+        </header>
+        <div class="project__body reveal">
+          <figure class="fig"><a href="assets/figures/shower/shower-module-cad.png" target="_blank" rel="noopener"><img src="assets/figures/shower/shower-module-cad.png" width="1090" height="676" loading="lazy" alt="SolidWorks views of the shower module: propellers inside a transparent tube, gear holder, gears, axis, and generator"></a><figcaption>The SolidWorks model: propellers inside the tube turn the axis and gears that drive a 6-9 V generator.</figcaption></figure>
+          <h4 class="project__h">The problem</h4>
+          <p>Korea ranks third in the world in electricity use per person, yet households generate almost none of their own. Standing in the shower, I wondered whether the falling water could be put to work.</p>
+          <h4 class="project__h">Approach</h4>
+          <p>A 3D-printed tube screws onto the shower faucet. Water spins propellers on an axle that drives a small generator (up to 9 V at about 6,000 rpm) through a gear train. The electricity charges a battery that powers an Arduino IoT system: an ultrasonic sensor turns the valve on only when someone is within 15 cm (an LED stood in for the valve in the prototype), and a Bluetooth app (MIT App Inventor) and an LCD show the live voltage.</p>
+          <figure class="fig fig--center" style="--maxw: 380px"><a href="assets/figures/shower/shower-iot.png" target="_blank" rel="noopener"><img src="assets/figures/shower/shower-iot.png" width="698" height="596" loading="lazy" alt="Diagram of the IoT system: the generator charges a rechargeable battery that powers an Arduino and a motor driver; the Arduino reads an ultrasonic sensor, switches the valve, drives an LCD, and runs a DC motor"></a><figcaption>The IoT system: the generator charges a battery that powers the Arduino, which reads the ultrasonic sensor, switches the “valve,” shows the voltage on an LCD, and drives a DC motor that stood in for the water in tests.</figcaption></figure>
+          <p>Most of the work was iteration. 3D-printed propellers were too fragile, so we switched to fixed-pitch LEGO blades and tested their angle. Bevel gears were too hard to stabilize, so we used spur gears and compared gear ratios, reading the generator’s voltage on an Arduino while a DC motor turned the axle at a steady 15 rpm. An oil seal replaced the bearings to stop leaks while letting the axle turn freely.</p>
+          <figure class="fig fig-pair" style="--cols: 1.485fr 1.426fr .794fr"><a href="assets/figures/shower/shower-v2-side.png" target="_blank" rel="noopener"><img src="assets/figures/shower/shower-v2-side.png" width="778" height="524" loading="lazy" alt="Side view of the redesigned module: propellers on a shaft inside the tube, the gear, and the generator in an enclosed housing"></a><a href="assets/figures/shower/shower-v2-iso.png" target="_blank" rel="noopener"><img src="assets/figures/shower/shower-v2-iso.png" width="830" height="582" loading="lazy" alt="Isometric view of the redesigned module with the gear housing around the shaft"></a><a href="assets/figures/shower/shower-v2-front.png" target="_blank" rel="noopener"><img src="assets/figures/shower/shower-v2-front.png" width="346" height="436" loading="lazy" alt="Front view of the redesigned module, looking down the shaft at the gear inside the housing"></a><figcaption>The redesign in SolidWorks: side, isometric, and front views of the reinforced gear housing.</figcaption></figure>
+          <p>The next design encloses the gears in a reinforced gear housing that holds the shaft in line, so the axle no longer shakes as the water drives it and the gears stay meshed.</p>
+          <h4 class="project__h">Results</h4>
+          <figure class="fig fig--center" style="--maxw: 380px"><a href="assets/figures/shower/shower-gear-ratios.png" target="_blank" rel="noopener"><img src="assets/figures/shower/shower-gear-ratios.png" width="740" height="646" loading="lazy" alt="Line chart of generator voltage over time for gear ratios 5:1, 5:3, 2:1, 3:1, and 1:1 at 15 rpm; the 2:1 line stays highest, around 0.2 V"></a><figcaption>Generator voltage over time for each gear ratio, with the axle turned at 15 rpm. 2:1 (green) stays highest.</figcaption></figure>
+          <ul class="bullets">
+            <li>Of five gear ratios (5:1, 5:3, 2:1, 3:1, and 1:1), 2:1 generated the most, up to 0.25 V, while no other ratio passed 0.2 V. We had expected 5:1 to win, but more revolutions of the generator did not mean more energy. The result held across three repeated runs.</li>
+            <li>Blades slanted at 75° spun fastest; at 30° and 45° the gears kept stalling. A wider tube kept the water moving, where a narrower one slowed it.</li>
+            <li>A working prototype: water spins the propellers and gears, and the IoT system turns the valve on only when someone is close, with the voltage shown live on an LCD and a phone.</li>
+          </ul>
+          <p class="after-list">Initial testing left two problems: the gears and axles were not held firmly enough, so the gears jammed and the generator sometimes stalled, and the rough 3D-printed tube added friction. The next version addresses both with the reinforced gear housing that supports the generator and axles, a tube of smooth plastic or light metal, and custom propellers in place of the LEGO blades.</p>
+          <div class="project__role"><span>My role</span>Led the project end to end: the pipe’s curve and shape for the water flow, and the blades’ placement and angle, found through experiments and basic calculations; the SolidWorks design; the 3D-printed build and testing; and the Arduino-based valve and IoT system.</div>
+        </div>
+      </article>
+    </div>
+  </dialog>
+  <dialog class="modal" id="igen" aria-label="IGEN">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <article class="project">
+        <header class="project__meta">
+          <p class="project__kicker">Ongoing · reinforcement learning</p>
+          <h3 class="project__title">IGEN</h3>
+          <p class="project__tagline">A parent that teaches a child agent across generations, and emotions that emerge because the child has a body to protect.</p>
+          <p class="project__venue">Intergenerational affective reinforcement learning · in progress</p>
+          <div class="project__links"><a class="pill-link" href="https://canva.link/g3qdtof64xzuw3x" target="_blank" rel="noopener">Initial slides</a><a class="pill-link" href="https://github.com/da-dawit/igen2" target="_blank" rel="noopener">Code, first version (private)</a><a class="pill-link" href="https://github.com/da-dawit/IGEN_emotions" target="_blank" rel="noopener">Code, current version (private)</a></div>
+        </header>
+        <div class="project__body">
+          <figure class="fig"><a href="assets/figures/igen/igen-architecture.png" target="_blank" rel="noopener"><img src="assets/figures/igen/igen-architecture.png" width="1576" height="824" loading="lazy" alt="IGEN architecture: a parent agent sends settings to a child agent in each generation and receives signals back; each child is warm-started from the previous generation, and the parent is updated by a meta-gradient from the children's evaluated performance"></a><figcaption>The original design: the parent sets each child’s training, each generation starts from the previous child’s weights, and the parent learns from how well its children do.</figcaption></figure>
+          <h4 class="project__h">Why</h4>
+          <p>Each of the three things I think robots are missing has a counterpart in IGEN. The child knows food, hazards and its own moves only by what they do to its body, so a recolored or relabeled world can be mapped back onto itself instead of learned again. A body model predicts what each action will do to that body before the child moves, the way a gut feeling does. And the child’s internal state has no definition of its own: it is shaped only by having a body to protect and a parent to answer to, which is where emotions would have to come from. Worlds whose rules change test whether the child can leave a way of acting that no longer works. The parent is there because people learn all of this by being raised: a parent adjusts how a child explores, and over time the child learns to regulate itself.</p>
+          <h4 class="project__h">First, a parent that sets the curriculum</h4>
+          <p>A parent agent reads a child reinforcement-learning agent’s learning-progress signals (curiosity, frustration, and confidence, later eight in all) and sets its curriculum: reward shaping, how hard to explore, learning rate, planning horizon, and how much to seek novelty. When a generation ends, the child’s weights and the parent’s strategy carry into the next. I first trained the parent with the exact bilevel (Stackelberg) meta-gradient, verified against finite differences to about four digits, and later with REINFORCE on the child’s realized performance.</p>
+          <p>Exploration-forward curricula clearly beat plain PPO. On MinAtar, the learned parent raised Breakout from 12.3 to 22.8 and Space Invaders from 97.8 to 137.2. On full Atari Freeway (2 seeds), it held a return of 26.5 while plain PPO peaked and then collapsed to 0. But across games, the learned parent was within noise of a random one, and the hand-written heuristic won on Asterix.</p>
+          <figure class="fig fig--center" style="--maxw: 560px"><a href="assets/figures/igen/igen-freeway-curves.png" target="_blank" rel="noopener"><img src="assets/figures/igen/igen-freeway-curves.png" width="840" height="480" loading="lazy" alt="Line chart of greedy return over environment steps on Atari Freeway: the learned parent stays near 25, while random-network-distillation PPO and the heuristic parent decline and plain PPO falls to 0"></a><figcaption>Atari Freeway, last generation: the learned parent (red) holds its return while plain PPO (blue) collapses.</figcaption></figure>
+          <figure class="fig fig--center fig--pixel" style="--maxw: 260px"><a href="assets/figures/igen/igen-minatar-breakout.gif" target="_blank" rel="noopener"><img src="assets/figures/igen/igen-minatar-breakout.gif" width="320" height="320" loading="lazy" alt="Animated MinAtar Breakout played by a child agent raised by the learned parent"></a><figcaption>A child raised by the learned parent, playing MinAtar Breakout.</figcaption></figure>
+          <h4 class="project__h">Now, a child with a body</h4>
+          <p>In the first version, the child’s “emotions” were eight statistics I computed from its training, such as return signal-to-noise and value loss. The current version replaces them with a state the child has to form itself, and gives it a body to form it around. The child lives in a 10×10 grid of food, hazards and walls. It has energy it must keep up, skin that senses contact on each side, warmth that rises near hazards, and damage on each of its four sides. It is rewarded only for keeping its hunger down.</p>
+          <p>There is no pain term in the reward. When a side is injured, moves in that direction fail, the senses on that side get noisier, and energy drains faster. I proved that the best achievable value can only fall as capacity is lost, so avoiding injury is worth learning without being told to. Enough damage on one side, or running out of energy, kills the child. It then sits out 20 steps and is reborn into a fresh layout, which costs the dynasty data and the parent reward.</p>
+          <p>The world also changes in ways the child cannot see. With no change in appearance, food sometimes restores only 40% as much energy and hazards sometimes hurt 1.75 times as much, and these hidden regimes switch at random, about every 500 steps. Moving burns twice the energy of resting, and food next to a hazard is worth double, so whether to rest, forage or take a risk depends on how hungry the child is and on what it believes about the world at that moment.</p>
+          <figure class="fig"><video controls muted playsinline preload="none" width="1100" height="572" poster="assets/figures/igen/igen-emotions-rollout-poster.jpg" aria-label="A trained child agent moving through the grid world, with plots of its learned internal state z and its body signals"><source src="assets/figures/igen/igen-emotions-rollout.mp4" type="video/mp4"></video><figcaption>One trained child over 240 steps, including a death and rebirth: the world on the left; its learned affect <em>z</em>, never hand-designed, and its body on the right.</figcaption></figure>
+          <p>The child is four small modules, about 263k parameters under a one-million cap: perception, a body model that predicts what each of its five actions would do to its body, a slow internal state <em>z</em>, and an actor-critic. Hunger and injury reach the actor only through <em>z</em>, and no loss defines <em>z</em>. It is shaped only by acting and by what the parent needs to hear, because it is the only message the child sends to the parent.</p>
+          <figure class="fig"><a href="assets/figures/igen/igen-affect-trace.png" target="_blank" rel="noopener"><img src="assets/figures/igen/igen-affect-trace.png" width="1540" height="1120" loading="lazy" alt="Five stacked plots over 400 steps of one life history: the four components of z, the drive, body-model error, eating and hazard events, and the hidden regime, with red lines at each death and rebirth"></a><figcaption><em>z</em> over one life history, next to the child’s drive, body-model error, meals and hazard contacts; red lines mark death and rebirth.</figcaption></figure>
+          <p>The child also never sees what an object is. It knows each kind of object only by what touching it did to its body (energy gained, damage taken, pressure on the skin, whether it blocked the way), and each action only by where it actually went. These two tables have no learned weights and keep updating as the child lives, so its belief about the hidden world can be read out directly, and a relabeled world can be mapped back onto its own body instead of learned again.</p>
+          <p>The parent reads <em>z</em> and sets how the child trains: how much it explores, how fast it learns, and how far ahead it values. Each generation starts from the best child so far. In the latest version, each of the 256 children in a batch gets its own curriculum from its own <em>z</em>, because averaging <em>z</em> over the whole batch had washed out the state the parent needed to read.</p>
+          <p>Before any learning run, the world is checked bit for bit against a plain-Python reference (0 mismatches in 64,000 transitions), the gradient into <em>z</em> is checked against finite differences, and the emergence criteria were fixed before the first sweep.</p>
+          <h4 class="project__h">What the first seven sweeps showed</h4>
+          <ul class="bullets">
+            <li>The child approaches food 0.75-0.85 of the time when hungry and 0.44-0.50 when full, and that runs through <em>z</em>: shuffling <em>z</em> between children removes 87-100% of the difference, and clamping it passes the intervention test in up to 4 of 5 seeds.</li>
+            <li>The value the child assigns to food tracks the hidden nutrition regime at a correlation of −0.70 to −0.76 across the main runs, so its belief about the invisible world is accurate. Fragility is tracked only weakly, since hazards are touched about 15 times less often than food.</li>
+            <li>With the controls relabeled, survival recovers from 0.88 to 0.99 of baseline by the second visit, against 0.42 → 0.41 without body grounding. Recolored objects do not transfer yet: when food looks harmful, the child avoids it and never gets the contact that would correct the belief.</li>
+            <li>I am still developing the parent. Its current levers (how much to explore, how fast to learn, how far ahead to value) have a best setting that depends mostly on training time, so a carefully searched schedule still keeps up with a parent that reads the child. Giving each child its own curriculum already produced the best <em>z</em> so far: the most causal, the most informative beyond the body, and the most accurate about the hidden world.</li>
+            <li>When food appears only next to hazards, the child keeps about 80% of its normal survival, but when the rules flip entirely (food injures, hazards feed), it has not yet learned to switch strategy. That jump out of the system is what I am working toward, along with the strictest criterion I set before the first sweep: showing that what <em>z</em> carries beyond the current body comes from having something to lose.</li>
+          </ul>
+          <figure class="fig"><a href="assets/figures/igen/igen-z-lesion.png" target="_blank" rel="noopener"><img src="assets/figures/igen/igen-z-lesion.png" width="2520" height="952" loading="lazy" alt="Ten small line plots of the probability of approaching food when hungry, mid, or full, with z intact, zeroed, or shuffled, for each experimental arm"></a><figcaption>The <em>z</em> lesion test across arms: with <em>z</em> intact (blue), the child seeks food more when hungry; zeroing or shuffling <em>z</em> (orange, green) flattens that dependence.</figcaption></figure>
+          <h4 class="project__h">What comes next</h4>
+          <p>IGEN is still in development, and these results come from its first world. The parent, the child and the dynasty stay; I am changing what the parent controls and what the world asks of the child. Next is an uncertainty channel, so the child can doubt a belief and test it again, which the flipped-rule world requires; a re-run of deliberation, where the child chooses from <em>z</em> how far to think ahead and pays for it in energy; and levers whose right setting depends on the child rather than on the clock. Then the same body interface moves into 2D physics and then MuJoCo manipulation, where fingertip touch sensors become the skin and actuator strength becomes the capacity that injury takes away.</p>
+        </div>
+      </article>
+    </div>
+  </dialog>
+  </main>
+
+  <footer class="site-footer" id="contact">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <p class="footer__lead">Prospective PhD student in robotics, Fall 2027. Always happy to talk about robots.</p>
+          <a class="footer__email" href="mailto:dchun4748@gmail.com">dchun4748@gmail.com</a>
+        </div>
+        <ul class="footer__links">
+          <li><a href="https://github.com/da-dawit" target="_blank" rel="noopener">GitHub <span class="footer__arrow" aria-hidden="true">↗</span></a></li>
+          <li><a href="assets/CV_DawitChun.pdf" target="_blank" rel="noopener">CV (PDF) <span class="footer__arrow" aria-hidden="true">↗</span></a></li>
+          <li><span>Taejae University, Seoul</span></li>
+        </ul>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span data-year>2026</span> Dawit Chun</span>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
