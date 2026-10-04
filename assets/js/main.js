@@ -37,6 +37,19 @@
     items.forEach((el) => el.classList.add('is-visible'));
   }
 
+  // Teaser clips on the home page: play only while on screen, and never under reduced motion
+  const teasers = document.querySelectorAll('video[data-teaser]');
+  if (teasers.length && 'IntersectionObserver' in window) {
+    const calm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const watch = new IntersectionObserver((entries) => {
+      entries.forEach(({ target: v, isIntersecting }) => {
+        if (isIntersecting && !calm.matches) v.play().catch(() => {});
+        else v.pause();
+      });
+    }, { threshold: 0.35 });
+    teasers.forEach((v) => watch.observe(v));
+  }
+
   // Click-to-load YouTube (no third-party iframe until someone asks for it)
   document.addEventListener('click', (e) => {
     const play = e.target.closest('.video__play');
@@ -219,6 +232,11 @@
 
     modals.forEach((d) => {
       d.querySelector('.modal__close').addEventListener('click', () => d.close());
+      d.querySelectorAll('[data-close]').forEach((link) => link.addEventListener('click', (e) => {
+        const to = link.getAttribute('href');
+        if (!to || to === '#') e.preventDefault();
+        d.close();
+      }));
       // a click on the dimmed backdrop lands on the dialog element itself
       d.addEventListener('click', (e) => { if (e.target === d) d.close(); });
       d.addEventListener('close', () => {

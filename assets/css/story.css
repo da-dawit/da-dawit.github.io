@@ -1,0 +1,1602 @@
+/* Who is Dawit Chun? The bingo story that opens the site. */
+
+@property --p { syntax: '<number>'; inherits: true; initial-value: 0; }
+
+:root {
+  color-scheme: dark;
+  /* the page is black; the bingo card is the one lit object on it */
+  --bg: #0b0b0c;
+  --text: #ecebe6;
+  --text-2: #a9a8a2;
+  --text-3: #807f79;
+  --rule: #252527;
+  --rule-2: #3a3a3d;
+  /* the card keeps its own paper and ink */
+  --card: #f3eee2;
+  --cell: #fffdf8;
+  --gold: #e2c262;
+  --card-ink: #16171a;
+  --red: #b3261e;
+  --serif: "Newsreader", Georgia, "Times New Roman", serif;
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --game: "Archivo", "IBM Plex Sans", system-ui, sans-serif;
+  /* Motion. Things arrive on --m-out (quick start, long soft stop, never past the mark), leave on --m-in, travel
+     between two places on --m-move, and pens draw on --m-draw (the curve of ease() in story.js).
+     150 ms for color, hover and exits; 240 for a small object settling; 360 for scenes and the stamp; 480 for travel. */
+  --m-out: cubic-bezier(.22, 1, .36, 1);
+  --m-in: cubic-bezier(.4, 0, 1, 1);
+  --m-move: cubic-bezier(.45, 0, .2, 1);
+  --m-draw: cubic-bezier(.45, 0, .55, 1);
+  --m-micro: 150ms;
+  --m-short: 240ms;
+  --m-base: 360ms;
+  --m-long: 480ms;
+  --ease: var(--m-out);
+  --top: 64px;
+  /* names the scene drawings use */
+  --k-bg: var(--bg);
+  --k-fg: var(--text);
+  --k-fg-2: var(--text-2);
+  --k-fg-3: var(--text-3);
+  --k-rule: var(--rule);
+  --k-rule-2: var(--rule-2);
+  --k-gold: #ecd27f;
+  --k-mono: var(--mono);
+  --rb-bg: var(--bg);
+}
+.sc { --tile-hi: color-mix(in srgb, var(--tile, #ecebe6) 62%, #fff); }
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; background: var(--bg); }
+
+body.story-body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text-2);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img, video { display: block; max-width: 100%; height: auto; }
+button { font: inherit; color: inherit; }
+p { margin: 0; }
+b, strong { color: var(--text); font-weight: 600; }
+:focus-visible { outline: 2px solid var(--text); outline-offset: 3px; }
+
+/* Top bar */
+
+.st-top {
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  height: var(--top);
+  padding: 0 clamp(16px, 3vw, 40px);
+  background: var(--bg);
+  border-bottom: 1px solid var(--rule);
+}
+
+.st-brand {
+  font-family: var(--serif);
+  font-size: 1.3rem;
+  letter-spacing: -.01em;
+  color: var(--text);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.skip-site {
+  padding: 8px 0;
+  color: var(--text-2);
+  font-size: .9rem;
+  text-decoration: underline 1px var(--rule-2);
+  text-underline-offset: 6px;
+  white-space: nowrap;
+  transition: color .15s ease, text-decoration-color .15s ease;
+}
+.skip-site:hover { color: var(--text); text-decoration-color: var(--text); }
+
+/* Layout: the card on one side, the scene on the other */
+
+.st {
+  display: grid;
+  grid-template-columns: minmax(0, 11fr) minmax(0, 12fr);
+  gap: clamp(28px, 5vw, 80px);
+  align-items: start;
+  max-width: 1360px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: calc(var(--top) + 12px) clamp(16px, 3vw, 40px) 64px;
+}
+
+.st-cardcol {
+  position: sticky;
+  top: calc(var(--top) + 12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(100vh - var(--top) - 40px);
+}
+
+.st-stage {
+  display: flex;
+  align-items: flex-start;
+  min-height: calc(100vh - var(--top) - 52px);
+  padding: max(28px, 9vh) 0 40px;
+  scroll-margin-top: calc(var(--top) + 8px);
+}
+
+/* The card: printed paper, gold boxes, rubber-stamp ink */
+
+.bc {
+  position: relative;
+  width: min(100%, calc(100vh - var(--top) - 120px), 600px);
+  padding: clamp(14px, 1.9vw, 24px);
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--card-ink);
+  transition: opacity .8s var(--ease);
+}
+.bc.is-idle { opacity: 1; }
+
+.bc-head {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(4px, .6vw, 7px);
+  margin-bottom: clamp(6px, .8vw, 10px);
+}
+.bc-head span {
+  font-family: var(--game);
+  font-style: italic;
+  font-weight: 800;
+  font-size: clamp(1.15rem, 2.3vw, 2rem);
+  line-height: 1;
+  text-align: center;
+}
+
+.bc-grid {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(4px, .6vw, 7px);
+}
+
+.bc-cell {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--gold);
+  border-radius: 5px;
+  background: var(--cell);
+  color: var(--card-ink);
+  container-type: size;
+  cursor: default;
+  transition: border-color var(--m-micro) var(--m-out), background-color var(--m-micro) var(--m-out);
+}
+
+.bc-ink {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transform: scale(0);
+}
+
+/* every stamp prints its word at one size; long words are set narrower, not smaller */
+.bc-label {
+  position: relative;
+  z-index: 2;
+  padding: 0 5cqw;
+  font-family: var(--game);
+  font-weight: 700;
+  font-size: 13cqw;
+  font-stretch: var(--wd, 100%);
+  line-height: 1.05;
+  text-align: center;
+  color: #fff;
+  opacity: 0;
+}
+
+/* the tile being played, and the tile ready for its stamp */
+.bc-cell.is-open { border-color: var(--tile); }
+.bc-cell.is-ready {
+  border-color: var(--tile);
+  background: color-mix(in srgb, var(--tile) 24%, var(--cell));
+  cursor: pointer;
+}
+.bc-cell.is-ready:hover { background: color-mix(in srgb, var(--tile) 34%, var(--cell)); }
+
+/* Stamped: one press. The tile gives under the stamp, the color and the word print at the moment of contact,
+   and the tile comes back up. Nothing grows, spins or splashes, and nothing else on the card moves. */
+.bc-cell.is-stamped {
+  --contact: calc(var(--m-base) * .3);
+  border-color: var(--card-ink);
+  background-color: var(--tile);
+  transition: background-color var(--m-micro) var(--m-out) var(--contact), border-color var(--m-micro) var(--m-out) var(--contact);
+  animation: stamp-press var(--m-base) linear;
+}
+.bc-cell.is-stamped .bc-label { animation: show var(--m-micro) var(--m-out) var(--contact) forwards; }
+
+/* 30% in, the stamp is down: it goes in on the way-in curve (--m-in) and lets go on the arrival curve (--m-out) */
+@keyframes stamp-press {
+  0% { transform: none; animation-timing-function: cubic-bezier(.4, 0, 1, 1); }
+  30% { transform: scale(.94); animation-timing-function: cubic-bezier(.22, 1, .36, 1); }
+  100% { transform: none; }
+}
+@keyframes show { to { opacity: 1; } }
+
+.bc-cell.no-anim,
+.bc-cell.no-anim * { animation-duration: 0s !important; animation-delay: 0s !important; transition-duration: 0s !important; transition-delay: 0s !important; }
+
+/* the second line: dashed until earned, penciled once chosen */
+.bc-cell.is-line:not(.is-stamped):not(.is-penciled),
+.bc-cell.is-waiting { border: 2px dashed var(--card-ink); }
+
+.bc-cell.is-penciled {
+  z-index: 2;
+  border: 2px dashed var(--card-ink);
+  background: repeating-linear-gradient(135deg, rgba(22, 23, 26, .07) 0 4px, transparent 4px 9px), var(--cell);
+}
+.bc-cell.is-penciled .bc-label {
+  padding: 0 2cqw;
+  background: var(--cell);
+  font-family: var(--serif);
+  font-weight: 400;
+  font-style: italic;
+  font-size: 12cqw;
+  font-stretch: 100%;
+  color: var(--card-ink);
+  opacity: 1;
+}
+
+/* bingo lines, in red marker and in pencil */
+.bc-lines {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+.bc-line path {
+  fill: none;
+  stroke: var(--red);
+  stroke-width: 5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.bc-line text { font-family: var(--game); font-style: italic; font-weight: 800; font-size: 22px; fill: var(--red); }
+.bc-line.is-dashed path { stroke: var(--card-ink); stroke-width: 3.5; }
+/* the pencil line is a row of separate dashes (story.js, renderLines), so it can be drawn like the marker */
+.bc-line.is-dashed .bc-dash { stroke-linecap: butt; }
+.bc-line.is-dashed text { fill: var(--card-ink); }
+/* One pen for both lines: corner to corner in 480 ms, speeding up and slowing down like a hand. The marker is one
+   stroke; each pencil dash is laid down as the pen reaches it. The arrowhead and numeral come when the stroke ends. */
+.bc-line.is-drawing .bc-stroke { stroke-dasharray: 1; stroke-dashoffset: 1; animation: draw var(--m-long) var(--m-draw) forwards; }
+.bc-line.is-drawing .bc-dash { stroke-dasharray: 1 1; stroke-dashoffset: 1; animation: draw var(--dur) linear var(--at) forwards; }
+.bc-line.is-drawing .bc-line__head,
+.bc-line.is-drawing text { opacity: 0; animation: show var(--m-micro) var(--m-out) var(--m-long) forwards; }
+@keyframes draw { to { stroke-dashoffset: 0; } }
+
+/* the bigger card: this one becomes a quarter of a ten by ten */
+.bc.is-big .bc-head { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3px; }
+.bc.is-big .bc-head span { font-size: clamp(.7rem, 1.2vw, 1.05rem); }
+.bc.is-big .bc-grid { grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 3px; }
+.bc.is-big .bc-cell { border-width: 1.5px; border-radius: 3px; }
+.bc.is-big .bc-line path { stroke-width: 3.5; }
+.bc.is-big .bc-line text { font-size: 15px; }
+/* the rest of the bigger card comes up once the old card has mostly shrunk into its corner */
+.bc-cell.is-new { opacity: 0; transition: opacity var(--m-base) var(--m-out) var(--m-short); }
+.bc.is-grown .bc-cell.is-new { opacity: 1; }
+
+/* Scenes */
+
+/* Text never moves: scenes and reveals only fade, in place. A scene leaves faster than the next one arrives. */
+.sc {
+  width: 100%;
+  max-width: 640px;
+  opacity: 0;
+  transition: opacity var(--m-base) var(--m-out);
+}
+.sc.is-in { opacity: 1; }
+.sc.is-leaving { opacity: 0; transition: opacity var(--m-micro) var(--m-in); }
+.rv { opacity: 0; transition: opacity var(--m-base) var(--m-out); }
+.rv.is-in { opacity: 1; }
+
+/* the line that carries the story over from the last tile */
+.sc-lead {
+  max-width: 54ch;
+  margin-bottom: 20px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.45;
+  color: var(--text-2);
+}
+.sc-hero {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-size: clamp(3.2rem, 7vw, 6.2rem);
+  line-height: .95;
+  letter-spacing: -.035em;
+  color: var(--text);
+}
+.sc-title {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(2rem, 3.5vw, 3rem);
+  line-height: 1.06;
+  letter-spacing: -.02em;
+  color: var(--text);
+  text-wrap: balance;
+}
+.sc-hero:focus,
+.sc-title:focus { outline: none; }
+.sc-lede { max-width: 58ch; margin-top: 18px; font-size: 1.06rem; color: var(--text-2); }
+.sc-lede + .sc-lede { margin-top: 12px; }
+.sc-hint { font-family: var(--serif); font-style: italic; font-size: 1rem; line-height: 1.45; color: var(--text-3); }
+.sc-body > .sc-hint { margin-top: 14px; }
+
+.sc-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px 16px;
+  margin-top: 28px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  min-height: 46px;
+  padding: 10px 20px;
+  border: 1px solid rgba(236, 235, 230, .42);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text);
+  font-weight: 500;
+  font-size: .95rem;
+  line-height: 1.2;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color var(--m-micro) var(--m-out), color var(--m-micro) var(--m-out), border-color var(--m-micro) var(--m-out), opacity var(--m-micro) var(--m-out);
+}
+.btn:hover { border-color: var(--text); background: var(--text); color: var(--bg); }
+.btn--primary { border-color: var(--text); background: var(--text); color: var(--bg); }
+.btn--primary:hover { border-color: #fff; background: #fff; }
+/* the stamp: an ink pad in the tile's color */
+.btn--stamp::before { content: ""; flex: none; width: 16px; height: 16px; border-radius: 2px; background: var(--tile); }
+.btn:disabled { opacity: .35; cursor: default; }
+.btn:disabled:hover { border-color: rgba(236, 235, 230, .42); background: transparent; color: var(--text); }
+.btn--primary:disabled:hover { background: var(--text); color: var(--bg); }
+.btn[hidden] { display: none; }
+
+/* what each tile reveals */
+.rv { margin-top: 30px; }
+.rv--bar { margin-top: 0; }
+.rv > :not(:first-child) { margin-top: 18px; }
+.rv-photo { margin: 0; }
+.rv-photo img,
+.rv-photo video { width: 100%; }
+figcaption { margin-top: 10px; font-size: .82rem; line-height: 1.45; color: var(--text-3); }
+.rv-text { max-width: 60ch; font-size: 1.06rem; color: var(--text-2); }
+.rv-meta { font-size: .82rem; color: var(--text-3); }
+/* two photos hung at the same height, each at its own proportions */
+.rv-pair { display: flex; gap: 14px; align-items: flex-start; }
+.rv-pair figure { flex: var(--r) 1 0; min-width: 0; margin: 0; }
+.rv-pair img { width: 100%; }
+.rv-note { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 18px; align-items: center; }
+.rv-photo--inset { max-width: 26rem; }
+.rv-note img { width: 200px; }
+.rv-note p { font-size: .98rem; color: var(--text-2); }
+
+/* BINGO! */
+
+.bingo {
+  font-family: var(--game);
+  font-weight: 800;
+  font-style: italic;
+  font-stretch: 112%;
+  font-size: clamp(4.5rem, 10vw, 9rem);
+  line-height: .88;
+  letter-spacing: -.035em;
+  color: var(--text);
+}
+
+/* The end */
+
+.sc-goal {
+  max-width: 40ch;
+  margin-top: 22px;
+  font-family: var(--serif);
+  font-size: 1.35rem;
+  line-height: 1.35;
+  color: var(--text-2);
+}
+.sc-goal b { font-weight: 600; color: var(--text); }
+.sc-end { margin-top: 34px; }
+.sc-links { display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 18px; }
+.sc-links a { color: var(--text-2); text-decoration: underline 1px var(--rule-2); text-underline-offset: 5px; }
+.sc-links a:hover { color: var(--text); text-decoration-color: var(--text); }
+
+/* Without JavaScript, the story as text */
+
+.ns { max-width: 680px; margin: 0 auto; padding: calc(var(--top) + 24px) 20px 64px; }
+.ns h1 { font-family: var(--serif); font-weight: 300; font-size: 3rem; line-height: 1; color: var(--text); }
+.ns h2 { margin-top: 28px; font-family: var(--serif); font-weight: 400; font-size: 1.6rem; color: var(--text); }
+.ns p { margin-top: 10px; }
+.ns a { color: var(--text); text-underline-offset: 4px; }
+.js .ns { display: none; }
+
+/* older names some drawings use */
+:root { --ink: var(--text); --ink-2: var(--text-2); --muted: var(--text-3); }
+
+/* Courage */
+
+/* Courage: what I heard, laid over the record */
+
+.doubts { margin: 26px 0 0; padding: 0; list-style: none; border-bottom: 1px solid var(--k-rule); }
+/* the row clips its doubt, so a doubt pushed aside leaves by the row's own edge */
+.doubt-slot { position: relative; min-height: 92px; overflow: hidden; border-top: 1px solid var(--k-rule); }
+/* the record is always there; the doubt covers it until it is pushed away */
+.doubt-answer {
+  display: grid;
+  grid-template-columns: 4.75rem minmax(0, 1fr);
+  align-items: start;
+  padding: 18px 0 20px;
+}
+.doubt-answer p { max-width: 52ch; font-size: .98rem; line-height: 1.55; color: var(--k-fg-2); }
+
+.doubt-slot.is-clear .doubt { display: none; }
+
+.doubt {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0 12px 0 0;
+  border: 0;
+  background: var(--k-bg);
+  color: var(--k-fg);
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.45rem, 2.6vw, 2.05rem);
+  line-height: 1.1;
+  letter-spacing: -.01em;
+  text-align: left;
+  cursor: grab;
+  touch-action: pan-y;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.doubt-q {
+  flex: none;
+  width: 4.75rem;
+  padding-right: .7rem;
+  font-size: 1.9em;
+  line-height: 0;
+  text-align: right;
+  color: var(--tile);
+  transform: translateY(.2em);
+}
+.doubt-say { transition: transform var(--m-short) var(--m-out); }
+.doubt:hover .doubt-say { transform: translateX(6px); }
+.doubt:focus-visible { outline: 2px solid var(--k-fg); outline-offset: -2px; }
+.doubt.is-drag { background: #141416; outline: 1px solid var(--k-rule-2); outline-offset: -1px; cursor: grabbing; }
+
+@media (max-width: 520px) {
+  .doubt-answer { grid-template-columns: 3.6rem minmax(0, 1fr); }
+    
+  
+  
+  .doubt-q { width: 3.6rem; padding-right: .55rem; }
+  .doubt { font-size: 1.55rem; }
+}
+
+/* Innovation: medals, and a car you teach */
+
+.drive,
+.medals {
+  --line: #ebe6da;
+  --line-2: rgba(235, 230, 218, .56);
+  --line-3: rgba(235, 230, 218, .2);
+  --hi: color-mix(in srgb, var(--tile) 60%, #fff);
+  --miss: #f0603f;
+  --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+
+.medals { display: flex; flex-wrap: wrap; gap: 14px 30px; margin-top: 22px; }
+.medal { display: flex; align-items: flex-end; gap: 12px; margin: 0; }
+.medal img { width: 54px; height: 72px; object-fit: cover; border-radius: 2px; }
+.medal figcaption { font-family: var(--mono); font-size: .76rem; line-height: 1.4; color: var(--line-2); }
+.medal b { display: block; font-family: var(--serif); font-weight: 400; font-size: 1.3rem; line-height: 1.1; color: var(--line); }
+
+.drive { display: grid; gap: 22px; margin-top: 24px; }
+
+/* three frames from the car's camera, each labelled with a key, as the kit records them */
+.views { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; margin: 0; padding: 0; list-style: none; }
+.view-cam { border-radius: 3px; outline: 1px solid var(--line-3); transition: outline-color .15s ease; }
+.view-cam svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 3px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 85% at 50% 42%, #000 55%, rgba(0, 0, 0, .45) 100%);
+  mask-image: radial-gradient(ellipse 80% 85% at 50% 42%, #000 55%, rgba(0, 0, 0, .45) 100%);
+}
+.cam-room { fill: #1c1b1f; }
+.cam-mat { fill: #8e8a81; }
+.cam-road { fill: #4a4850; }
+.cam-tape { fill: #0d0d0e; }
+.view.is-live .view-cam { outline: 2px solid var(--hi); }
+.view.is-miss .view-cam { outline: 2px solid var(--miss); }
+
+/* the arrow cluster as it sits on a keyboard: up above, left and right below, the unused down key between */
+.view-pick {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-rows: 30px 30px;
+  gap: 4px;
+  width: min(100%, 138px);
+  margin: 12px auto 0;
+}
+.view-pick [data-act="straight"] { grid-area: 1 / 2; }
+.view-pick [data-act="left"] { grid-area: 2 / 1; }
+.view-pick [data-act="right"] { grid-area: 2 / 3; }
+/* the down key: nothing in the kit is labelled with it */
+.view-pick i { grid-area: 2 / 2; display: grid; place-items: center; border: 1px solid #222225; border-bottom-width: 3px; border-radius: 5px; color: rgba(235, 230, 218, .14); }
+.view-pick button {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 0;
+  border: 1px solid #3a3a3f;
+  border-bottom-width: 3px;
+  border-radius: 5px;
+  background: #141416;
+  color: var(--line-2);
+  cursor: pointer;
+  transition: border-color .15s ease, color .15s ease, background-color .15s ease;
+}
+.view-pick svg { width: 15px; height: 15px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.view-pick button:hover:not(:disabled) { border-color: #5c5c62; color: var(--line); }
+/* a pressed key sinks: the cap drops 2px and its lip disappears, so its bottom edge stays put */
+.view-pick button[aria-pressed="true"] {
+  margin-top: 2px;
+  border-color: var(--hi);
+  border-bottom-width: 1px;
+  background: color-mix(in srgb, var(--tile) 20%, #111);
+  color: var(--hi);
+}
+.view-pick button.is-fire { border-color: var(--tile); background: var(--tile); color: #fff; }
+.view.is-miss .view-pick button[aria-pressed="true"] { border-color: var(--miss); background: color-mix(in srgb, var(--miss) 18%, #111); color: var(--miss); }
+.view-pick button:disabled { cursor: default; }
+
+/* the track, drawn to plan: edge tape, the car, and the path it actually drove */
+.track { position: relative; max-width: 560px; }
+.track svg { display: block; width: 100%; height: auto; }
+.track-edge { fill: none; stroke: var(--line); stroke-width: 25.6; stroke-linejoin: round; opacity: .8; }
+.track-road { fill: none; stroke: #1a1a1d; stroke-width: 23; stroke-linejoin: round; }
+.track-start { fill: none; stroke: var(--line); stroke-width: 1.2; stroke-dasharray: 2 2; }
+.track-trace { fill: none; stroke: var(--hi); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.track-trace.is-off { stroke: var(--miss); }
+.track-traces .is-old { opacity: .3; }
+.track-trace.is-old { stroke-dasharray: 3 3; }
+.track-x { fill: none; stroke: var(--miss); stroke-width: 1.8; stroke-linecap: round; }
+.car-fov { fill: none; stroke: var(--hi); stroke-width: .6; stroke-dasharray: 1.6 1.2; stroke-linejoin: round; }
+.car-tyre { fill: #0b0b0c; stroke: var(--line); stroke-width: .6; }
+.car-deck,
+.car-cam { fill: #101012; stroke: var(--line); stroke-width: .7; }
+.car-cell { fill: none; stroke: var(--line-2); stroke-width: .6; }
+.car-lens { fill: #0b0b0c; stroke: var(--hi); stroke-width: .8; }
+.track-msg {
+  position: absolute;
+  top: 36%;
+  left: 14%;
+  right: 14%;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: .8rem;
+  line-height: 1.45;
+  color: var(--line);
+}
+
+/* Sharing: what leaves my column, and who it reaches */
+
+.pass { margin: 20px 0 0; padding: 0; list-style: none; border-bottom: 1px solid var(--k-rule); }
+.pass-row {
+  display: grid;
+  grid-template-columns: 10.5rem minmax(28px, 1fr) minmax(0, 25rem);
+  align-items: start;
+  padding: 14px 0 16px;
+  border-top: 1px solid var(--k-rule);
+}
+.pass-give {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--k-fg);
+  text-align: left;
+  cursor: pointer;
+}
+.pass-give:disabled { cursor: default; }
+.pass-qty,
+.pass-got { font-family: var(--serif); font-weight: 400; font-variant-numeric: lining-nums tabular-nums; white-space: nowrap; }
+.pass-qty { display: block; font-size: 1.55rem; line-height: 1.1; color: var(--k-fg); transition: color var(--m-micro) var(--m-out), opacity var(--m-micro) var(--m-out); }
+.pass-what { display: block; margin-top: 3px; font-size: .88rem; line-height: 1.35; color: var(--k-fg-2); }
+.pass-give:hover:not(:disabled) .pass-qty { color: var(--tile-hi); }
+/* once passed, it is no longer in my column */
+.pass-row.is-sending .pass-qty { opacity: .38; }
+.pass-qty--ghost {
+  position: fixed;
+  z-index: 50;
+  margin: 0;
+  color: color-mix(in srgb, var(--tile) 62%, #fff);
+  transform-origin: 0 0;
+  pointer-events: none;
+}
+
+/* a dashed line until it is passed, then a trace to a filled terminal */
+.pass-wire {
+  position: relative;
+  height: 1px;
+  margin: .8rem 12px 0 10px;
+  background: repeating-linear-gradient(90deg, var(--k-rule-2) 0 3px, transparent 3px 7px);
+}
+.pass-wire::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--tile);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--m-long) var(--m-move);
+}
+.pass-wire::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  right: -4px;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--k-fg-3);
+  border-radius: 50%;
+  background: var(--k-bg);
+  transition: background-color var(--m-micro) var(--m-out) var(--m-long), border-color var(--m-micro) var(--m-out) var(--m-long);
+}
+.pass-row.is-sending .pass-wire::before { transform: scaleX(1); }
+.pass-row.is-sending .pass-wire::after { border-color: var(--tile); background: var(--tile); }
+
+.pass-to { position: relative; display: flex; align-items: flex-start; gap: 14px; min-height: 3.4rem; }
+/* the blank the recipient fills */
+.pass-to::before {
+  content: "";
+  position: absolute;
+  top: .8rem;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed var(--k-rule-2);
+  transition: opacity .2s ease;
+}
+.pass-row.is-sent .pass-to::before { opacity: 0; }
+.pass-body { flex: 1; min-width: 0; }
+.pass-got { display: block; padding-top: .2rem; font-size: 1rem; line-height: 1.2; color: var(--tile-hi); }
+.pass-body strong { display: block; margin-top: 3px; font-size: .95rem; font-weight: 600; line-height: 1.3; color: var(--k-fg); }
+.pass-note { display: block; margin-top: 3px; font-size: .84rem; line-height: 1.45; color: var(--k-fg-2); }
+.pass-thumb { flex: none; }
+.pass-thumb img { width: 58px; height: 58px; object-fit: cover; border: 1px solid var(--k-rule-2); }
+.pass-thumb,
+.pass-body { visibility: hidden; }
+.pass-row.is-sent .pass-thumb,
+.pass-row.is-sent .pass-body { visibility: visible; }
+/* the amount that just landed is already there, so only what came with it fades in */
+.pass-row.is-sent .pass-thumb,
+.pass-row.is-sent .pass-body > :not(.pass-got) { animation: fade-in var(--m-short) var(--m-out); }
+@keyframes fade-in { from { opacity: 0; } }
+
+@media (max-width: 900px) {
+  .pass-row { grid-template-columns: minmax(0, 1fr); }
+  .pass-wire {
+    width: 1px;
+    height: 22px;
+    margin: 8px 0 6px .5rem;
+    background: repeating-linear-gradient(180deg, var(--k-rule-2) 0 3px, transparent 3px 7px);
+  }
+  .pass-wire::before { transform: scaleY(0); transform-origin: top; }
+  .pass-row.is-sending .pass-wire::before { transform: scaleY(1); }
+  .pass-wire::after { top: auto; right: auto; bottom: -4px; left: -3px; }
+  .pass-thumb img { width: 52px; height: 52px; }
+}
+
+/* Technology */
+
+/* Technology: the robot arm, drawn as a kinematic diagram on the black page */
+
+.robot {
+  --rb-bg: var(--bg);                    /* the page background: link cores and label halos are painted with it */
+  --rb-ink: #ece8df;
+  --rb-ink-2: rgba(236, 232, 223, .6);
+  --rb-ink-3: rgba(236, 232, 223, .3);
+  --rb-policy: #8fb2dc;                  /* the Technology tile's slate, lifted for black */
+  --rb-you: #f2a444;
+  margin-top: 20px;
+}
+.robot-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  touch-action: none;
+  -webkit-user-select: none;
+  user-select: none;
+  font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+.robot-svg:focus { outline: none; }
+.robot-svg:focus-visible { outline: 1px dashed var(--rb-ink-2); outline-offset: 6px; }
+.robot-svg.is-yours { cursor: grab; }
+.robot-svg.is-yours:active { cursor: grabbing; }
+
+/* ground, and the block cut in section */
+.rb-hatch line { stroke: var(--rb-ink-3); stroke-width: .9; }
+.rb-ground { fill: url(#rb-hatch); }
+.rb-table { stroke: var(--rb-ink-2); stroke-width: 1.2; }
+.rb-section { fill: url(#rb-hatch); }
+.rb-edge { fill: none; stroke: var(--rb-ink); stroke-width: 1.4; }
+
+/* centre lines: long dash, short dash */
+.rb-cl { stroke: var(--rb-ink-3); stroke-width: .8; stroke-dasharray: 11 3 2 3; fill: none; }
+.rb-axis { stroke: var(--rb-ink-3); stroke-width: .7; }
+
+/* the arm: hollow links, pinned joints */
+.rb-base { fill: var(--rb-bg); stroke: var(--rb-ink); stroke-width: 1.4; stroke-linejoin: round; }
+.rb-link { stroke: var(--rb-ink); stroke-linecap: round; }
+.rb-core { stroke: var(--rb-bg); stroke-linecap: round; }
+.rb-link--1 { stroke-width: 15; }
+.rb-core--1 { stroke-width: 12.2; }
+.rb-link--2 { stroke-width: 11.5; }
+.rb-core--2 { stroke-width: 8.7; }
+.rb-joint { fill: var(--rb-bg); stroke: var(--rb-ink); stroke-width: 1.4; }
+.rb-pin { fill: var(--rb-ink); }
+.rb-palm,
+.rb-jaw { fill: none; stroke: var(--rb-ink); stroke-width: 2; stroke-linecap: square; }
+.rb-jaw { transition: transform .25s var(--ease); }
+.robot-svg.is-in .rb-jaw--l { transform: translateX(-3px); }
+.robot-svg.is-in .rb-jaw--r { transform: translateX(3px); }
+.rb-peg { fill: var(--rb-ink); }
+.rb-peg--seated { display: none; }
+.robot-svg.is-in .rb-peg--seated { display: inline; }
+.robot-svg.is-in .rb-hand .rb-peg { display: none; }
+
+/* joint angles */
+.rb-arc { fill: none; stroke: var(--rb-ink-2); stroke-width: .9; }
+.rb-sym,
+.rb-read-sym { font-family: var(--serif); font-style: italic; }
+.rb-sym { font-size: 15px; fill: var(--rb-ink-2); }
+.rb-sub { font-family: "IBM Plex Mono", ui-monospace, monospace; font-style: normal; font-size: 9px; }
+.rb-read { font-size: 11.5px; fill: var(--rb-ink-2); }
+.rb-read-sym { font-size: 14px; }
+.rb-v1,
+.rb-v2 { fill: var(--rb-ink); }
+
+/* what the robot did: the peg tip's path, a dot every 100 ms */
+.rb-trace polyline { fill: none; stroke-width: 1.4; stroke-linejoin: round; stroke-linecap: round; }
+.rb-trace--run1 polyline,
+.rb-trace--run2 polyline { stroke: var(--rb-policy); }
+.rb-trace--you polyline { stroke: var(--rb-you); stroke-width: 1.6; }
+.rb-trace--run1 .rb-dots,
+.rb-trace--run2 .rb-dots { fill: var(--rb-policy); }
+.rb-trace--you .rb-dots { fill: var(--rb-you); }
+.rb-trace--run1 { transition: opacity var(--m-base) var(--m-out); }
+.robot-svg.is-retrained .rb-trace--run1 { opacity: .42; }
+.robot-svg.is-retrained .rb-trace--run1 polyline { stroke-dasharray: 3 3; }
+.rb-x { fill: none; stroke: var(--rb-policy); stroke-width: 1.4; opacity: 0; }
+.robot-svg.is-miss .rb-x,
+.robot-svg.is-saved .rb-x { opacity: 1; }
+.robot-svg.is-retrained .rb-x { opacity: .42; }
+
+/* the miss, measured centre line to centre line, while the visitor closes it */
+.rb-dim { opacity: 0; }
+.robot-svg.is-miss .rb-dim { opacity: 1; }
+.rb-dim-line,
+.rb-dim-ticks { fill: none; stroke: var(--rb-ink-2); stroke-width: .9; }
+.rb-dim-label { font-family: var(--serif); font-size: 14px; fill: var(--rb-ink); }
+.robot-svg.is-close .rb-dim-label { opacity: 0; }
+
+/* the visitor's turn: the capture radius at the hole mouth, and the leader's command vs the follower */
+.rb-catch { fill: none; stroke: var(--rb-you); stroke-width: 1; stroke-dasharray: 2 3; opacity: 0; }
+.robot-svg.is-yours .rb-catch { opacity: 1; }
+.robot-svg.is-yours .rb-cl--hole { stroke: var(--rb-you); }
+
+/* labels, cut out of whatever runs behind them */
+.rb-who,
+.rb-lbl { paint-order: stroke; stroke: var(--rb-bg); stroke-width: 4px; stroke-linejoin: round; }
+.rb-who { font-size: 11.5px; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; fill: var(--rb-policy); }
+.robot-svg.is-yours .rb-who,
+.robot-svg.is-saved:not(.is-retrained) .rb-who { fill: var(--rb-you); }
+.rb-lbl { font-size: 11px; opacity: 0; transition: opacity var(--m-base) var(--m-out); }
+.rb-lbl--run1,
+.rb-lbl--run2 { fill: var(--rb-policy); }
+.rb-lbl--you { fill: var(--rb-you); }
+.robot-svg.is-done .rb-lbl { opacity: 1; }
+.robot-svg.is-done .rb-lbl--run1 { opacity: .6; }
+
+/* what the dots mean */
+.rb-key { opacity: 0; transition: opacity var(--m-base) var(--m-out); }
+.robot-svg.is-miss .rb-key,
+.robot-svg.is-saved .rb-key { opacity: 1; }
+.rb-key circle { fill: var(--rb-ink-2); }
+.rb-key text { font-size: 11px; fill: var(--rb-ink-2); }
+
+.robot-msg { min-height: 1.5em; margin-top: 10px; font-size: .95rem; color: var(--ink-2); }
+
+@media (max-width: 520px) {
+  .rb-sym { font-size: 18px; }
+  .rb-read { font-size: 14px; }
+  .rb-read-sym { font-size: 17px; }
+  .rb-sub { font-size: 11px; }
+  .rb-who { font-size: 14px; }
+  .rb-lbl { font-size: 14px; }
+  .rb-dim-label { font-size: 17px; }
+  .rb-key text { font-size: 13px; }
+}
+
+/* the path here: a dated log, dates in the margin, like the CV it comes from */
+.path { margin: 14px 0 0; padding: 0; list-style: none; border-top: 1px solid var(--rule); }
+.path li {
+  display: grid;
+  grid-template-columns: 6.4rem minmax(0, 1fr) 112px;
+  gap: 16px;
+  align-items: baseline;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--rule);
+}
+.path-date { font-family: var(--mono); font-size: .8rem; color: var(--text-3); }
+.path-place { display: block; font-weight: 600; font-size: .93rem; color: var(--text); }
+.path-text { display: block; margin-top: 2px; font-size: .93rem; line-height: 1.5; color: var(--text-2); }
+.path-media { align-self: start; }
+.path-media img { width: 112px; aspect-ratio: 4 / 3; object-fit: cover; }
+
+@media (max-width: 520px) {
+  .path li { grid-template-columns: minmax(0, 1fr) 80px; gap: 2px 12px; }
+  .path-date { grid-column: 1; grid-row: 1; }
+  .path-body { grid-column: 1; grid-row: 2; }
+  .path-media { grid-column: 2; grid-row: 1 / 3; }
+  .path-media img { width: 80px; }
+}
+
+/* Compassion: the gaze keyboard, drawn the way an eye tracker records it.
+   Amber is a click made by time (dwell); green is a click made by a silent sound (the implant). */
+
+.eyes {
+  --e-line: rgba(255, 255, 255, .17);
+  --e-dim: #8b8a85;
+  --e-faint: #3c3c3a;
+  --e-hi: #f3f1ec;
+  --e-dwell: #eea33f;
+  --e-phon: #6fc38e;
+  --e-hit: var(--e-dwell);
+  --e-ground: var(--bg);
+  position: relative;
+  margin-top: 24px;
+  color: var(--e-hi);
+  font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.eyes.is-speak { --e-hit: var(--e-phon); }
+.eyes:focus { outline: none; }
+.eyes:focus-visible { outline: none; }
+.eyes:focus-visible .eyes-keys { outline: 1px solid rgba(243, 241, 236, .65); outline-offset: -1px; }
+
+/* the text field sits on the keyboard's top rule */
+.eyes-out {
+  display: flex;
+  align-items: baseline;
+  min-height: 2.9rem;
+  padding: 0 2px 10px;
+  overflow: hidden;
+  font-size: 1.7rem;
+  line-height: 1.2;
+  letter-spacing: .16em;
+  white-space: nowrap;
+}
+/* a long run of stray letters scrolls off to the left, the newest stays in view */
+.eyes-typed { min-width: 0; overflow: hidden; direction: rtl; }
+.eyes-typed .is-off { color: var(--e-dwell); text-decoration: underline 1px; text-underline-offset: 6px; }
+.eyes-caret { flex: none; align-self: center; width: 2px; height: 1.2em; margin: 0 3px 0 -1px; background: var(--e-hi); animation: blink 1s steps(1) infinite; }
+.eyes-goal { flex: none; color: var(--e-faint); }
+@keyframes blink { 50% { opacity: 0; } }
+
+/* keys: a ruled grid, no fills */
+.eyes-keys {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  border-top: 1px solid var(--e-line);
+  border-left: 1px solid var(--e-line);
+}
+.key {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1.25;
+  border-right: 1px solid var(--e-line);
+  border-bottom: 1px solid var(--e-line);
+  font-size: 1.05rem;
+  color: var(--e-dim);
+  transition: color .12s ease;
+}
+.key--del { grid-column: span 2; aspect-ratio: auto; font-size: .78rem; letter-spacing: .06em; text-transform: lowercase; }
+.key { text-shadow: 1px 0 var(--e-ground), -1px 0 var(--e-ground), 0 1px var(--e-ground), 0 -1px var(--e-ground), 0 0 3px var(--e-ground); }
+.key.is-gaze { color: var(--e-hi); }
+.key.is-typed { animation: eyes-hit var(--m-base) var(--m-out); }
+@keyframes eyes-hit { from { background: var(--e-hit); color: #0a0a0a; } }
+.eyes.is-done .eyes-keys { opacity: .5; transition: opacity var(--m-base) var(--m-out); }
+
+/* the scanpath: circles grow with fixation time; lines are saccades */
+.eyes-path { position: absolute; inset: 0; z-index: 0; width: 100%; height: 100%; pointer-events: none; }
+.ep-sac { stroke: var(--e-hi); stroke-width: 1; }
+.ep-fix { fill: none; stroke: var(--e-hi); stroke-width: 1; }
+.ep-fix.is-dwell { stroke: var(--e-dwell); fill: rgba(238, 163, 63, .1); }
+.ep-fix.is-phon { stroke: var(--e-phon); fill: rgba(111, 195, 142, .12); }
+.ep-track { fill: none; stroke: rgba(238, 163, 63, .22); stroke-width: 2; }
+.ep-ring { fill: none; stroke: var(--e-dwell); stroke-width: 2; }
+.ep-reticle { fill: none; stroke: var(--e-hi); stroke-width: 1; }
+.ep-reticle.is-phon { stroke: var(--e-phon); stroke-width: 1.5; }
+.ep-gaze { fill: var(--e-hi); }
+
+/* the record: gaze above, implant below, now at the hairline */
+/* the record keeps room for the implant lane from the start, so the buttons under it never move when it appears */
+.eyes-time { display: block; width: 100%; height: 90px; margin-top: 18px; overflow: hidden; }
+.et-lab, .et-key, .et-dim-lab { font-family: "IBM Plex Mono", ui-monospace, Menlo, monospace; font-size: 11px; letter-spacing: .02em; }
+.et-lab { fill: var(--e-dim); }
+.et-lab--end { text-anchor: end; }
+.et-base { stroke: var(--e-line); stroke-width: 1; }
+.et-now { stroke: var(--e-hi); stroke-width: 1; opacity: .4; }
+.et-bar { fill: rgba(243, 241, 236, .26); }
+.et-bar.is-live { fill: rgba(243, 241, 236, .55); }
+.et-key { fill: var(--e-dim); }
+.et-hit { stroke-width: 2; }
+.et-hit.is-dwell { stroke: var(--e-dwell); }
+.et-hit.is-phon { stroke: var(--e-phon); }
+.et-link { stroke: var(--e-phon); stroke-width: 1; stroke-dasharray: 2 3; }
+.et-dim { fill: none; stroke: var(--e-dwell); stroke-width: 1; }
+.et-dim-lab { fill: var(--e-dwell); text-anchor: middle; }
+.et-bins { fill: none; stroke: rgba(243, 241, 236, .34); stroke-width: 1; }
+.et-bins.is-burst { stroke: var(--e-phon); }
+.et-scale { fill: none; stroke: var(--e-dim); stroke-width: 1; }
+
+@media (max-width: 520px) {
+  .eyes-out { font-size: 1.4rem; }
+  .key { font-size: .9rem; }
+  .key--del { font-size: .7rem; }
+}
+
+/* The second line: spare tiles, cut the same as the card's */
+
+.picks { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; max-width: 460px; margin-top: 24px; }
+.pick {
+  position: relative;
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  padding: 0;
+  overflow: hidden;
+  border: 2px solid var(--k-gold);
+  border-radius: 6px;
+  background: #fff;
+  color: #16171a;
+  container-type: size;
+  cursor: pointer;
+  transition: transform .18s var(--ease), background-color .2s ease, border-color .2s ease, opacity .3s ease;
+}
+.pick span {
+  padding: 0 4cqw;
+  font-family: var(--serif);
+  font-style: italic;
+  font-size: var(--fs, 14cqw);
+  line-height: 1.05;
+  text-align: center;
+}
+.pick:hover:not(:disabled) { border-color: #fff; }
+.pick:focus-visible { outline: 2px solid var(--k-fg); outline-offset: 3px; }
+/* the tile has left the tray: only its socket is left */
+.pick.is-picked { border-style: dashed; border-color: rgba(236, 210, 127, .45); background: transparent; transform: none; }
+.pick.is-picked span { visibility: hidden; }
+.pick:disabled { cursor: default; }
+/* the tiles not chosen stay on the tray, unlit */
+.pick:disabled:not(.is-picked) { border-color: rgba(236, 210, 127, .28); background: transparent; color: var(--k-fg-3); }
+.pick--ghost { position: fixed; z-index: 50; margin: 0; transform-origin: 0 0; pointer-events: none; }
+@media (max-width: 520px) { .picks { gap: 8px; } }
+
+/* Courage: the doubt stays on the record, struck through */
+html, body.story-body { overflow-x: clip; }
+.doubt-answer { grid-template-columns: 150px minmax(0, 1fr); gap: 18px; padding: 16px 0 18px; }
+.doubt-pic img { width: 150px; height: auto; }
+.doubt-rec { grid-column: 2; }
+.doubt-rec { min-width: 0; }
+.doubt-was { display: block; margin-bottom: 4px; font-family: var(--serif); font-style: italic; font-size: .95rem; color: var(--text-3); text-decoration-thickness: 1px; }
+
+/* Innovation: the medals beside the words about them */
+.medals { display: grid; grid-template-columns: 148px minmax(0, 1fr); gap: 22px; align-items: start; margin-top: 22px; }
+.medal { display: block; margin: 0; }
+.medal img { width: 100%; height: auto; object-fit: contain; border-radius: 0; }
+.medal figcaption { margin-top: 8px; font-family: var(--sans); font-size: .82rem; color: var(--text-3); }
+.medal-text .sc-lede:first-child { margin-top: 0; }
+.drive-hint { margin-top: 26px; }
+.drive { margin-top: 12px; }
+
+/* BINGO!, its lede and its button arrive together, with their scene, once the red line is drawn (story.js, bingo) */
+
+.rv-video video { width: 100%; aspect-ratio: 2 / 1; object-fit: cover; object-position: 50% 100%; }
+
+/* Sharing: photos big enough to read; U9's certificates side by side, one per year */
+.pass-thumb.pass-set { display: flex; gap: 3px; }
+.pass-thumb.pass-set img { width: 31px; height: 40px; object-fit: cover; object-position: 50% 0; border: 1px solid var(--rule-2); }
+.pass-thumb img { width: 96px; height: 72px; }
+.pass-hint { margin-top: 18px; }
+
+/* labels on the drawings stay in sentence case */
+.rb-who { letter-spacing: 0; text-transform: none; }
+
+/* Narrow screens: the card on top, the scene below */
+
+@media (max-width: 900px) {
+  :root { --top: 58px; }
+  .st { grid-template-columns: minmax(0, 1fr); align-content: start; gap: 22px; padding-top: calc(var(--top) + 8px); }
+  .st-cardcol { position: relative; top: 0; height: auto; }
+  .bc { width: min(100%, 440px, 54vh); }
+  .st-stage { display: block; min-height: 0; padding-top: 0; }
+  .st-brand { font-size: 1.1rem; }
+  .skip-site { font-size: .85rem; }
+  .rv-note { grid-template-columns: 140px minmax(0, 1fr); }
+  .rv-note img { width: 140px; }
+}
+
+@media (max-width: 520px) {
+  .medals { grid-template-columns: 104px minmax(0, 1fr); gap: 16px; }
+  .rv-pair { flex-direction: column; align-items: stretch; }
+  .rv-pair figure { flex: none; }
+  .pass-row { grid-template-columns: minmax(0, 1fr); }
+  .views { gap: 8px; }
+  .view-pick { grid-template-rows: 28px 28px; gap: 3px; }
+  .track-msg { top: 32%; font-size: .72rem; }
+  
+  
+  
+  
+  .rv-note { grid-template-columns: minmax(0, 1fr); }
+  .rv-note img { width: 100%; max-width: 320px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .001ms !important;
+    animation-delay: 0s !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .001ms !important;
+    transition-delay: 0s !important;
+  }
+}
+
+/* the title's invitation to play */
+.sc-ask { margin-top: 30px; font-family: var(--serif); font-size: clamp(1.5rem, 2.4vw, 2rem); line-height: 1.25; color: var(--text); }
+
+/* the route's arrows sit in the line, clear of the photo beside it */
+
+/* Courage: the three answer photos share one frame */
+.doubt-pic img { width: 150px; height: auto; aspect-ratio: 4 / 3; object-fit: cover; }
+@media (max-width: 520px) { .doubt-pic img { width: 96px; } }
+
+/* Refinement pass (merged). Append at the end of story.css, in this order. */
+
+/* 1. Tokens: one type scale, one grid */
+:root {
+  --top: 56px;
+  --edge: clamp(20px, 3vw, 40px);
+  --lift: 56px;
+  --max: 1280px;
+  --fs-hero: clamp(3rem, min(5.6vw, 9vh), 4.75rem);
+  --fs-title: clamp(2rem, 3vw, 2.625rem);
+  --fs-sub: 1.375rem;
+  --fs-body: 1.0625rem;
+  --fs-small: .875rem;
+  --fs-cap: .8125rem;
+}
+body.story-body { line-height: 1.6; }
+
+/* 2. Layout: top bar on the content edges; card top, title and portrait on one line */
+.st-top { height: var(--top); padding-inline: calc(max(0px, (100% - var(--max)) / 2) + var(--edge)); }
+.st-brand { font-size: 1.1875rem; }
+.skip-site { font-size: var(--fs-small); text-underline-offset: 5px; }
+.st { max-width: var(--max); grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); column-gap: clamp(40px, 5vw, 72px); padding: calc(var(--top) + var(--lift)) var(--edge) 96px; }
+.st-cardcol { top: calc(var(--top) + var(--lift)); height: auto; align-items: flex-start; justify-content: flex-start; }
+.st-stage { min-height: calc(100vh - var(--top) - var(--lift)); padding: 0 0 64px; scroll-margin-top: calc(var(--top) + var(--lift)); }
+.bc { width: min(100%, calc(100vh - var(--top) - var(--lift) - 104px), 544px); }
+
+/* 3. Type */
+.sc-hero { font-size: var(--fs-hero); line-height: 1; letter-spacing: -.03em; text-wrap: balance; }
+.sc-title { font-size: var(--fs-title); line-height: 1.1; letter-spacing: -.02em; }
+.sc-lede { max-width: 60ch; margin-top: 16px; font-size: clamp(var(--fs-body), 1.3vw, 1.1875rem); line-height: 1.55; color: #c6c5bf; text-wrap: pretty; }
+.sc-lede + .sc-lede { margin-top: 12px; }
+.rv-text, .pass-note, .rv-note p { text-wrap: pretty; }
+.rv-text { font-size: var(--fs-body); line-height: 1.6; }
+.sc-hint { font-family: var(--sans); font-style: normal; font-size: var(--fs-small); line-height: 1.5; color: var(--text-3); }
+.sc-body > .sc-hint { margin-top: 16px; }
+figcaption { margin-top: 8px; font-size: var(--fs-cap); line-height: 1.45; }
+.rv-meta { font-size: var(--fs-cap); line-height: 1.45; }
+
+/* 4. Spacing rhythm */
+.sc-actions { margin-top: 32px; gap: 12px 16px; }
+.rv { margin-top: 40px; }
+.rv--bar { margin-top: 0; }
+.rv > :not(:first-child) { margin-top: 24px; }
+.rv-pair { gap: 16px; }
+
+/* 5. Buttons */
+.btn { min-height: 44px; padding: 0 20px; gap: 10px; border: 1px solid var(--rule-2); border-radius: 6px; font-size: .9375rem; font-weight: 500; }
+.btn:hover { border-color: var(--text-3); background: rgba(255, 255, 255, .06); color: var(--text); }
+.btn--primary { border-color: var(--text); background: var(--text); color: var(--bg); }
+.btn--primary:hover { border-color: #fff; background: #fff; color: var(--bg); }
+.btn:disabled:hover { border-color: var(--rule-2); background: transparent; color: var(--text); }
+.btn--stamp::before { width: 12px; height: 12px; border-radius: 3px; }
+
+/* 6. Photos */
+.sc video { border-radius: 3px; outline: 1px solid rgba(255, 255, 255, .07); outline-offset: -1px; }
+.pass-thumb img { border: 0; }
+
+/* 7. Card: the card keeps the look of the deck (base rules above); only the finale's tiny tiles get legible words */
+@container (max-width: 60px) { .bc.is-big .bc-label { font-size: 17cqw; font-stretch: 62%; padding: 0 1cqw; letter-spacing: 0; } }
+@container (max-width: 34px) { .bc.is-big .bc-label { visibility: hidden; } }
+
+/* 8. Title */
+.sc-ask { margin-top: 32px; font-size: clamp(1.375rem, 2vw, 1.75rem); }
+
+/* 9. Courage */
+.doubts { margin-top: 32px; }
+.doubt-q { width: auto; margin-left: -.42em; padding-right: 0; font-size: 1em; line-height: inherit; color: var(--text-3); transform: none; }
+
+/* 11. Innovation */
+.drive-hint { margin-top: 32px; }
+.drive { gap: 24px; margin-top: 16px; }
+.track-edge { stroke: rgba(235, 230, 218, .5); stroke-width: 24.4; opacity: 1; }
+.track-road { stroke: var(--bg); }
+.track-msg { font-family: var(--sans); font-size: .9375rem; line-height: 1.5; color: var(--text-2); text-wrap: balance; }
+
+/* 12. Sharing */
+.pass { margin-top: 24px; }
+.pass-hint { margin-top: 16px; }
+.pass-row { grid-template-columns: 9.5rem minmax(40px, 1fr) minmax(0, 26rem); padding: 16px 0 20px; }
+.pass-qty { font-size: 1.5rem; }
+.pass-what { margin-top: 4px; font-size: var(--fs-small); line-height: 1.45; }
+.pass-got { font-size: var(--fs-body); color: var(--k-fg); }
+.pass-qty--ghost { color: var(--k-fg); }
+.pass-give:hover:not(:disabled) .pass-qty { color: #fff; }
+.pass-body strong { margin-top: 4px; font-size: .9375rem; }
+.pass-note { margin-top: 4px; font-size: var(--fs-small); line-height: 1.5; }
+
+/* 13. BINGO! */
+.bingo { font-size: clamp(4rem, 7.2vw, 6.5rem); }
+
+/* 14. Technology */
+.rb-who, .rb-lbl, .rb-key text { font-family: var(--sans); }
+.robot-msg { margin-top: 12px; font-size: .9375rem; color: var(--text-2); }
+.path { margin-top: 16px; }
+.path li { padding: 16px 0; }
+.path-date { font-family: var(--sans); font-size: var(--fs-cap); font-variant-numeric: tabular-nums; }
+
+/* 15. Pick two */
+.picks { gap: 12px; max-width: 448px; margin-top: 32px; }
+.pick { border: 1.5px solid var(--gold); border-radius: 3px; background: var(--cell); color: var(--card-ink); }
+.pick:disabled:not(.is-picked) { border-color: rgba(236, 235, 230, .16); background: transparent; color: var(--text-3); }
+.pick.is-picked { border-color: rgba(236, 235, 230, .28); }
+
+/* 16. A bigger bingo */
+.sc-goal { max-width: 30ch; margin-top: 32px; font-size: clamp(1.5rem, 2.2vw, 1.875rem); line-height: 1.3; color: var(--text); text-wrap: balance; }
+.sc-goal b { font-weight: inherit; color: inherit; }
+.sc-end { margin-top: 40px; }
+.sc-links { gap: 8px 24px; margin-top: 24px; font-size: .9375rem; }
+
+/* 17. Narrow screens: these must come last */
+@media (max-width: 900px) {
+  :root { --top: 52px; --lift: 16px; }
+  .st { grid-template-columns: minmax(0, 1fr); column-gap: 0; row-gap: 32px; }
+  .st-cardcol { top: 0; justify-content: center; }
+  .bc { width: min(100%, 440px, 54vh); }
+  .st-stage { min-height: 0; }
+  .pass-row { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 520px) {
+  .doubt-answer { grid-template-columns: 96px minmax(0, 1fr); gap: 16px; }
+  .doubt-pic img { width: 96px; }
+  .views { gap: 8px; }
+  .track-msg { font-size: .8125rem; }
+  .picks { gap: 8px; }
+  
+  .bc-line text { font-size: 12px; }
+}
+
+/* 18. Follow-ups: the title fits a phone screen sooner */
+@media (max-width: 520px) {
+}
+
+/* 19. Motion never moves the layout */
+/* a finished instruction fades where it is instead of being removed, so what sits under it stays put */
+.is-spent { opacity: 0; visibility: hidden; transition: opacity var(--m-micro) var(--m-in), visibility 0s linear var(--m-micro); }
+/* an action row keeps a button's height while its buttons are hidden or swapped */
+.sc-actions { min-height: 44px; }
+
+/* on a phone the robot's messages wrap to two lines; keep room for both so the buttons under them stay put */
+@media (max-width: 520px) { .robot-msg { min-height: 3.2em; } }
+
+/* 20. Challenge: prints laid one on another, each a step higher, so the stack climbs from 2021 to 2026 */
+.prints {
+  --pw: 60%;
+  --dy: 36px;
+  --dx: calc((100% - var(--pw)) / (var(--n) - 1));
+  position: relative;
+  margin-top: 26px;
+  aspect-ratio: 615 / 470;
+}
+.print {
+  position: absolute;
+  left: calc(var(--dx) * var(--i));
+  bottom: calc(var(--dy) * var(--i));
+  z-index: var(--i);
+  display: flex;
+  flex-direction: column;
+  width: var(--pw);
+  padding: 6px 6px 0;
+  border: 0;
+  border-radius: 3px;
+  background: var(--card);
+  color: var(--card-ink);
+  text-align: left;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .25) inset, 0 18px 40px -12px rgba(0, 0, 0, .8), 0 2px 6px rgba(0, 0, 0, .5);
+  cursor: pointer;
+  visibility: hidden;
+}
+.print.is-on { visibility: visible; }
+.print:disabled { cursor: default; }
+.print.is-front { z-index: 20; }
+.print-photo { display: block; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 2px; background: #1a1a1c; }
+.print-photo img { width: 100%; height: 100%; object-fit: cover; }
+.print-cap { display: flex; align-items: center; gap: 10px; height: var(--dy); padding: 0 4px; overflow: hidden; white-space: nowrap; font-size: .8125rem; line-height: 1; }
+.print-cap b { flex: none; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--tile); }
+.print-cap span { overflow: hidden; text-overflow: ellipsis; color: #3a3833; }
+.prints-note { margin-top: 22px; }
+.prints-note > * { animation: fade-in var(--m-short) var(--m-out); }
+.prints-head { font-family: var(--serif); font-size: var(--fs-sub); line-height: 1.3; color: var(--text); text-wrap: balance; }
+.prints-more { margin-top: 6px; font-size: .9375rem; line-height: 1.5; color: var(--text-2); }
+
+/* a thing carried from one chapter into the next */
+.carry { position: fixed; z-index: 60; margin: 0; pointer-events: none; object-fit: cover; border-radius: 3px; }
+
+/* 21. Responsibility: zoom out from Seoul */
+.atlas { margin-top: 24px; }
+.atlas-map { position: relative; height: 230px; overflow: hidden; border-radius: 3px; background: #111214; }
+.atlas-land,
+.atlas-marks { position: absolute; inset: 0; width: 100%; height: 100%; }
+.atlas-land { filter: brightness(.32); }
+.atlas-arc { fill: none; stroke: var(--tile-hi); stroke-width: 1.4; stroke-linecap: round; stroke-dasharray: 1; stroke-dashoffset: 1; opacity: .85; }
+.atlas-dot { fill: #111214; stroke: var(--text-2); stroke-width: 1.5; opacity: 0; }
+.atlas-dot.is-here { fill: var(--tile); stroke: #fff; }
+.atlas-name { position: absolute; left: 0; top: 0; width: 0; height: 0; opacity: 0; pointer-events: none; }
+.atlas-tag { position: absolute; display: block; white-space: nowrap; line-height: 1.2; }
+.atlas-tag b { display: block; font-size: .8125rem; font-weight: 600; color: var(--text-2); }
+.atlas-tag span { display: block; font-size: .72rem; font-variant-numeric: tabular-nums; color: var(--text-3); }
+.atlas-name.is-here .atlas-tag b { color: var(--text); }
+.atlas-name[data-side="r"] .atlas-tag { left: 10px; top: 0; transform: translateY(-50%); }
+.atlas-name[data-side="l"] .atlas-tag { right: 10px; top: 0; transform: translateY(-50%); text-align: right; }
+.atlas-name[data-side="t"] .atlas-tag { left: 0; bottom: 10px; transform: translateX(-50%); text-align: center; }
+.atlas-name[data-side="b"] .atlas-tag { left: 0; top: 10px; transform: translateX(-50%); text-align: center; }
+.atlas-zoom { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; margin-top: 12px; font-size: var(--fs-cap); color: var(--text-3); }
+.atlas-zoom input { width: 100%; margin: 0; accent-color: var(--tile); }
+.atlas-photo { display: grid; grid-template-columns: minmax(0, 3fr) minmax(0, 2fr); gap: 20px; align-items: end; margin: 20px 0 0; }
+.atlas-frame { position: relative; aspect-ratio: 3 / 2; overflow: hidden; border-radius: 3px; background: #111214; isolation: isolate; }
+.atlas-frame .atlas-pic { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transition: opacity 0s linear var(--m-base); }
+.atlas-frame .atlas-pic.is-on { z-index: 1; opacity: 1; transition: opacity var(--m-base) var(--m-out); }
+.atlas-cap { position: relative; margin: 0; font-size: .9375rem; line-height: 1.55; color: var(--text-2); }
+.atlas-cap > * { animation: fade-in var(--m-short) var(--m-out); }
+.atlas-cap b { display: block; margin-bottom: 6px; font-family: var(--serif); font-weight: 400; font-size: var(--fs-sub); line-height: 1.25; color: var(--text); }
+
+/* 22. Technology: the RL result as a small chart */
+.result { margin: 0; }
+.result-head { font-size: var(--fs-cap); line-height: 1.45; color: var(--text-3); }
+.result-rows { display: grid; gap: 10px; margin-top: 12px; }
+.result-row { display: grid; grid-template-columns: 11.5rem minmax(0, 1fr) 7rem; align-items: center; gap: 12px; font-size: .9375rem; }
+.result-name { color: var(--text-2); }
+.result-bar { position: relative; height: 12px; overflow: hidden; border-radius: 2px; background: rgba(236, 235, 230, .07); }
+.result-bar i { position: absolute; top: 0; bottom: 0; left: 0; width: calc(var(--a) * 100%); background: rgba(236, 235, 230, .34); }
+.result-bar b { position: absolute; top: 0; bottom: 0; left: calc(var(--a) * 100%); width: calc((var(--b) - var(--a)) * 100%); background: var(--tile); transform-origin: 0 50%; }
+.result-val { font-family: var(--mono); font-size: .875rem; font-variant-numeric: tabular-nums; text-align: right; color: var(--text); }
+
+/* 23. Innovation: the lap result reads under the track, not over it */
+.track-msg { position: static; min-height: 1.5em; margin-top: 12px; font-size: .9375rem; text-align: left; }
+
+@media (max-width: 520px) {
+  .prints { --pw: 74%; --dy: 28px; aspect-ratio: 350 / 350; }
+  .print { padding: 4px 4px 0; }
+  .print-cap { font-size: .72rem; gap: 7px; }
+  .atlas-map { height: 180px; }
+  .atlas-photo { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .atlas-name:not(.is-here) { visibility: hidden; }
+  .result-row { grid-template-columns: minmax(0, 1fr) auto; row-gap: 6px; }
+  .result-bar { grid-column: 1 / -1; grid-row: 2; }
+  .track-msg { font-size: .875rem; }
+}
+
+/* 24. The stack, cleaner: thin paper edge, a soft shadow, and only the print being read is in full color */
+.print { padding: 4px 4px 0; border-radius: 2px; box-shadow: 0 10px 28px -10px rgba(0, 0, 0, .9); }
+.print-photo { border-radius: 1px; }
+.print-photo img { filter: brightness(.38) saturate(.5); transition: filter var(--m-base) var(--m-out); }
+.print.is-front .print-photo img { filter: none; }
+.print-cap { gap: 12px; padding: 0 8px; border-top: 1px solid rgba(22, 23, 26, .08); }
+.print-cap b { color: #8a7f6a; }
+.print.is-front .print-cap b { color: var(--tile); }
+.print:not(:disabled):hover .print-photo img { filter: brightness(.6) saturate(.7); }
+.print.is-front:hover .print-photo img { filter: none; }
+@media (max-width: 520px) { .print { padding: 3px 3px 0; } }
+
+/* 25. Responsibility: Oxford and the debate, each told with its photos */
+.ost + .ost { margin-top: 40px; }
+.ost-when { font-size: var(--fs-cap); font-weight: 500; font-variant-numeric: tabular-nums; color: var(--text-3); }
+.ost .rv-pair { margin-top: 10px; }
+.ost .rv-text { margin-top: 16px; }
+
+/* 26. Sharing: four photo cards; each one turns to show where it went */
+.gave { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 18px 0 0; padding: 0; list-style: none; }
+.gave-card { display: block; width: 100%; padding: 0; border: 0; background: none; color: inherit; text-align: left; cursor: pointer; }
+.gave-card:disabled { cursor: default; }
+.gave-photo { position: relative; display: block; aspect-ratio: 4 / 3; overflow: hidden; border-radius: 3px; background: #1a1a1c; }
+.gave-photo > img, .gave-set { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(.32) saturate(.4); transition: filter var(--m-base) var(--m-out); }
+.gave-set { display: flex; align-items: center; justify-content: center; gap: 6%; padding: 7%; background: #ecebe6; }
+.gave-set img { width: 27%; height: auto; box-shadow: 0 2px 8px rgba(0, 0, 0, .25); }
+.gave-what { position: absolute; left: 16px; right: 16px; bottom: 14px; display: grid; gap: 2px; color: #fff; transition: opacity var(--m-short) var(--m-out); }
+.gave-what b { font-family: var(--serif); font-weight: 400; font-size: clamp(1.6rem, 2.6vw, 2.1rem); line-height: 1.1; }
+.gave-what span { font-size: .875rem; color: rgba(255, 255, 255, .78); }
+.gave-card:not(:disabled):hover .gave-photo > img, .gave-card:not(:disabled):hover .gave-set { filter: brightness(.45) saturate(.6); }
+.gave-card.is-given .gave-photo > img, .gave-card.is-given .gave-set { filter: none; }
+.gave-card.is-given .gave-what { opacity: 0; }
+.gave-to { display: grid; gap: 4px; margin-top: 10px; visibility: hidden; opacity: 0; transition: opacity var(--m-base) var(--m-out); }
+.gave-card.is-given .gave-to { visibility: visible; opacity: 1; }
+.gave-to strong { font-size: .9375rem; font-weight: 600; color: var(--text); }
+.gave-to span { font-size: .875rem; line-height: 1.5; color: var(--text-2); }
+@media (max-width: 520px) {
+  .gave { grid-template-columns: minmax(0, 1fr); gap: 22px; }
+}
+
+/* 27. Each chapter closes on its tile, as in the presentation */
+.sc-fill { color: var(--text); }
+.sc-fill b { font-weight: 600; color: var(--tile-hi); }
+
+/* 29. Sharing: the U9 certificates fill their card */
+.gave-set { gap: 3%; padding: 4% 5%; }
+.gave-set img { width: 31%; }
+.gave-set { gap: 0; padding: 0; }
+.gave-set img { width: auto; height: 86%; margin: 0 -7%; border-radius: 2px; box-shadow: 0 6px 18px rgba(0, 0, 0, .3); }
+.gave-set img:nth-child(1) { transform: rotate(-6deg) translateY(2%); }
+.gave-set img:nth-child(2) { position: relative; z-index: 1; }
+.gave-set img:nth-child(3) { transform: rotate(6deg) translateY(2%); }
+.sc-body > .ost { margin-top: 28px; }
+.sc-body > .rv-text { margin-top: 24px; }
+.sc-body > .sc-fill { margin-top: 20px; }
+
+/* 30. Challenge: the problem behind each award, one at a time */
+.why { margin-top: 18px; }
+.why-tabs { display: flex; gap: 22px; border-bottom: 1px solid var(--rule-2); }
+.why-tabs button { padding: 0 0 10px; border: 0; border-bottom: 2px solid transparent; margin-bottom: -1px; background: none; font-size: .9375rem; font-weight: 500; color: var(--text-3); cursor: pointer; }
+.why-tabs button:hover { color: var(--text-2); }
+.why-tabs button[aria-selected="true"] { border-bottom-color: var(--tile); color: var(--text); }
+.why-panel { display: none; margin-top: 16px; }
+.why-panel.is-on { display: block; animation: fade-in var(--m-short) var(--m-out); }
+.why-media { aspect-ratio: 16 / 9; overflow: hidden; border-radius: 3px; background: #111214; }
+.why-media video, .why-media img { width: 100%; height: 100%; object-fit: cover; }
+.why-media--light { background: #fff; }
+.why-media--light img { object-fit: contain; }
+.why-panel p { margin-top: 14px; font-size: var(--fs-body); line-height: 1.6; color: var(--text-2); }
+
+/* 31. A row of three photos */
+.trio { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+.trio figure { margin: 0; }
+.trio img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; }
+.trio--tall img { aspect-ratio: 3 / 4; object-fit: cover; object-position: 50% 0; background: #fff; }
+.trio figcaption { margin-top: 6px; font-size: var(--fs-cap); line-height: 1.4; color: var(--text-3); }
+.rv > .trio + .rv-text, .ost .trio + .rv-text { margin-top: 16px; }
+.ost .trio { margin-top: 10px; }
+@media (max-width: 520px) { .trio { gap: 6px; } .trio figcaption { font-size: .7rem; } }
+
+/* 32. Photos next to the sentences they belong to, alternating sides */
+.beats { display: grid; gap: 28px; margin-top: 22px; }
+.beat { display: grid; grid-template-columns: minmax(0, 11fr) minmax(0, 9fr); gap: 22px; align-items: center; }
+.beat:nth-child(even) .beat-media { order: 2; }
+.beat-media { margin: 0; }
+.beat-media > img { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; }
+.beat-text p { font-size: var(--fs-body); line-height: 1.6; color: var(--text-2); }
+.beat-text .beat-when { margin-bottom: 6px; font-size: var(--fs-cap); font-weight: 500; color: var(--text-3); }
+.fan { position: relative; display: flex; align-items: center; justify-content: center; aspect-ratio: 4 / 3; border-radius: 3px; background: #ecebe6; overflow: hidden; }
+.fan img { width: auto; height: 84%; margin: 0 -9%; border-radius: 2px; box-shadow: 0 6px 18px rgba(0, 0, 0, .3); background: #fff; }
+.fan img:nth-child(1) { transform: rotate(-7deg); }
+.fan img:nth-child(2) { position: relative; z-index: 1; height: 72%; }
+.fan img:nth-child(3) { transform: rotate(7deg); }
+@media (max-width: 520px) {
+  .beat { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .beat:nth-child(even) .beat-media { order: 0; }
+}
+
+/* 33. The paper on the 2026 print */
+.print-photo--paper { background: #fff; display: flex; align-items: center; }
+.print-photo--paper img { height: auto; object-fit: contain; padding: 0 6%; }
+.print-photo--paper img { filter: none; opacity: .4; }
+.print.is-front .print-photo--paper img { opacity: 1; }
+
+/* 34. Innovation: the medal photo at its own shape */
+.medal img { aspect-ratio: 949 / 1000; object-fit: cover; border-radius: 3px; }
+
+/* 35. The last page: the cohort's route around the world */
+.tour { margin-top: 28px; }
+.tour-map { position: relative; aspect-ratio: 1000 / 212.5; }
+.tour-map svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: hidden; }
+.tour-land { opacity: .16; }
+.tour-leg { fill: none; stroke: var(--text-2); stroke-width: 1.4; stroke-dasharray: 1; vector-effect: non-scaling-stroke; }
+.tour-city { position: absolute; width: 0; height: 0; opacity: .25; transition: opacity var(--m-base) var(--m-out); }
+.tour-city.is-on { opacity: 1; }
+.tour-city i { position: absolute; left: -4px; top: -4px; width: 8px; height: 8px; border: 1.5px solid var(--text); border-radius: 50%; background: var(--bg); }
+.tour-city b { position: absolute; left: 0; top: 8px; transform: translateX(-50%); font-size: .75rem; font-weight: 500; white-space: nowrap; color: var(--text-2); }
+.tour-city:last-of-type i { background: var(--text); }
+.tour-text { margin-top: 26px; font-size: .9375rem; line-height: 1.55; color: var(--text-2); }
+@media (max-width: 520px) { .tour-city b { font-size: .62rem; } }
+.print-photo--paper img { padding: 0 1%; transform: scale(1.12); }
+.tour-city:nth-of-type(1) b { left: -8px; transform: translateX(-100%); top: -6px; }
+.tour-city:nth-of-type(2) b { left: 8px; transform: none; top: -6px; }
+
+/* 36. Courage: the doubts stay on the page, crossed out; Challenge: the button sits right under the stack */
+.doubt-answer--plain { display: flex; align-items: center; min-height: 100%; padding: 14px 0; }
+.doubt-answer--plain .doubt-was { font-family: var(--serif); font-size: 1.35rem; color: var(--text-3); }
+.prints-actions { margin-top: 18px; }
+.prints-actions + .prints-note { margin-top: 20px; }
+
+@media (min-width: 521px) { .prints { --pw: 56%; --dy: 30px; aspect-ratio: 615 / 405; margin-top: 18px; } }
+
+/* 37. Courage: each doubt is a card you can throw away */
+.doubts { border-bottom: 0; }
+.doubt-slot { overflow: visible; min-height: 96px; margin-top: 12px; border-top: 0; }
+.doubt-slot.is-lifted, .doubt-slot.is-thrown { z-index: 20; }
+.doubt {
+  inset: 4px 0;
+  padding: 0 22px;
+  border-radius: 6px;
+  background: var(--card);
+  color: var(--card-ink);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .4) inset, 0 10px 24px -12px rgba(0, 0, 0, .8);
+  touch-action: none;
+  will-change: transform;
+}
+.doubt .doubt-q { margin-left: 0; color: var(--tile); }
+.doubt:hover .doubt-say { transform: none; }
+.doubt:hover { box-shadow: 0 1px 0 rgba(255, 255, 255, .4) inset, 0 16px 30px -12px rgba(0, 0, 0, .9); }
+.doubt.is-drag { background: var(--card); outline: 0; box-shadow: 0 24px 40px -14px rgba(0, 0, 0, .95); }
+.doubt-answer--plain { padding: 14px 22px; }
+
+/* 38. The title: a larger portrait */
+
+/* 39. HELLO typed with the gaze: ticked off */
+.eyes-check { flex: none; margin-left: 12px; font-family: var(--sans); font-weight: 600; color: #6fcf8a; animation: fade-in var(--m-short) var(--m-out); }
+
+.why-tabs { flex-wrap: wrap; row-gap: 6px; }
+@media (max-width: 520px) { .why-tabs { gap: 14px; } .why-tabs button { font-size: .8125rem; } }
+
+/* 40. A thrown card leaves its words behind, crossed out, at the same size and place */
+.doubt-answer--plain { min-height: 88px; padding: 4px 22px; }
+.doubt-answer--plain .doubt-was { margin: 0; font-size: clamp(1.45rem, 2.6vw, 2.05rem); line-height: 1.1; letter-spacing: -.01em; text-decoration-thickness: 1.5px; }
+.doubt-slot { min-height: 88px; margin-top: 10px; }
+
+/* 41. Videos in photo-and-text pairs */
+.beat-media > video { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; background: #111214; }
+.rv > .beats + .result { margin-top: 28px; }
+
+/* 42. Innovation: Drive right under the camera views */
+.drive-go { margin-top: 0; }
+.drive-go.is-spent { display: none; }
+
+/* 43. The last page: Taejae's Global Rotation, a city at a time */
+.tour-legend { margin-bottom: 8px; font-size: var(--fs-cap); font-weight: 500; letter-spacing: .02em; color: var(--text-3); }
+button.tour-city { padding: 0; border: 0; background: none; cursor: pointer; }
+button.tour-city::before { content: ""; position: absolute; left: -14px; top: -14px; width: 28px; height: 28px; }
+.tour-city.is-here i { border-color: #fff; background: #fff; box-shadow: 0 0 0 4px rgba(255, 255, 255, .15); }
+.tour-city.is-here b { color: var(--text); }
+.tour-info { display: grid; grid-template-columns: 132px minmax(0, 1fr); gap: 16px; align-items: center; min-height: 99px; margin-top: 26px; }
+.tour-info > img, .tour-pic-none { width: 132px; aspect-ratio: 4 / 3; object-fit: cover; border-radius: 3px; background: #1a1a1c; animation: fade-in var(--m-short) var(--m-out); }
+.tour-info p { font-size: .9375rem; line-height: 1.5; color: var(--text-2); animation: fade-in var(--m-short) var(--m-out); }
+.tour-info b { display: block; margin-bottom: 2px; font-weight: 600; color: var(--text); }
+@media (max-width: 520px) { .tour-info { grid-template-columns: 96px minmax(0, 1fr); } .tour-info > img, .tour-pic-none { width: 96px; } }
+
+.beat-media--fit > img { object-fit: contain; background: #fff; }
+.tour-city:nth-of-type(2) b { top: 8px; left: 6px; }
+
+/* 44. Innovation: a bigger gold medal photo, at its own shape */
+.medals { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: 24px; align-items: start; }
+.medal img { width: 100%; aspect-ratio: 949 / 1000; object-fit: cover; }
+@media (max-width: 520px) { .medals { grid-template-columns: minmax(0, 1fr); } .medal { max-width: 300px; } }
+
+/* 45. Photos shown whole when the frame would crop them */
+.beat-media--fit > img, .beat-media--fit > video { height: auto; aspect-ratio: auto; object-fit: contain; }
+
+/* 46. The ALS keyboards: a start screen over each one, and the two times */
+.eyes { position: relative; }
+.key--sp { aspect-ratio: auto; font-size: .78rem; letter-spacing: .06em; }
+.key--del { grid-column: auto; }
+.eyes-gate { position: absolute; inset: -6px; z-index: 5; display: grid; place-items: center; padding: 16px; border-radius: 4px; background: rgba(11, 11, 12, .55); backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px); }
+.eyes-gate[hidden] { display: none; }
+.eyes-gate-card { max-width: 30rem; padding: 22px 24px; border: 1px solid var(--rule-2); border-radius: 6px; background: rgba(18, 18, 20, .92); text-align: left; }
+.eyes-gate-step { font-size: var(--fs-cap); color: var(--text-3); }
+.eyes-gate-title { margin-top: 4px; font-family: var(--serif); font-size: var(--fs-sub); color: var(--text); }
+.eyes-gate-text { margin: 8px 0 18px; font-size: .9375rem; line-height: 1.55; color: var(--text-2); }
+.eyes-times { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.eyes-times p { display: grid; gap: 2px; padding: 12px 14px; border: 1px solid var(--rule-2); border-radius: 4px; }
+.eyes-times span { font-size: var(--fs-cap); color: var(--text-3); }
+.eyes-times b { font-family: var(--serif); font-weight: 400; font-size: 1.6rem; color: var(--text); }
+.eyes-check { font-size: .9em; }
+
+/* 47. The rotation: a Next button */
+.tour-info { grid-template-columns: 132px minmax(0, 1fr) auto; }
+.tour-next { min-height: 36px; padding: 0 14px; font-size: .875rem; white-space: nowrap; }
+@media (max-width: 520px) { .tour-info { grid-template-columns: 96px minmax(0, 1fr); } .tour-next { grid-column: 1 / -1; justify-self: start; } }
+
+.eyes-gate-card, .eyes-gate-card .btn { font-family: var(--sans); letter-spacing: 0; }
+.eyes-gate-title { font-family: var(--serif); }
+
+/* wide figures and videos take the full width, with their sentence under them */
+.beat:has(.beat-media--fit) { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+.beat:has(.beat-media--fit) .beat-media { order: 0; }
+
+/* room between the medal story and the car game */
+.medals + .drive { margin-top: 44px; }
+
+/* on a phone, the title screen keeps the card small so Start is on the first screen */
+@media (max-width: 900px) {
+  .bc.is-idle { width: min(62%, 30vh); margin-inline: auto; }
+  .st:has(.bc.is-idle) { row-gap: 18px; }
+}
+
+/* 53. The title screen. On a wide screen one scale, --k (set in story.js), sizes the name, the welcome, the question
+   and the gaps between them together, so the words fill exactly the height of the card beside them. */
+.sc--title .sc-hero { margin: 0; font-size: clamp(2.6rem, 11vw, 3.4rem); line-height: 1; letter-spacing: -.03em; text-wrap: balance; }
+.sc--title .sc-lede { margin-top: 18px; max-width: none; font-size: 1.0625rem; line-height: 1.55; }
+.sc--title .sc-ask { margin-top: 20px; font-size: 1.35rem; line-height: 1.25; }
+.sc--title .sc-actions { margin-top: 18px; }
+@media (min-width: 901px) {
+  .sc--title .sc-hero { font-size: min(calc(var(--k, 1) * 80px), 92px); }
+  .sc--title .sc-lede { margin-top: calc(var(--k, 1) * 30px); font-size: calc(var(--k, 1) * 20px); }
+  .sc--title .sc-ask { margin-top: calc(var(--k, 1) * 30px); font-size: calc(var(--k, 1) * 28px); }
+  .sc--title .sc-actions { margin-top: calc(var(--k, 1) * 22px); }
+}
+
+/* 54. Reading focus: the part being read is sharp; the others are blurred and dimmed, more the farther away they are
+   (story.js decides which part is being read). */
+.part { transition: filter var(--m-long) var(--m-out), opacity var(--m-long) var(--m-out); }
+.part.is-near { filter: blur(1.5px); opacity: .5; }
+.part.is-far { filter: blur(3px); opacity: .32; }
+@media print { .part.is-near, .part.is-far { filter: none; opacity: 1; } }
+/* on a page read part by part, room below the last part lets the closing line and its button come up to the middle */
+.st-stage.is-reading { padding-bottom: max(64px, calc(55vh - 160px)); }
