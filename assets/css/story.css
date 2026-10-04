@@ -1600,3 +1600,72 @@ button.tour-city::before { content: ""; position: absolute; left: -14px; top: -1
 @media print { .part.is-near, .part.is-far { filter: none; opacity: 1; } }
 /* on a page read part by part, room below the last part lets the closing line and its button come up to the middle */
 .st-stage.is-reading { padding-bottom: max(64px, calc(55vh - 160px)); }
+/* the car demo opens with how to drive it, over the blurred views and track */
+.drive { position: relative; }
+.drive-gate { inset: -10px; }
+
+/* 55. Every demo opens with how to use it, over the demo blurred behind (the same card as the ALS keyboards) */
+.demo-box, .robot { position: relative; }
+.demo-gate { inset: -10px; }
+.doubts-box { padding-top: 1px; }
+.doubts-box .demo-gate { inset: 14px -10px -10px; }
+.doubts-box .eyes-gate-card { padding: 18px 22px; }
+.doubts-box .eyes-gate-text { margin-bottom: 14px; }
+
+/* 56. Watch-Out: a map you walk on, a watch that answers, and the steps of help lit as the risk grows */
+.wo-box { margin-top: 18px; }
+.wo { --wo-ink: #ece8df; --wo-ink-2: rgba(236, 232, 223, .55); --wo-ink-3: rgba(236, 232, 223, .22); --wo-hot: #e5584f;
+  display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 16px 20px; align-items: center; }
+.wo-map { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 6px; background: #101012; touch-action: none; }
+.wo-map.is-free { cursor: grab; }
+.wo-map.is-free:active { cursor: grabbing; }
+.wo-map:focus { outline: none; }
+.wo-map:focus-visible { outline: 1px dashed var(--wo-ink-2); outline-offset: 4px; }
+.wo-road { fill: none; stroke: rgba(255, 255, 255, .055); stroke-width: 16; }
+.wo-zone { fill: color-mix(in srgb, var(--tile) 9%, transparent); stroke: color-mix(in srgb, var(--tile) 70%, transparent); stroke-width: 1.2; stroke-dasharray: 4 4; }
+.wo-zone-lbl { font: 500 10px var(--sans); fill: var(--wo-ink-2); }
+.wo-house { fill: #16161a; stroke: var(--wo-ink); stroke-width: 1.4; stroke-linejoin: round; }
+.wo-door { fill: #101012; stroke: var(--wo-ink); stroke-width: 1.2; transform-origin: -5px 2px; transition: transform var(--m-base) var(--m-out); }
+.is-open .wo-door { transform: scaleX(.25); }
+.wo-lock rect, .wo-lock path { fill: none; stroke: var(--tile-hi); stroke-width: 1.3; }
+.wo-lock { cursor: pointer; }
+.wo-lock.is-open path { transform: translateY(-2px); }
+.wo-lock.is-open rect, .wo-lock.is-open path { stroke: #6fcf8a; }
+.wo-person circle:last-child { fill: var(--wo-ink-3); }
+.wo-ping { fill: none; stroke: var(--tile-hi); stroke-width: 1.2; opacity: 0; }
+.wo-box[data-level="2"] .wo-person circle:last-child, .wo-box[data-level="3"] .wo-person circle:last-child, .wo-box[data-level="4"] .wo-person circle:last-child { fill: var(--wo-ink); }
+.wo-box[data-level="2"] .wo-ping, .wo-box[data-level="3"] .wo-ping, .wo-box[data-level="4"] .wo-ping { animation: wo-ping 1.4s var(--m-out) infinite; }
+@keyframes wo-ping { from { opacity: .9; transform: scale(1); } to { opacity: 0; transform: scale(3.2); } }
+.wo-call-line { fill: none; stroke: var(--tile-hi); stroke-width: 1.2; stroke-dasharray: 3 4; opacity: 0; transition: opacity var(--m-short) var(--m-out); }
+.wo-box[data-level="3"] .wo-call-line, .wo-box[data-level="4"] .wo-call-line { opacity: 1; }
+.wo-dot { fill: var(--tile); stroke: #fff; stroke-width: 1.6; }
+.wo-arrow { fill: var(--tile-hi); opacity: 0; transition: opacity var(--m-short) var(--m-out); }
+.wo-box[data-level="1"] .wo-arrow, .wo-box[data-level="2"] .wo-arrow, .wo-box[data-level="3"] .wo-arrow, .wo-box[data-level="4"] .wo-arrow { opacity: 1; }
+.wo-sos { fill: none; stroke: var(--wo-hot); stroke-width: 1.5; opacity: 0; }
+.wo-box[data-level="4"] .wo-sos { animation: wo-ping 1.1s var(--m-out) infinite; }
+.wo-box:not(.is-open) .wo-walker { opacity: .55; }
+.wo-watch { justify-self: center; display: grid; place-items: center; width: 132px; height: 156px; padding: 10px; border: 2px solid var(--rule-2); border-radius: 34px; background: #0d0d0f; cursor: pointer; box-shadow: 0 0 0 6px #161618; transition: border-color var(--m-micro) var(--m-out); }
+.wo-watch:hover { border-color: var(--text-3); }
+.wo-watch:focus-visible { outline: 1px dashed var(--wo-ink-2); outline-offset: 10px; }
+.wo-face { display: grid; justify-items: center; gap: 8px; text-align: center; }
+.wo-icon { width: 46px; height: 46px; }
+.wo-i { display: none; fill: none; stroke: var(--wo-ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
+.wo-face[data-icon="lock"] .wo-i--lock, .wo-face[data-icon="ok"] .wo-i--ok, .wo-face[data-icon="compass"] .wo-i--compass,
+.wo-face[data-icon="people"] .wo-i--people, .wo-face[data-icon="call"] .wo-i--call, .wo-face[data-icon="sos"] .wo-i--sos { display: inline; }
+.wo-face[data-icon="ok"] .wo-i--ok { stroke: #6fcf8a; }
+.wo-needle { fill: var(--tile-hi); stroke: none; transition: transform var(--m-short) var(--m-out); }
+.wo-i--sos { stroke: var(--wo-hot); }
+.wo-i--sos text { fill: var(--wo-hot); stroke: none; font: 700 9px var(--sans); }
+.wo-say { font-size: .8125rem; line-height: 1.35; color: var(--wo-ink); text-wrap: balance; }
+.wo-steps { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none; }
+.wo-steps li { position: relative; padding: 8px 6px 7px; border: 1px solid var(--rule-2); border-radius: 4px; font-size: .75rem; line-height: 1.25; text-align: center; color: var(--text-3); transition: color var(--m-short) var(--m-out), border-color var(--m-short) var(--m-out), background-color var(--m-short) var(--m-out); }
+.wo-steps li.is-on { border-color: color-mix(in srgb, var(--tile) 70%, transparent); background: color-mix(in srgb, var(--tile) 14%, transparent); color: var(--text); }
+.wo-steps li:last-child.is-on { border-color: color-mix(in srgb, var(--wo-hot) 70%, transparent); background: color-mix(in srgb, var(--wo-hot) 16%, transparent); }
+@media (max-width: 560px) {
+  .wo { grid-template-columns: minmax(0, 1fr) 112px; gap: 12px; }
+  .wo-watch { width: 108px; height: 128px; border-radius: 28px; }
+  .wo-icon { width: 38px; height: 38px; }
+  .wo-say { font-size: .75rem; }
+  .wo-steps { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+  .wo-steps li { padding: 6px 2px; font-size: .625rem; }
+}

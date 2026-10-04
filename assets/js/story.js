@@ -301,6 +301,17 @@
   const fan = (items) => `<span class="fan">${items.map((x) => img(x.src, x.w, x.h, x.alt, 'loading="lazy"')).join('')}</span>`;
   const CH = {};
   const fill = (word, which) => `<p class="rv-text sc-fill">So I fill ${which} with <b>${word}</b>.</p>`;
+  // How to use a demo, said in a line or two over the demo itself, blurred behind it. The demo wakes up on the button.
+  const gateHtml = (title, text, label = 'Start') => `<div class="eyes-gate demo-gate"><div class="eyes-gate-card"><p class="eyes-gate-title">${title}</p><p class="eyes-gate-text">${text}</p><button class="btn btn--primary" type="button" data-gate-start>${label}</button></div></div>`;
+  const opened = (box, behind = []) => new Promise((done) => {
+    const gate = $('.demo-gate', box);
+    behind.forEach((el) => { el.inert = true; });
+    $('[data-gate-start]', gate).addEventListener('click', () => {
+      gate.hidden = true;
+      behind.forEach((el) => { el.inert = false; });
+      done();
+    }, { once: true });
+  });
   const fig = (src, w, h, alt, cap = '', extra = '') => `<figure class="rv-photo">${img(src, w, h, alt, extra)}${cap ? `<figcaption>${cap}</figcaption>` : ''}</figure>`;
   const pair = (a, b) => `<div class="rv-pair">${[a, b].map((x) => `<figure style="--r: ${(x.w / x.h).toFixed(3)}">${img(x.src, x.w, x.h, x.alt, 'loading="lazy"')}${x.cap ? `<figcaption>${x.cap}</figcaption>` : ''}</figure>`).join('')}</div>`;
 
@@ -409,12 +420,16 @@
     async play(body) {
       body.innerHTML = `
         <p class="sc-lede">Before university, I chose not to follow the usual path through school, so I could study what I loved. Many people around me were worried. Some of them said things like this to me.</p>
+        <div class="demo-box doubts-box">
+        ${gateHtml('Throw the doubts away', 'Grab a card and throw it off the page, or just tap it.')}
         <ol class="doubts">${DOUBTS.map((d) => `
           <li class="doubt-slot">
             <div class="doubt-answer doubt-answer--plain"><s class="doubt-was">“${d.say}”</s></div>
             <button class="doubt" type="button"><span class="doubt-q" aria-hidden="true">“</span><span class="doubt-say">${d.say}<span aria-hidden="true">”</span></span></button>
           </li>`).join('')}
-        </ol>`;
+        </ol>
+        </div>`;
+      opened($('.doubts-box', body), [$('.doubts', body)]);
       // a keyboard user keeps their place: when one doubt goes, focus moves to the next one
       await Promise.all($$('.doubt', body).map((el) => flick(el).then(() => {
         const a = doc.activeElement;
@@ -445,6 +460,133 @@
     { year: '2026', pic: { src: 'assets/figures/story/pdpm-paper.jpg', w: 1560, h: 405, fit: 'contain', alt: 'The title of the PDPM paper, PDPM: Perceptron-Driven Pipeline Morphing for Adaptive RISC-V Processors, by Dawit Chun and Minhee Jun' },
       cap: 'First-author paper, IEEE ICCD', head: 'First-author paper at IEEE ICCD, for PDPM', more: ['A processor that reshapes its own pipeline while a program runs', 'Patent application for a window that frees people trapped behind security bars in floods and fires'] },
   ];
+
+  /* Watch-Out: help that grows only as the risk does */
+
+  // the home, its safe zone, and how far past it each next kind of help starts (drawing units)
+  const WO = { home: { x: 96, y: 142 }, safe: 62, band: 54, w: 420, h: 250 };
+  const WO_STEPS = [
+    { name: 'Door lock', watch: 'Tap to open the door' },
+    { name: 'Compass', watch: 'This way home' },
+    { name: 'Bystanders', watch: 'Asking people nearby to help' },
+    { name: 'Caregiver call', watch: 'Calling your caregiver' },
+    { name: 'Emergency call', watch: 'Emergency call, sharing your location' },
+  ];
+  const WO_PEOPLE = [{ x: 236, y: 92 }, { x: 292, y: 200 }, { x: 352, y: 118 }];
+  const WO_HTML = `
+        <div class="wo">
+          <svg class="wo-map" viewBox="0 0 ${WO.w} ${WO.h}" tabindex="0" role="img" aria-label="A neighbourhood map with a home, its safe zone, and a person you can move with the pointer or the arrow keys">
+            <path class="wo-road" d="M0 52H420M0 214H420M178 0V250M318 0V250"/>
+            <circle class="wo-zone" cx="${WO.home.x}" cy="${WO.home.y}" r="${WO.safe}"/>
+            <text class="wo-zone-lbl" x="${WO.home.x}" y="${WO.home.y - WO.safe - 6}" text-anchor="middle">Safe zone</text>
+            <g class="wo-call"><path class="wo-call-line"/></g>
+            ${WO_PEOPLE.map((p) => `<g class="wo-person" transform="translate(${p.x} ${p.y})"><circle class="wo-ping" r="5"/><circle r="4.5"/></g>`).join('')}
+            <g class="wo-home" transform="translate(${WO.home.x} ${WO.home.y})">
+              <path class="wo-house" d="M-20 18V-4L0 -20L20 -4V18Z"/>
+              <rect class="wo-door" x="-5" y="2" width="10" height="16"/>
+              <g class="wo-lock" transform="translate(12 6)"><rect x="-4" y="-1" width="8" height="7" rx="1"/><path d="M-2.5 -1V-3.5A2.5 2.5 0 0 1 2.5 -3.5V-1"/></g>
+            </g>
+            <g class="wo-walker" transform="translate(${WO.home.x} ${WO.home.y + 12})">
+              <circle class="wo-sos" r="9"/>
+              <path class="wo-arrow" d="M0 -17L4 -10H-4Z"/>
+              <circle class="wo-dot" r="7"/>
+            </g>
+          </svg>
+          <div class="wo-watch" role="button" tabindex="0" aria-label="The watch">
+            <div class="wo-face">
+              <svg class="wo-icon" viewBox="-20 -20 40 40" aria-hidden="true">
+                <g class="wo-i wo-i--lock"><rect x="-8" y="-3" width="16" height="13" rx="2"/><path d="M-5 -3V-8A5 5 0 0 1 5 -8V-3"/></g>
+                <g class="wo-i wo-i--ok"><circle r="13"/><path d="M-6 0L-1.5 4.5L6.5 -4"/></g>
+                <g class="wo-i wo-i--compass"><circle r="14"/><path class="wo-needle" d="M0 -11L4 2H-4Z"/></g>
+                <g class="wo-i wo-i--people"><circle cx="-6" cy="-4" r="4"/><circle cx="6" cy="-4" r="4"/><path d="M-13 10A7 7 0 0 1 1 10M-1 10A7 7 0 0 1 13 10"/></g>
+                <g class="wo-i wo-i--call"><path d="M-9 -11L-3 -11L-1 -4L-5 -1A14 14 0 0 0 1 5L4 1L11 3L11 9A3 3 0 0 1 8 12A21 21 0 0 1 -12 -8A3 3 0 0 1 -9 -11Z"/></g>
+                <g class="wo-i wo-i--sos"><circle r="14"/><text y="4.5" text-anchor="middle">SOS</text></g>
+              </svg>
+              <p class="wo-say" aria-live="polite">Tap to open the door</p>
+            </div>
+          </div>
+          <ol class="wo-steps">${WO_STEPS.map((x) => `<li>${x.name}</li>`).join('')}</ol>
+        </div>`;
+
+  function watchOut(box) {
+    const map = $('.wo-map', box);
+    const watch = $('.wo-watch', box);
+    const say = $('.wo-say', box);
+    const walker = $('.wo-walker', box);
+    const lock = $('.wo-lock', box);
+    const callLine = $('.wo-call-line', box);
+    const steps = $$('.wo-steps li', box);
+    const face = $('.wo-face', box);
+    const needle = $('.wo-needle', box);
+    const arrow = $('.wo-arrow', box);
+    let open = false;
+    let at = { x: WO.home.x, y: WO.home.y + 12 };
+    let level = -1;
+    const icon = (k) => { face.dataset.icon = k; };
+    icon('lock');
+    const show = () => {
+      const dx = WO.home.x - at.x;
+      const dy = WO.home.y - at.y;
+      const d = Math.hypot(dx, dy);
+      const next = d <= WO.safe ? 0 : Math.min(4, 1 + Math.floor((d - WO.safe) / WO.band));
+      // the compass on the watch, and the arrow by the person, point the way home
+      const deg = (Math.atan2(dy, dx) * 180) / Math.PI + 90;
+      needle.setAttribute('transform', `rotate(${deg.toFixed(1)})`);
+      arrow.setAttribute('transform', `rotate(${deg.toFixed(1)})`);
+      walker.setAttribute('transform', `translate(${at.x.toFixed(1)} ${at.y.toFixed(1)})`);
+      callLine.setAttribute('d', `M${WO.home.x} ${WO.home.y}L${at.x.toFixed(1)} ${at.y.toFixed(1)}`);
+      if (next === level) return;
+      level = next;
+      box.dataset.level = String(level);
+      steps.forEach((li, k) => li.classList.toggle('is-on', k <= level));
+      icon(['ok', 'compass', 'people', 'call', 'sos'][level]);
+      say.textContent = level === 0 ? 'In your safe zone' : WO_STEPS[level].watch;
+    };
+    const unlock = () => {
+      if (open) return;
+      open = true;
+      box.classList.add('is-open');
+      lock.classList.add('is-open');
+      steps[0].classList.add('is-on');
+      say.textContent = 'Door open';
+      icon('ok');
+      map.classList.add('is-free');
+      setTimeout(() => { if (level < 0) show(); }, calm() ? 0 : 700);
+    };
+    watch.addEventListener('click', unlock);
+    watch.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); unlock(); } });
+    lock.addEventListener('click', unlock);
+    const toMap = (e) => {
+      const pt = map.createSVGPoint();
+      pt.x = e.clientX;
+      pt.y = e.clientY;
+      const p = pt.matrixTransform(map.getScreenCTM().inverse());
+      return { x: Math.min(WO.w - 10, Math.max(10, p.x)), y: Math.min(WO.h - 10, Math.max(10, p.y)) };
+    };
+    let dragging = false;
+    map.addEventListener('pointerdown', (e) => {
+      if (!open) return;
+      dragging = true;
+      capture(map, e);
+      at = toMap(e);
+      show();
+    });
+    map.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      at = toMap(e);
+      show();
+    });
+    map.addEventListener('pointerup', () => { dragging = false; });
+    map.addEventListener('pointercancel', () => { dragging = false; });
+    map.addEventListener('keydown', (e) => {
+      const step = { ArrowLeft: [-10, 0], ArrowRight: [10, 0], ArrowUp: [0, -10], ArrowDown: [0, 10] }[e.key];
+      if (!step || !open) return;
+      e.preventDefault();
+      at = { x: Math.min(WO.w - 10, Math.max(10, at.x + step[0])), y: Math.min(WO.h - 10, Math.max(10, at.y + step[1])) };
+      show();
+    });
+    opened(box, [map, watch]);
+  }
 
   CH.challenge = {
     title: 'Through countless challenges, I have proved what I can do.',
@@ -492,33 +634,14 @@
       btn.parentElement.remove();
       release();
       add(body, `
-        <p class="rv-text">Each of these started when I saw people struggling and asked myself, “How can I help these people, and what should I do?”</p>
-        <div class="why">
-          <div class="why-tabs" role="tablist">
-            <button type="button" role="tab" aria-selected="true">Smart Emergency Window</button>
-            <button type="button" role="tab" aria-selected="false">Hydroelectric Shower Module</button>
-            <button type="button" role="tab" aria-selected="false">Watch-Out</button>
-          </div>
-          <div class="why-panel is-on" role="tabpanel">
-            <div class="why-media"><video src="assets/figures/home/window-teaser.mp4" poster="assets/figures/home/window-teaser-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="The Smart Emergency Window releasing its bars"></video></div>
-            <p>In the 2022 monsoon floods, people in semi-basement homes were trapped behind their window bars. My teammate and I built a security window whose bars release by themselves when its fire or water sensors go off.</p>
-          </div>
-          <div class="why-panel" role="tabpanel">
-            <div class="why-media why-media--light">${img('assets/figures/shower/shower-module-cad.png', 1090, 676, 'The hydroelectric shower module in CAD, with its propellers, gears and generator', 'loading="lazy"')}</div>
-            <p>Korean households use a lot of electricity but make almost none. I designed a module where shower water spins propellers that turn a small generator, which powers an Arduino that opens the valve only when someone is near.</p>
-          </div>
-          <div class="why-panel" role="tabpanel">
-            <div class="why-media why-media--light">${img('assets/figures/watchout/gradual-intervention.png', 1642, 926, 'Watch-Out’s gradual intervention: an NFC door lock, then geofencing and a digital compass, then a quick call and a help request to bystanders, and finally an emergency call with GPS sharing', 'loading="lazy"')}</div>
-            <p>Elderly people with dementia can wander off and get lost. My team built Watch-Out, a smartwatch and door lock that add help only as the risk rises. The NFC lock opens when they tap their watch. If they leave their safe zone, the watch’s compass guides them back, then bystanders are asked to help, then a caregiver calls, and only last are the authorities called.</p>
-          </div>
+        <p class="rv-text">Each of these started when I saw people struggling and asked myself, “How can I help these people, and what should I do?” For Watch-Out, which took first place at ACM CHI, it was elderly people with dementia who wander off and get lost.</p>
+        <div class="demo-box wo-box">
+        ${gateHtml('Watch-Out', 'Tap the watch to open the door, then drag the person away from home. Help is added one step at a time, and emergency services are called only last.')}
+        ${WO_HTML}
         </div>
+        <p class="rv-text">My team built Watch-Out, a smartwatch and a door lock that add help only as the risk rises, so people with dementia can still go out on their own.</p>
         ${fill('Challenge', 'my second tile')}`);
-      const tabs = $$('.why-tabs button', body);
-      const panels = $$('.why-panel', body);
-      tabs.forEach((t, i) => t.addEventListener('click', () => {
-        tabs.forEach((x, k) => x.setAttribute('aria-selected', String(k === i)));
-        panels.forEach((p, k) => p.classList.toggle('is-on', k === i));
-      }));
+      watchOut($('.wo-box', body));
     },
   };
 
@@ -661,6 +784,7 @@
           </div>
         </div>
         <div class="drive">
+          ${gateHtml('Drive the DeepCo car', 'Each camera view below is a frame the car sees. Label it left, straight or right, then press Drive to see if the car can finish a lap on its own.')}
           <ol class="views">${['right', 'straight', 'left'].map((k, i) => `
             <li class="view" data-kind="${k}">
               ${camView(k)}
@@ -680,6 +804,8 @@
           </div>
         </div>`;
       const labels = { left: null, straight: null, right: null };
+      // how to drive comes first, over the blurred demo; the views and Drive wake up on Start
+      opened($('.drive', body), [$('.views', body), $('.drive-go', body)]);
       const go = $('[data-go]', body);
       const msg = $('.track-msg', body);
       const path = $('.track-road', body);
@@ -802,6 +928,8 @@
     async play(body) {
       body.innerHTML = `
         <p class="sc-lede">Thinking about it, what good is it to keep everything I had seen outside Korea, and outside my own small world, to myself? Why not share it back?</p>
+        <div class="demo-box gave-box">
+        ${gateHtml('Where it went', 'Each card is something I received. Click a card to see who I passed it on to.')}
         <ul class="gave">${GAVE.map((g) => `
           <li><button class="gave-card" type="button" aria-expanded="false">
             <span class="gave-photo">${g.set ? `<span class="gave-set">${g.set.map((c) => img(c.src, c.w, c.h, c.alt, 'loading="lazy"')).join('')}</span>` : img(g.pic.src, g.pic.w, g.pic.h, g.pic.alt, `loading="lazy"${g.pic.pos ? ` style="object-position: ${g.pic.pos}"` : ''}`)}
@@ -809,7 +937,9 @@
             </span>
             <span class="gave-to"><strong>${g.to}</strong><span>${g.note}</span></span>
           </button></li>`).join('')}
-        </ul>`;
+        </ul>
+        </div>`;
+      opened($('.gave-box', body), [$('.gave', body)]);
       await Promise.all($$('.gave-card', body).map((card) => new Promise((done) => {
         card.addEventListener('click', () => {
           card.classList.add('is-given');
@@ -899,8 +1029,9 @@
     async play(body) {
       const tr = (k) => `<g class="rb-trace rb-trace--${k}"><polyline/><g class="rb-dots"></g></g>`;
       body.innerHTML = `
-        <p class="sc-lede">For my second bingo, I joined ROBOTIS’s Humanoid Software Team as a research intern in summer 2026. Over nine weeks on three robots, I tested new robot AI models, built my own policy, trained it with reinforcement learning, and built a way to teach a robot by correcting it. The arm below is that last part: when it misses the hole, take over as I did.</p>
+        <p class="sc-lede">For my second bingo, I joined ROBOTIS’s Humanoid Software Team as a research intern in summer 2026. Over nine weeks on three robots, I tested new robot AI models, built my own policy, trained it with reinforcement learning, and built a way to teach a robot by correcting it. The arm below is that last part.</p>
         <div class="robot">
+          ${gateHtml('Correct the robot', 'The robot will try to put the peg in the hole. Just before it fails, it stops and hands control to you. Drag the gripper into the hole, or use the arrow keys, and the robot learns from your correction.', 'Run the robot')}
           <svg class="robot-svg" viewBox="100 40 490 290" tabindex="0" role="img" aria-label="A robot arm, drawn as a kinematic diagram, placing a peg in a hole. Use the arrow keys to guide it when it is your turn.">
             <defs>
               <pattern id="rb-hatch" class="rb-hatch" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><line x1="3" y1="0" x2="3" y2="6"/></pattern>
@@ -950,7 +1081,7 @@
           </svg>
           <p class="robot-msg" aria-live="polite"></p>
         </div>
-        <div class="sc-actions"><button class="btn btn--primary" type="button" data-run>Run the robot</button><button class="btn" type="button" data-guide hidden>Guide it for me</button></div>`;
+        <div class="sc-actions"><button class="btn btn--primary" type="button" data-run hidden disabled>Retrain and run</button><button class="btn" type="button" data-guide hidden>Guide it for me</button></div>`;
       const svg = $('.robot-svg', body);
       const q = (s) => $(s, svg);
       const link1 = q('.rb-link--1');
@@ -1037,16 +1168,16 @@
       draw(START);
 
       who.textContent = 'policy';
-      await press(run);
-      await move([{ x: MISS.x, y: MISS.y - 50 }, MISS], 1400, run1);
+      await opened($('.robot', body), [svg]);
+      // HG-DAgger: the policy heads for the wrong spot, and it is stopped just before the miss
+      await move([{ x: MISS.x, y: MISS.y - 50 }, { x: MISS.x, y: MISS.y - 16 }], 1300, run1);
       svg.classList.add('is-miss');
       dim(wrist.x);
-      msg.textContent = 'It missed the hole. Drag the gripper over the hole to correct it.';
+      msg.textContent = 'It stopped just before missing the hole. Drag the gripper into the hole.';
       who.textContent = 'you';
-      // the Run button is about to hide; hand keyboard focus to the drawing so the arrow keys work at once
-      if (doc.activeElement === run || doc.activeElement === doc.body) svg.focus({ preventScroll: true });
+      // hand keyboard focus to the drawing so the arrow keys work at once
+      if (doc.activeElement === doc.body || !doc.activeElement || doc.activeElement.closest('.demo-gate')) svg.focus({ preventScroll: true });
       svg.classList.add('is-yours');
-      run.hidden = true;
 
       await new Promise((done) => {
         let goal = { ...wrist };
@@ -1097,26 +1228,28 @@
       svg.classList.remove('is-yours', 'is-miss', 'is-close');
       svg.classList.add('is-saved');
       guide.hidden = true;
-      msg.textContent = 'Your correction is saved, and the robot can now retrain on it.';
+      msg.textContent = 'Your correction is saved. Retrain the robot on it and run it again.';
       run.hidden = false;
       run.disabled = false;
-      run.textContent = 'Retrain and run';
       await press(run);
       svg.classList.add('is-retrained');
       who.textContent = 'policy, retrained';
       msg.textContent = '';
       await move([START], 700);
-      await move([{ x: HOLE.x, y: HOLE.y - 50 }, HOLE], 1300, run2);
+      // it reaches the same wrong spot, and this time it knows the way from there into the hole
+      await move([{ x: MISS.x, y: MISS.y - 50 }, { x: MISS.x, y: MISS.y - 16 }], 1100, run2);
+      await wait(120);
+      await move([{ x: HOLE.x, y: HOLE.y - 10 }, HOLE], 700, run2);
       await move([{ x: HOLE.x, y: HOLE.y + 26 }], 450, run2);
       svg.classList.add('is-in');
-      msg.textContent = 'After retraining on your correction, the robot put the peg in the hole.';
+      msg.textContent = 'It reached the same wrong spot, and this time it found its way into the hole.';
       // it lets go of the peg and moves clear, so the three runs can be read side by side
       await wait(350);
       await move([{ x: HOLE.x, y: HOLE.y - 30 }, START], 900);
       svg.classList.add('is-done');
       run.parentElement.remove();
       const shown = add(body, `${beats([
-        { media: '<video src="assets/figures/story/hg-dagger.mp4" poster="assets/figures/robotis/hg-dagger-operation-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Operating the HG-DAgger system on the AI Worker"></video>', text: 'Your correction was a small version of HG-DAgger, a form of human-in-the-loop learning, and I built the system that runs it on the real robot. With 30 demonstrations and 13 corrections, the AI Worker learned a long peg-and-screw task.' },
+        { media: '<video src="assets/figures/story/hg-dagger.mp4" poster="assets/figures/robotis/hg-dagger-operation-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Operating the HG-DAgger system on the AI Worker"></video>', text: 'Your correction was a small version of HG-DAgger, a form of human-in-the-loop learning, and I built the system that runs it on the real robot. I stop the robot just before it fails and correct it by hand. From that, it learns a way to finish the task even from a wrong state its first demonstrations never showed it, which opens up the bottleneck of learning from demonstrations alone. With 30 demonstrations and 13 corrections, the AI Worker learned a long peg-and-screw task.' },
         { media: '<video src="assets/figures/robotis/prior-act-td3-rollout.mp4" poster="assets/figures/robotis/prior-act-td3-rollout-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Prior-ACT placing a bottle in the basket on the real AI Worker"></video>', text: 'I also built Prior-ACT, which lets an ACT policy choose how to move from what its camera sees, and trained it with off-policy RL in a simulation calibrated to the real robot. Back on the real AI Worker, it improved far more than TurboVLA, a vision-language-action model.' },
       ])}
         <figure class="result">
@@ -1718,8 +1851,8 @@
   const TOUR = [
     { city: 'Seoul', when: '2023 to 2024', at: [889.9, 106.0], pic: 'assets/figures/journey/seoul-2023/prototype-ecosort.jpg', text: 'Taejae’s home campus. My first civic project was on plastic food delivery containers.' },
     { city: 'Tokyo', when: 'Spring 2025', at: [932.3, 113.8], pic: 'assets/figures/journey/tokyo/yokohama.jpg', text: 'I studied at Kanda University and presented Watch-Out at CHI 2025 in Yokohama.' },
-    { city: 'San Francisco', when: 'Fall 2025', at: [58.6, 105.1], pic: 'assets/figures/journey/san-francisco/usf.jpg', text: 'At the University of San Francisco, I started building PDPM and was a physics teaching assistant.' },
-    { city: 'New York', when: 'Spring 2026', at: [220.0, 92.9], pic: 'assets/figures/journey/new-york/skyline-court.jpg', text: 'At Pace University, I turned PDPM into a paper with Professor Minhee Jun.' },
+    { city: 'San Francisco', when: 'Fall 2025', at: [58.6, 105.1], pic: 'assets/figures/journey/san-francisco/usf.jpg', text: 'At the University of San Francisco, I took Intro to Digital Electronics and Silicon Valley Immersion, started building PDPM, and was a physics teaching assistant.' },
+    { city: 'New York', when: 'Spring 2026', at: [220.0, 92.9], pic: 'assets/figures/journey/new-york/skyline-court.jpg', text: 'At Pace University, I took Artificial Intelligence and US History, and turned PDPM into a paper with Professor Minhee Jun.' },
     { city: 'Shenzhen', when: 'Now', at: [846.9, 168.6], pic: 'assets/figures/story/shenzhen.jpg', text: 'This semester, with a new civic project in progress.' },
   ];
   // a leg longer than half the strip goes the other way round, across the Pacific, leaving one edge and entering the other
@@ -1912,7 +2045,7 @@
         // the title and the paragraphs that open the page
         || (last.head && a.matches('.sc-lede, .medals'))
         // a sentence and the photos, tabs, closing line or next paragraph it leads into: paragraphs in a row read as one part
-        || (prev.matches('p.rv-text:not(.sc-fill)') && a.matches('p.rv-text, .why, .rv-pair, .trio, figure')));
+        || (prev.matches('p.rv-text:not(.sc-fill)') && a.matches('p.rv-text, .why, .wo-box, .rv-pair, .trio, figure')));
       if (join) last.els.push(a);
       else out.push({ els: [a], head: a.matches('h1, h2, .sc-lead, .bingo') });
     });

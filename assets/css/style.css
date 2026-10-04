@@ -2495,3 +2495,8 @@ details.jr-civic > p { margin-top: 12px; }
 @media (max-width: 1100px) { .shelf--plain .shelf__grid { grid-template-columns: repeat(3, calc((100% - 168px - 44px) / 3)); } }
 @media (max-width: 760px) { .shelf--plain .shelf__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .rcard--wide .rcard__more { margin-top: 0; }
+
+/* About: a stop with many photos wraps its thumbnails into rows, each a readable size */
+.jr-gallery__thumbs { flex-wrap: wrap; }
+.jr-gallery__thumb { flex: 0 0 56px; max-width: none; }
+@media (max-width: 520px) { .jr-gallery__thumb { flex-basis: 48px; } }
