@@ -518,9 +518,10 @@
             <div class="wo-door">
               <div class="wo-door-card">
                 <p class="wo-door-head">${icon('volume-2')}<span>Before the door opens, its speaker asks</span></p>
-                <div class="wo-q"><p>“Where are you going?”</p><div class="wo-chips"><button type="button" data-a="the park">To the park</button><button type="button" data-a="the market">To the market</button></div></div>
+                <div class="wo-q"><p>“Where are you going?”</p><div class="wo-chips"><button type="button" data-a="the park">To the park</button><button type="button" data-a="the market">To the market</button><button type="button" class="wo-none" data-none>She doesn’t answer</button></div></div>
                 <div class="wo-q" hidden><p>“What are you wearing?”</p><div class="wo-chips"><button type="button" data-a="a blue jacket">A blue jacket</button><button type="button" data-a="a grey coat">A grey coat</button></div></div>
                 <p class="wo-said" hidden></p>
+                <div class="wo-shut" hidden><p>The door stays shut. If she can’t answer, she may not be ready to go out alone.</p><button type="button" class="wo-again">Try again</button></div>
                 <div class="wo-tap" hidden><p>The lights show where to tap her watch.</p><button type="button" class="wo-reader" aria-label="Tap her watch on the NFC reader">${icon('nfc')}</button></div>
               </div>
             </div>
@@ -557,7 +558,7 @@
       tap: () => `${icon('nfc')}<b>Tap me on the reader</b><span>The door opens only for me</span>`,
       safe: () => `${icon('house')}<b>Safe zone</b><span>${now()}</span>`,
       compass: (deg, m) => `<i class="wo-arrow" style="transform: rotate(${deg.toFixed(0)}deg)">${icon('navigation-2')}</i><b>Home, ${m} m</b><span>${icon('vibrate')}“Let’s head home.”</span>`,
-      people: () => `${icon('share-2')}<b>SOS shared</b><span>with 3 phones within 10 m</span>`,
+      people: (n) => (n ? `${icon('share-2')}<b>SOS shared</b><span>with ${n} phone${n > 1 ? 's' : ''} within 10 m</span>` : `${icon('share-2')}<b>Asking for help</b><span>No one within 10 m yet</span>`),
       call: () => `${icon('audio-lines')}<b>Minjun is talking</b><span>No need to answer</span>`,
       sos: () => `${icon('siren')}<b>Calling 112</b><span>Sharing her location</span>`,
     };
@@ -579,7 +580,19 @@
     let open = false;
     // the door: two calm questions, then the watch on the reader
     const said = $('.wo-said', box);
-    qs.forEach((q, i) => $$('button', q).forEach((b) => b.addEventListener('click', () => {
+    const shut = $('.wo-shut', box);
+    // no answer: the door stays shut
+    $('[data-none]', box).addEventListener('click', (e) => {
+      e.stopImmediatePropagation();
+      qs[0].hidden = true;
+      shut.hidden = false;
+      $('.wo-again', shut).focus({ preventScroll: true });
+    });
+    $('.wo-again', shut).addEventListener('click', () => {
+      shut.hidden = true;
+      qs[0].hidden = false;
+    });
+    qs.forEach((q, i) => $$('button:not([data-none])', q).forEach((b) => b.addEventListener('click', () => {
       answers[i] = b.dataset.a;
       // a keyboard user keeps their place on the next step
       const keys = b.matches(':focus-visible');
@@ -626,9 +639,21 @@
       // past the last ring: to the side on a wide map, below it on a narrow one
       label(mapEl.clientWidth > mapEl.clientHeight * 1.2 ? by(home, WO.rings[3] + 150, 0) : north(-(WO.rings[3] + 70)), 4);
       L.marker(home, { interactive: false, keyboard: false, icon: L.divIcon({ className: 'wo-home', html: icon('house'), iconSize: [30, 30] }) }).addTo(map);
-      // three people with phones a few steps from her, drawn a little apart so they can be seen at this scale
-      const SPOTS = [[24, -10], [-22, -16], [6, 24]];
-      const crowd = SPOTS.map(([dx, dy]) => L.marker(home, { interactive: false, keyboard: false, icon: L.divIcon({ className: 'wo-near', html: '<span></span>', iconSize: [12, 12], iconAnchor: [6 - dx, 6 - dy] }) }));
+      // people out in the neighbourhood stay where they are; her SOS reaches only the few near her (within 10 m in
+      // reality, drawn as about 200 m at this scale so it can be seen)
+      const seed = (k) => {
+        const x = Math.sin(k * 12.9898 + 78.233) * 43758.5453;
+        return x - Math.floor(x);
+      };
+      const spot = (r, a) => by(home, Math.cos(a) * r, Math.sin(a) * r);
+      const PEOPLE = [
+        // spread through the bystander ring, so someone is usually near her when she reaches it
+        ...Array.from({ length: 16 }, (_, k) => spot(440 + seed(k + 30) * 150, (k / 16) * Math.PI * 2 + (seed(k) - 0.5) * 0.24)),
+        // and elsewhere in the neighbourhood
+        ...Array.from({ length: 18 }, (_, k) => spot(260 + seed(k + 90) * 1000, seed(k + 70) * Math.PI * 2)),
+      ];
+      const crowd = PEOPLE.map((ll) => L.marker(ll, { interactive: false, keyboard: false, icon: L.divIcon({ className: 'wo-near', html: '<span></span>', iconSize: [10, 10] }) }).addTo(map));
+      let reachedSig = '';
       const line = L.polyline([home, home], { className: 'wo-line', interactive: false });
       me = L.marker(by(home, 0, -14), { draggable: true, autoPan: false, keyboard: true, title: 'Ms. Lee', icon: L.divIcon({ className: 'wo-me', html: '<span></span>', iconSize: [24, 24] }) }).addTo(map);
       if (open) me.getElement().classList.add('is-free');
@@ -651,14 +676,25 @@
         const d = home.distanceTo(p);
         const next = WO.rings.findIndex((r) => d <= r);
         const lv = next < 0 ? 4 : next;
-        crowd.forEach((m) => m.setLatLng(p));
         line.setLatLngs([home, p]);
+        // from the bystander step on, the people closest to her get the SOS, wherever she is
+        const alerted = lv >= 2 ? PEOPLE.map((ll, k) => [p.distanceTo(ll), k]).filter(([m]) => m < 210).sort((x, y) => x[0] - y[0]).slice(0, 3).map(([, k]) => k) : [];
+        crowd.forEach((m, k) => { const el = m.getElement(); if (el) el.classList.toggle('is-alerted', alerted.includes(k)); });
+        const sig = alerted.join(',');
         if (lv === 1) watch.innerHTML = W.compass(bearing(p, home), Math.round(d / 10) * 10);
-        if (lv === level) return;
+        if (lv === level) {
+          if (sig !== reachedSig) {
+            reachedSig = sig;
+            if (lv === 2) watch.innerHTML = W.people(alerted.length);
+            near.innerHTML = alerted.length ? nearSos() : nearIdle();
+          }
+          return;
+        }
+        reachedSig = sig;
         // each step of help she passes is told to her son in order, even when she is dragged past several at once
         const NOTES = [null,
           ['bell', 'Mom left her safe zone. Her watch is guiding her home with vibration and voice.', false],
-          ['share-2', 'She is still out, so an SOS went to 3 phones near her.', false],
+          ['share-2', 'She is still out, so her watch is asking people near her for help.', false],
           ['audio-lines', 'QuickCall: no one has helped yet, so you are talking to her through her watch.', true],
           ['siren', '112 was called, and her live location is shared.', true]];
         for (let k = reached + 1; k <= lv; k += 1) {
@@ -673,8 +709,6 @@
         level = lv;
         root.dataset.level = String(lv);
         steps.forEach((li, k) => li.classList.toggle('is-on', k <= lv));
-        if (lv >= 2) crowd.forEach((m) => m.addTo(map));
-        else crowd.forEach((m) => m.remove());
         if (lv >= 3) line.addTo(map);
         else line.remove();
         me.getElement().classList.toggle('is-sos', lv === 4);
@@ -683,7 +717,7 @@
           watch.innerHTML = W.compass(bearing(p, home), Math.round(d / 10) * 10);
         }
         if (lv === 2) {
-          watch.innerHTML = W.people();
+          watch.innerHTML = W.people(alerted.length);
         }
         if (lv === 3) {
           watch.innerHTML = W.call();
@@ -691,7 +725,7 @@
         if (lv === 4) {
           watch.innerHTML = W.sos();
         }
-        near.innerHTML = lv >= 2 ? nearSos() : nearIdle();
+        near.innerHTML = alerted.length ? nearSos() : nearIdle();
       };
       me.on('drag', update);
       me.on('dragstart', () => me.getElement().classList.remove('is-free'));
@@ -757,12 +791,12 @@
       btn.parentElement.remove();
       release();
       add(body, `
-        <p class="rv-text">Each of these started when I saw people struggling and asked myself, “How can I help these people, and what should I do?” For Watch-Out, which took first place at ACM CHI, it was elderly people with dementia who wander off and get lost.</p>
+        <p class="rv-text">Each of these started when I saw people struggling and asked myself, “How can I help these people, and what should I do?” For Watch-Out, which took first place at ACM CHI, it was elderly people with dementia who wander off and get lost. This is a very simplified version of our idea, with concentric geofencing.</p>
         <div class="demo-box wo-box">
         ${gateHtml('Watch-Out', 'A sample case: Ms. Lee, 79, has dementia and wants to go out. Answer the door’s questions and tap her watch on the reader. Then drag her away from home on the map, and see what her watch, a stranger’s phone nearby and her son’s phone show.')}
         ${WO_HTML}
         </div>
-        <p class="rv-text">My team built Watch-Out, a smartwatch and a door lock that add help only as the risk rises, so people with dementia can still go out on their own.</p>
+        <p class="rv-text">My team built Watch-Out, a smartwatch and a door lock that add help only as the risk rises, so people with dementia can still go out on their own. The reader sits where only a properly worn watch can reach it, so she always leaves wearing it, and her caregiver can help her put it on beforehand. If she can’t answer the door’s questions, she may not be ready to go out alone, so the door stays shut.</p>
         ${fill('Challenge', 'my second tile')}`);
       watchOut($('.wo-box', body));
     },

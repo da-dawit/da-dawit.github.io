@@ -1732,3 +1732,13 @@ button.tour-city::before { content: ""; position: absolute; left: -14px; top: -1
 .wo-said + .wo-tap { margin-top: 10px; }
 /* the instructions sit over the map, the first thing in view */
 .wo-box > .demo-gate { place-items: start center; padding-top: clamp(40px, 9vh, 90px); }
+.wo-chips .wo-none { border-style: dashed; color: var(--text-2); }
+.wo-shut { margin-top: 12px; }
+.wo-shut p { font-size: .9375rem; line-height: 1.45; color: var(--text); }
+.wo-again { margin-top: 10px; min-height: 34px; padding: 0 14px; border: 1px solid var(--rule-2); border-radius: 99px; background: transparent; color: var(--text); font-size: .875rem; cursor: pointer; }
+.wo-again:hover { border-color: var(--text-3); }
+/* people stay put: dim until her SOS reaches them */
+.wo-near span { background: rgba(243, 241, 236, .4); transition: background-color var(--m-short) var(--m-out); }
+.wo-near span::after { content: none; }
+.wo-near.is-alerted span { background: #f3f1ec; }
+.wo-near.is-alerted span::after { content: ""; position: absolute; inset: -6px; border: 1.5px solid var(--wo-people); border-radius: 6px; animation: wo-pulse 1.4s var(--m-out) infinite; }

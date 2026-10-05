@@ -207,6 +207,8 @@
           img.height = btn.dataset.h;
           img.alt = btn.dataset.alt;
           img.style.objectPosition = btn.dataset.pos || '';
+          // a portrait photo is shown whole, not cropped to the landscape frame
+          img.classList.toggle('is-tall', +btn.dataset.h > +btn.dataset.w * 1.05);
           link.href = btn.dataset.src;
           img.classList.remove('is-swapping');
         });

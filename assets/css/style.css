@@ -2500,3 +2500,6 @@ details.jr-civic > p { margin-top: 12px; }
 .jr-gallery__thumbs { flex-wrap: wrap; }
 .jr-gallery__thumb { flex: 0 0 56px; max-width: none; }
 @media (max-width: 520px) { .jr-gallery__thumb { flex-basis: 48px; } }
+
+/* About: a portrait photo is shown whole in the gallery frame, on dark, like the videos */
+.jr-gallery__main img.is-tall { object-fit: contain; background: #111; }
