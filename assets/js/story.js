@@ -520,6 +520,7 @@
                 <p class="wo-door-head">${icon('volume-2')}<span>Before the door opens, its speaker asks</span></p>
                 <div class="wo-q"><p>“Where are you going?”</p><div class="wo-chips"><button type="button" data-a="the park">To the park</button><button type="button" data-a="the market">To the market</button></div></div>
                 <div class="wo-q" hidden><p>“What are you wearing?”</p><div class="wo-chips"><button type="button" data-a="a blue jacket">A blue jacket</button><button type="button" data-a="a grey coat">A grey coat</button></div></div>
+                <p class="wo-said" hidden></p>
                 <div class="wo-tap" hidden><p>The lights show where to tap her watch.</p><button type="button" class="wo-reader" aria-label="Tap her watch on the NFC reader">${icon('nfc')}</button></div>
               </div>
             </div>
@@ -577,14 +578,18 @@
     let me = null;
     let open = false;
     // the door: two calm questions, then the watch on the reader
+    const said = $('.wo-said', box);
     qs.forEach((q, i) => $$('button', q).forEach((b) => b.addEventListener('click', () => {
       answers[i] = b.dataset.a;
-      $$('button', q).forEach((x) => x.classList.toggle('is-on', x === b));
-      if (i === 0) qs[1].hidden = false;
-      else {
-        $('.wo-tap', box).hidden = false;
-        watch.innerHTML = W.tap();
-      }
+      // a keyboard user keeps their place on the next step
+      const keys = b.matches(':focus-visible');
+      q.hidden = true;
+      said.hidden = false;
+      said.textContent = i === 0 ? `Going to ${answers[0]}.` : `Going to ${answers[0]}, wearing ${answers[1]}.`;
+      const next = i === 0 ? qs[1] : $('.wo-tap', box);
+      next.hidden = false;
+      if (i === 1) watch.innerHTML = W.tap();
+      if (keys) $('button', next).focus();
     })));
     $('.wo-reader', box).addEventListener('click', () => {
       if (open || answers.length < 2) return;
