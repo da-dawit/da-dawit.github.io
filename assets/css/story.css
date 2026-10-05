@@ -1742,3 +1742,9 @@ button.tour-city::before { content: ""; position: absolute; left: -14px; top: -1
 .wo-near span::after { content: none; }
 .wo-near.is-alerted span { background: #f3f1ec; }
 .wo-near.is-alerted span::after { content: ""; position: absolute; inset: -6px; border: 1.5px solid var(--wo-people); border-radius: 6px; animation: wo-pulse 1.4s var(--m-out) infinite; }
+/* the two phones share one height (set in story.js); a long feed is cut at the bottom, newest first */
+.wo-pscreen { max-height: none; min-height: 0; overflow: hidden; }
+.wo-sos p { text-wrap: pretty; }
+@media (max-width: 560px) { .wo-dev:last-child .wo-pscreen { min-height: 0; } }
+/* older messages on her son's phone fade out at the bottom edge instead of being cut */
+.wo-pscreen--son { -webkit-mask-image: linear-gradient(#000 calc(100% - 34px), transparent calc(100% - 4px)); mask-image: linear-gradient(#000 calc(100% - 34px), transparent calc(100% - 4px)); }

@@ -559,7 +559,7 @@
       safe: () => `${icon('house')}<b>Safe zone</b><span>${now()}</span>`,
       compass: (deg, m) => `<i class="wo-arrow" style="transform: rotate(${deg.toFixed(0)}deg)">${icon('navigation-2')}</i><b>Home, ${m} m</b><span>${icon('vibrate')}“Let’s head home.”</span>`,
       people: (n) => (n ? `${icon('share-2')}<b>SOS shared</b><span>with ${n} phone${n > 1 ? 's' : ''} within 10 m</span>` : `${icon('share-2')}<b>Asking for help</b><span>No one within 10 m yet</span>`),
-      call: () => `${icon('audio-lines')}<b>Minjun is talking</b><span>No need to answer</span>`,
+      call: () => `${icon('audio-lines')}<b>Minjun is talking</b>`,
       sos: () => `${icon('siren')}<b>Calling 112</b><span>Sharing her location</span>`,
     };
     const nearIdle = () => `<p class="wo-ptime">${now()}</p><p class="wo-idle">No alerts</p>`;
@@ -568,12 +568,32 @@
         <p class="wo-sos-head">${icon('message-circle-warning')}<span>AirDrop from a Watch-Out watch</span></p>
         <p class="wo-sos-title">Someone within 10 m may need help</p>
         <p>Ms. Lee, 79, has dementia and may be lost. She is wearing ${answers[1] || 'a blue jacket'}.</p>
-        <p>Please speak slowly and calmly. Crowds and loud voices upset her.</p>
+        <p>Please speak calmly. Crowds and noise upset her.</p>
         <span class="wo-sos-call">${icon('phone-call')}Call her son, Minjun</span>
         <p class="wo-sos-foot">${icon('shield-plus')}<span>First responders: tap her watch for medical details.</span></p>
       </div>`;
     watch.innerHTML = W.locked();
     near.innerHTML = nearIdle();
+    // both phones are as tall as the stranger's alert needs at this width, so they match and neither grows when it arrives
+    const sizePhones = () => {
+      if (!near.isConnected || !near.offsetWidth) return;
+      const probe = near.cloneNode(false);
+      probe.removeAttribute('aria-live');
+      probe.setAttribute('aria-hidden', 'true');
+      probe.style.cssText = `position: absolute; visibility: hidden; height: auto; width: ${near.offsetWidth}px`;
+      probe.innerHTML = nearSos();
+      near.parentElement.appendChild(probe);
+      const h = Math.max(252, Math.ceil(probe.offsetHeight));
+      probe.remove();
+      [near, son].forEach((el) => { el.style.height = `${h}px`; });
+    };
+    let phoneTimer = 0;
+    window.addEventListener('resize', () => {
+      clearTimeout(phoneTimer);
+      phoneTimer = setTimeout(sizePhones, 120);
+    });
+    if (doc.fonts) doc.fonts.ready.then(sizePhones);
+    sizePhones();
     son.innerHTML = `<p class="wo-ptime">${now()}</p><p class="wo-idle">Mom is at home</p>`;
 
     let me = null;
