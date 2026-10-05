@@ -1612,60 +1612,112 @@ button.tour-city::before { content: ""; position: absolute; left: -14px; top: -1
 .doubts-box .eyes-gate-card { padding: 18px 22px; }
 .doubts-box .eyes-gate-text { margin-bottom: 14px; }
 
-/* 56. Watch-Out: a map you walk on, a watch that answers, and the steps of help lit as the risk grows */
-.wo-box { margin-top: 18px; }
-.wo { --wo-ink: #ece8df; --wo-ink-2: rgba(236, 232, 223, .55); --wo-ink-3: rgba(236, 232, 223, .22); --wo-hot: #e5584f;
-  display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 16px 20px; align-items: center; }
-.wo-map { display: block; width: 100%; height: auto; border: 1px solid var(--rule); border-radius: 6px; background: #101012; touch-action: none; }
-.wo-map.is-free { cursor: grab; }
-.wo-map.is-free:active { cursor: grabbing; }
-.wo-map:focus { outline: none; }
-.wo-map:focus-visible { outline: 1px dashed var(--wo-ink-2); outline-offset: 4px; }
-.wo-road { fill: none; stroke: rgba(255, 255, 255, .055); stroke-width: 16; }
-.wo-zone { fill: color-mix(in srgb, var(--tile) 9%, transparent); stroke: color-mix(in srgb, var(--tile) 70%, transparent); stroke-width: 1.2; stroke-dasharray: 4 4; }
-.wo-zone-lbl { font: 500 10px var(--sans); fill: var(--wo-ink-2); }
-.wo-house { fill: #16161a; stroke: var(--wo-ink); stroke-width: 1.4; stroke-linejoin: round; }
-.wo-door { fill: #101012; stroke: var(--wo-ink); stroke-width: 1.2; transform-origin: -5px 2px; transition: transform var(--m-base) var(--m-out); }
-.is-open .wo-door { transform: scaleX(.25); }
-.wo-lock rect, .wo-lock path { fill: none; stroke: var(--tile-hi); stroke-width: 1.3; }
-.wo-lock { cursor: pointer; }
-.wo-lock.is-open path { transform: translateY(-2px); }
-.wo-lock.is-open rect, .wo-lock.is-open path { stroke: #6fcf8a; }
-.wo-person circle:last-child { fill: var(--wo-ink-3); }
-.wo-ping { fill: none; stroke: var(--tile-hi); stroke-width: 1.2; opacity: 0; }
-.wo-box[data-level="2"] .wo-person circle:last-child, .wo-box[data-level="3"] .wo-person circle:last-child, .wo-box[data-level="4"] .wo-person circle:last-child { fill: var(--wo-ink); }
-.wo-box[data-level="2"] .wo-ping, .wo-box[data-level="3"] .wo-ping, .wo-box[data-level="4"] .wo-ping { animation: wo-ping 1.4s var(--m-out) infinite; }
-@keyframes wo-ping { from { opacity: .9; transform: scale(1); } to { opacity: 0; transform: scale(3.2); } }
-.wo-call-line { fill: none; stroke: var(--tile-hi); stroke-width: 1.2; stroke-dasharray: 3 4; opacity: 0; transition: opacity var(--m-short) var(--m-out); }
-.wo-box[data-level="3"] .wo-call-line, .wo-box[data-level="4"] .wo-call-line { opacity: 1; }
-.wo-dot { fill: var(--tile); stroke: #fff; stroke-width: 1.6; }
-.wo-arrow { fill: var(--tile-hi); opacity: 0; transition: opacity var(--m-short) var(--m-out); }
-.wo-box[data-level="1"] .wo-arrow, .wo-box[data-level="2"] .wo-arrow, .wo-box[data-level="3"] .wo-arrow, .wo-box[data-level="4"] .wo-arrow { opacity: 1; }
-.wo-sos { fill: none; stroke: var(--wo-hot); stroke-width: 1.5; opacity: 0; }
-.wo-box[data-level="4"] .wo-sos { animation: wo-ping 1.1s var(--m-out) infinite; }
-.wo-box:not(.is-open) .wo-walker { opacity: .55; }
-.wo-watch { justify-self: center; display: grid; place-items: center; width: 132px; height: 156px; padding: 10px; border: 2px solid var(--rule-2); border-radius: 34px; background: #0d0d0f; cursor: pointer; box-shadow: 0 0 0 6px #161618; transition: border-color var(--m-micro) var(--m-out); }
-.wo-watch:hover { border-color: var(--text-3); }
-.wo-watch:focus-visible { outline: 1px dashed var(--wo-ink-2); outline-offset: 10px; }
-.wo-face { display: grid; justify-items: center; gap: 8px; text-align: center; }
-.wo-icon { width: 46px; height: 46px; }
-.wo-i { display: none; fill: none; stroke: var(--wo-ink); stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round; }
-.wo-face[data-icon="lock"] .wo-i--lock, .wo-face[data-icon="ok"] .wo-i--ok, .wo-face[data-icon="compass"] .wo-i--compass,
-.wo-face[data-icon="people"] .wo-i--people, .wo-face[data-icon="call"] .wo-i--call, .wo-face[data-icon="sos"] .wo-i--sos { display: inline; }
-.wo-face[data-icon="ok"] .wo-i--ok { stroke: #6fcf8a; }
-.wo-needle { fill: var(--tile-hi); stroke: none; transition: transform var(--m-short) var(--m-out); }
-.wo-i--sos { stroke: var(--wo-hot); }
-.wo-i--sos text { fill: var(--wo-hot); stroke: none; font: 700 9px var(--sans); }
-.wo-say { font-size: .8125rem; line-height: 1.35; color: var(--wo-ink); text-wrap: balance; }
-.wo-steps { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin: 0; padding: 0; list-style: none; }
-.wo-steps li { position: relative; padding: 8px 6px 7px; border: 1px solid var(--rule-2); border-radius: 4px; font-size: .75rem; line-height: 1.25; text-align: center; color: var(--text-3); transition: color var(--m-short) var(--m-out), border-color var(--m-short) var(--m-out), background-color var(--m-short) var(--m-out); }
-.wo-steps li.is-on { border-color: color-mix(in srgb, var(--tile) 70%, transparent); background: color-mix(in srgb, var(--tile) 14%, transparent); color: var(--text); }
-.wo-steps li:last-child.is-on { border-color: color-mix(in srgb, var(--wo-hot) 70%, transparent); background: color-mix(in srgb, var(--wo-hot) 16%, transparent); }
+/* 56. Watch-Out: a real map with the zones around her home, the smart door, and what three screens show at each step */
+.wo { --wo-safe: #6fcf8a; --wo-compass: #e9b949; --wo-people: #f08a3e; --wo-call: #ec6a4c; --wo-sos: #ff5a5f; --wo-ui: -apple-system, BlinkMacSystemFont, "SF Pro Text", "IBM Plex Sans", system-ui, sans-serif; }
+.wo-frame { position: relative; overflow: hidden; border: 1px solid var(--rule-2); border-radius: 10px; background: #0e0e10; }
+.wo-map { height: clamp(280px, 46vh, 400px); background: #0e0e10; touch-action: pan-y; }
+.wo-map.is-off { display: grid; place-items: center; color: var(--text-3); font-size: .875rem; }
+.wo-map .leaflet-control-attribution { padding: 1px 6px; background: rgba(0, 0, 0, .55); color: #9a9a9a; font: 10px/1.5 var(--sans); }
+.wo-map .leaflet-control-attribution a { color: #c9c9c9; }
+.wo-ring { fill: none; stroke-width: 1.5; stroke-dasharray: 5 6; }
+.wo-ring--0 { fill: var(--wo-safe); fill-opacity: .1; stroke: var(--wo-safe); stroke-dasharray: none; }
+.wo-ring--1 { stroke: var(--wo-compass); }
+.wo-ring--2 { stroke: var(--wo-people); }
+.wo-ring--3 { stroke: var(--wo-call); }
+.wo-zone span { display: inline-block; transform: translate(-50%, -50%); padding: 1px 7px; border-radius: 99px; background: rgba(10, 10, 12, .78); font: 600 10.5px/1.5 var(--sans); white-space: nowrap; }
+.wo-zone--0 span { color: var(--wo-safe); }
+.wo-zone--1 span { color: var(--wo-compass); }
+.wo-zone--2 span { color: var(--wo-people); }
+.wo-zone--3 span { color: var(--wo-call); }
+.wo-zone--4 span { color: var(--wo-sos); }
+.wo-home { display: grid !important; place-items: center; border-radius: 50%; background: #f3f1ec; color: #101012; box-shadow: 0 0 0 4px rgba(243, 241, 236, .18); }
+.wo-home .ic { width: 17px; height: 17px; stroke: currentColor; }
+.wo-me span { position: absolute; inset: 2px; border: 3px solid #fff; border-radius: 50%; background: #4a9dff; box-shadow: 0 2px 8px rgba(0, 0, 0, .6); }
+.wo-me { cursor: grab; touch-action: none; }
+.wo-me:active { cursor: grabbing; }
+.wo-me.is-free span::after, .wo-me.is-sos span::after { content: ""; position: absolute; inset: -9px; border: 2px solid #4a9dff; border-radius: 50%; animation: wo-pulse 1.5s var(--m-out) infinite; }
+.wo-me.is-sos span { background: var(--wo-sos); }
+.wo-me.is-sos span::after { border-color: var(--wo-sos); }
+.wo-near span { position: absolute; inset: 0; border-radius: 3px; background: #f3f1ec; }
+.wo-near span::after { content: ""; position: absolute; inset: -6px; border: 1.5px solid var(--wo-people); border-radius: 6px; animation: wo-pulse 1.4s var(--m-out) infinite; }
+.wo-line { fill: none; stroke: var(--wo-call); stroke-width: 2; stroke-dasharray: 3 6; }
+@keyframes wo-pulse { from { opacity: .9; transform: scale(.7); } to { opacity: 0; transform: scale(1.6); } }
+
+/* the smart door: two calm questions, then the watch on the NFC reader */
+.wo-door { position: absolute; inset: 0; z-index: 800; display: grid; place-items: center; padding: 14px; background: rgba(11, 11, 12, .74); backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); transition: opacity var(--m-base) var(--m-out); }
+.wo-door.is-open { opacity: 0; pointer-events: none; }
+.wo-door-card { width: min(100%, 330px); padding: 16px 18px; border: 1px solid var(--rule-2); border-radius: 12px; background: #141416; }
+.wo-door-head { display: flex; align-items: center; gap: 8px; font-size: .8125rem; color: var(--text-3); }
+.wo-door-head .ic { width: 16px; height: 16px; stroke: var(--text-2); }
+.wo-q { margin-top: 12px; }
+.wo-q > p, .wo-tap > p { font-family: var(--serif); font-size: 1.125rem; line-height: 1.3; color: var(--text); }
+.wo-tap > p { font-family: var(--sans); font-size: .875rem; color: var(--text-2); }
+.wo-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.wo-chips button { min-height: 36px; padding: 0 14px; border: 1px solid var(--rule-2); border-radius: 99px; background: transparent; color: var(--text); font-size: .875rem; cursor: pointer; }
+.wo-chips button:hover { border-color: var(--text-3); }
+.wo-chips button.is-on { border-color: var(--text); background: var(--text); color: var(--bg); }
+.wo-tap { margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--rule); text-align: center; }
+.wo-reader { position: relative; display: inline-grid; place-items: center; width: 74px; height: 74px; margin-top: 10px; border: 1px solid var(--rule-2); border-radius: 18px; background: #1d1d20; color: #fff; cursor: pointer; }
+.wo-reader .ic { width: 30px; height: 30px; stroke: currentColor; }
+.wo-reader::after { content: ""; position: absolute; inset: -5px; border: 2px solid #4a9dff; border-radius: 22px; animation: wo-led 1.2s ease-in-out infinite; }
+@keyframes wo-led { 50% { opacity: .25; } }
+
+/* the steps of help, lit as she wanders farther */
+.wo-steps { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; margin: 12px 0 0; padding: 0; list-style: none; }
+.wo-steps li { padding: 7px 4px; border: 1px solid var(--rule-2); border-radius: 6px; font-size: .75rem; line-height: 1.25; text-align: center; color: var(--text-3); transition: color var(--m-short) var(--m-out), border-color var(--m-short) var(--m-out), background-color var(--m-short) var(--m-out); }
+.wo-steps li.is-on { color: var(--text); }
+.wo-steps li[data-z="0"].is-on { border-color: var(--text-3); background: rgba(255, 255, 255, .06); }
+.wo-steps li[data-z="1"].is-on { border-color: var(--wo-compass); background: color-mix(in srgb, var(--wo-compass) 14%, transparent); }
+.wo-steps li[data-z="2"].is-on { border-color: var(--wo-people); background: color-mix(in srgb, var(--wo-people) 14%, transparent); }
+.wo-steps li[data-z="3"].is-on { border-color: var(--wo-call); background: color-mix(in srgb, var(--wo-call) 16%, transparent); }
+.wo-steps li[data-z="4"].is-on { border-color: var(--wo-sos); background: color-mix(in srgb, var(--wo-sos) 18%, transparent); }
+
+/* three screens: her watch, a stranger's phone, her son's phone */
+.wo-devices { display: grid; grid-template-columns: 136px minmax(0, 1fr) minmax(0, 1fr); gap: 14px; align-items: start; margin-top: 14px; font-family: var(--wo-ui); }
+.wo-dev { margin: 0; }
+.wo-dev figcaption { margin-top: 8px; font: 500 .75rem/1.35 var(--sans); color: var(--text-3); text-align: center; }
+.wo-watch { width: 132px; height: 158px; margin: 0 auto; padding: 7px; border-radius: 36px; background: #1b1b1e; box-shadow: inset 0 0 0 1.5px #3b3b40, 0 0 0 6px #111113; }
+.wo-wscreen { display: grid; place-content: center; justify-items: center; gap: 4px; height: 100%; padding: 10px; border-radius: 30px; background: #000; color: #fff; text-align: center; }
+.wo-wscreen .ic { width: 30px; height: 30px; stroke: currentColor; }
+.wo-wscreen b { font-size: 13px; font-weight: 600; line-height: 1.2; }
+.wo-wscreen span { display: inline-flex; align-items: center; gap: 3px; font-size: 10.5px; line-height: 1.3; color: #a1a1a6; }
+.wo-wscreen span .ic { width: 12px; height: 12px; }
+.wo-arrow { display: block; color: var(--wo-compass); transition: transform var(--m-short) var(--m-out); }
+.wo-arrow .ic { fill: currentColor; stroke: none; }
+.wo[data-level="0"] .wo-wscreen > .ic { color: var(--wo-safe); }
+.wo[data-level="2"] .wo-wscreen > .ic { color: var(--wo-people); }
+.wo[data-level="3"] .wo-wscreen > .ic { color: var(--wo-call); }
+.wo[data-level="4"] .wo-wscreen > .ic { color: var(--wo-sos); }
+.wo-phone { padding: 6px; border-radius: 24px; background: #1b1b1e; box-shadow: inset 0 0 0 1.5px #3b3b40; }
+.wo-pscreen { min-height: 252px; padding: 10px 10px 12px; border-radius: 19px; background: linear-gradient(#17171b, #0c0c0e); color: #f2f2f2; font-size: 11.5px; line-height: 1.4; }
+.wo-ptime { margin-bottom: 8px; font-size: 22px; font-weight: 300; text-align: center; color: #fff; font-variant-numeric: tabular-nums; }
+.wo-idle { margin-top: 40px; text-align: center; color: #8e8e93; }
+.wo-note { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 7px; margin-top: 6px; padding: 8px; border-radius: 12px; background: rgba(255, 255, 255, .09); animation: fade-in var(--m-short) var(--m-out); }
+.wo-note .ic { width: 16px; height: 16px; margin-top: 1px; stroke: #d6d6d6; }
+.wo-note p { color: #f2f2f2; }
+.wo-note span { display: block; margin-top: 2px; font-size: 10px; color: #8e8e93; }
+.wo-note.is-loud { background: rgba(236, 106, 76, .26); }
+.wo-note.is-loud .ic { stroke: #ffb4a4; }
+.wo-sos { padding: 10px; border-radius: 14px; background: rgba(255, 255, 255, .1); animation: fade-in var(--m-short) var(--m-out); }
+.wo-sos p + p { margin-top: 6px; }
+.wo-sos-head { display: flex; align-items: center; gap: 6px; font-size: 10px; color: #a1a1a6; }
+.wo-sos-head .ic { width: 14px; height: 14px; stroke: var(--wo-people); }
+.wo-sos-title { margin-top: 4px !important; font-size: 12.5px; font-weight: 600; color: #fff; }
+.wo-sos-call { display: flex; align-items: center; justify-content: center; gap: 6px; margin-top: 8px; padding: 7px 8px; border-radius: 99px; background: #30d158; color: #062b12; font-weight: 600; }
+.wo-sos-call .ic { width: 14px; height: 14px; stroke: currentColor; }
+.wo-sos-foot { display: flex; align-items: flex-start; gap: 5px; margin-top: 8px !important; font-size: 10px; color: #a1a1a6; }
+.wo-sos-foot .ic { flex: none; width: 13px; height: 13px; stroke: #a1a1a6; }
 @media (max-width: 560px) {
-  .wo { grid-template-columns: minmax(0, 1fr) 112px; gap: 12px; }
-  .wo-watch { width: 108px; height: 128px; border-radius: 28px; }
-  .wo-icon { width: 38px; height: 38px; }
-  .wo-say { font-size: .75rem; }
-  .wo-steps { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; }
+  .wo-steps { gap: 4px; }
   .wo-steps li { padding: 6px 2px; font-size: .625rem; }
+  .wo-devices { grid-template-columns: 120px minmax(0, 1fr); gap: 12px; }
+  .wo-dev:last-child { grid-column: 1 / -1; }
+  .wo-watch { width: 116px; height: 140px; border-radius: 32px; }
+  .wo-wscreen { border-radius: 26px; }
+  .wo-dev:last-child .wo-pscreen { min-height: 0; }
 }
+@media (prefers-reduced-motion: reduce) {
+  .wo-me span::after, .wo-near span::after, .wo-reader::after { animation: none; }
+}
+.wo-pscreen { max-height: 330px; overflow: hidden; }
+.wo-zone--4 span { transform: translate(-50%, -50%); }

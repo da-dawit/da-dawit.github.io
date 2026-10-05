@@ -461,131 +461,249 @@
       cap: 'First-author paper, IEEE ICCD', head: 'First-author paper at IEEE ICCD, for PDPM', more: ['A processor that reshapes its own pipeline while a program runs', 'Patent application for a window that frees people trapped behind security bars in floods and fires'] },
   ];
 
-  /* Watch-Out: help that grows only as the risk does */
+  /* Watch-Out: the smart door, then help that grows only as she wanders farther. A sample case on a real map. */
 
-  // the home, its safe zone, and how far past it each next kind of help starts (drawing units)
-  const WO = { home: { x: 96, y: 142 }, safe: 62, band: 54, w: 420, h: 250 };
-  const WO_STEPS = [
-    { name: 'Door lock', watch: 'Tap to open the door' },
-    { name: 'Compass', watch: 'This way home' },
-    { name: 'Bystanders', watch: 'Asking people nearby to help' },
-    { name: 'Caregiver call', watch: 'Calling your caregiver' },
-    { name: 'Emergency call', watch: 'Emergency call, sharing your location' },
-  ];
-  const WO_PEOPLE = [{ x: 236, y: 92 }, { x: 292, y: 200 }, { x: 352, y: 118 }];
+  // icons from Lucide (lucide.dev, ISC licence)
+  const IC = {
+    'audio-lines': '<path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/>',
+    'bell': '<path d="M10.268 21a2 2 0 0 0 3.464 0"/><path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326"/>',
+    'circle-check': '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
+    'door-open': '<path d="M13 4h3a2 2 0 0 1 2 2v14"/><path d="M2 20h3"/><path d="M13 20h9"/><path d="M10 12v.01"/><path d="M13 4.562v16.157a1 1 0 0 1-1.242.97L5 20V5.562a2 2 0 0 1 1.515-1.94l4-1A2 2 0 0 1 13 4.561Z"/>',
+    'house': '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>',
+    'lock-open': '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/>',
+    'lock': '<rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>',
+    'message-circle-warning': '<path d="M7.9 20A9 9 0 1 0 4 16.1L2 22Z"/><path d="M12 8v4"/><path d="M12 16h.01"/>',
+    'navigation-2': '<polygon points="12 2 19 21 12 17 5 21 12 2"/>',
+    'nfc': '<path d="M6 8.32a7.43 7.43 0 0 1 0 7.36"/><path d="M9.46 6.21a11.76 11.76 0 0 1 0 11.58"/><path d="M12.91 4.1a15.91 15.91 0 0 1 .01 15.8"/><path d="M16.37 2a20.16 20.16 0 0 1 0 20"/>',
+    'phone-call': '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/><path d="M14.05 2a9 9 0 0 1 8 7.94"/><path d="M14.05 6A5 5 0 0 1 18 10"/>',
+    'share-2': '<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"/><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"/>',
+    'shield-plus': '<path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z"/><path d="M9 12h6"/><path d="M12 9v6"/>',
+    'siren': '<path d="M7 18v-6a5 5 0 1 1 10 0v6"/><path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z"/><path d="M21 12h1"/><path d="M18.5 4.5 18 5"/><path d="M2 12h1"/><path d="M12 2v1"/><path d="m4.929 4.929.707.707"/><path d="M12 12v6"/>',
+    'users': '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+    'vibrate': '<path d="m2 8 2 2-2 2 2 2-2 2"/><path d="m22 8-2 2 2 2-2 2 2 2"/><rect width="8" height="14" x="8" y="5" rx="1"/>',
+    'volume-2': '<path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/>',
+  };
+  const icon = (n) => `<svg class="ic" viewBox="0 0 24 24" aria-hidden="true">${IC[n]}</svg>`;
+
+  // the map library loads only when this demo is reached
+  let leaflet = null;
+  const loadLeaflet = () => {
+    if (!leaflet) {
+      leaflet = new Promise((ok, fail) => {
+        const css = doc.createElement('link');
+        css.rel = 'stylesheet';
+        css.href = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css';
+        doc.head.appendChild(css);
+        const js = doc.createElement('script');
+        js.src = 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js';
+        js.onload = () => ok(window.L);
+        js.onerror = () => {
+          leaflet = null;
+          fail(new Error('map'));
+        };
+        doc.head.appendChild(js);
+      });
+    }
+    return leaflet;
+  };
+
+  // a sample home in Mangwon-dong, Seoul, and the rings around it (metres): the safe zone her son draws, then how far
+  // she has wandered before each next kind of help starts; past the last ring, emergency services are called
+  const WO = { home: [37.5559, 126.9032], rings: [150, 400, 600, 800] };
+  const WO_ZONES = ['Safe zone', 'Compass', 'Bystanders', 'QuickCall', 'Emergency call'];
   const WO_HTML = `
         <div class="wo">
-          <svg class="wo-map" viewBox="0 0 ${WO.w} ${WO.h}" tabindex="0" role="img" aria-label="A neighbourhood map with a home, its safe zone, and a person you can move with the pointer or the arrow keys">
-            <path class="wo-road" d="M0 52H420M0 214H420M178 0V250M318 0V250"/>
-            <circle class="wo-zone" cx="${WO.home.x}" cy="${WO.home.y}" r="${WO.safe}"/>
-            <text class="wo-zone-lbl" x="${WO.home.x}" y="${WO.home.y - WO.safe - 6}" text-anchor="middle">Safe zone</text>
-            <g class="wo-call"><path class="wo-call-line"/></g>
-            ${WO_PEOPLE.map((p) => `<g class="wo-person" transform="translate(${p.x} ${p.y})"><circle class="wo-ping" r="5"/><circle r="4.5"/></g>`).join('')}
-            <g class="wo-home" transform="translate(${WO.home.x} ${WO.home.y})">
-              <path class="wo-house" d="M-20 18V-4L0 -20L20 -4V18Z"/>
-              <rect class="wo-door" x="-5" y="2" width="10" height="16"/>
-              <g class="wo-lock" transform="translate(12 6)"><rect x="-4" y="-1" width="8" height="7" rx="1"/><path d="M-2.5 -1V-3.5A2.5 2.5 0 0 1 2.5 -3.5V-1"/></g>
-            </g>
-            <g class="wo-walker" transform="translate(${WO.home.x} ${WO.home.y + 12})">
-              <circle class="wo-sos" r="9"/>
-              <path class="wo-arrow" d="M0 -17L4 -10H-4Z"/>
-              <circle class="wo-dot" r="7"/>
-            </g>
-          </svg>
-          <div class="wo-watch" role="button" tabindex="0" aria-label="The watch">
-            <div class="wo-face">
-              <svg class="wo-icon" viewBox="-20 -20 40 40" aria-hidden="true">
-                <g class="wo-i wo-i--lock"><rect x="-8" y="-3" width="16" height="13" rx="2"/><path d="M-5 -3V-8A5 5 0 0 1 5 -8V-3"/></g>
-                <g class="wo-i wo-i--ok"><circle r="13"/><path d="M-6 0L-1.5 4.5L6.5 -4"/></g>
-                <g class="wo-i wo-i--compass"><circle r="14"/><path class="wo-needle" d="M0 -11L4 2H-4Z"/></g>
-                <g class="wo-i wo-i--people"><circle cx="-6" cy="-4" r="4"/><circle cx="6" cy="-4" r="4"/><path d="M-13 10A7 7 0 0 1 1 10M-1 10A7 7 0 0 1 13 10"/></g>
-                <g class="wo-i wo-i--call"><path d="M-9 -11L-3 -11L-1 -4L-5 -1A14 14 0 0 0 1 5L4 1L11 3L11 9A3 3 0 0 1 8 12A21 21 0 0 1 -12 -8A3 3 0 0 1 -9 -11Z"/></g>
-                <g class="wo-i wo-i--sos"><circle r="14"/><text y="4.5" text-anchor="middle">SOS</text></g>
-              </svg>
-              <p class="wo-say" aria-live="polite">Tap to open the door</p>
+          <div class="wo-frame">
+            <div class="wo-map" role="application" aria-label="A map of a neighbourhood in Seoul, with her home and the zones around it. Drag her marker, or focus it and use the arrow keys."></div>
+            <div class="wo-door">
+              <div class="wo-door-card">
+                <p class="wo-door-head">${icon('volume-2')}<span>Before the door opens, its speaker asks</span></p>
+                <div class="wo-q"><p>“Where are you going?”</p><div class="wo-chips"><button type="button" data-a="the park">To the park</button><button type="button" data-a="the market">To the market</button></div></div>
+                <div class="wo-q" hidden><p>“What are you wearing?”</p><div class="wo-chips"><button type="button" data-a="a blue jacket">A blue jacket</button><button type="button" data-a="a grey coat">A grey coat</button></div></div>
+                <div class="wo-tap" hidden><p>The lights show where to tap her watch.</p><button type="button" class="wo-reader" aria-label="Tap her watch on the NFC reader">${icon('nfc')}</button></div>
+              </div>
             </div>
           </div>
-          <ol class="wo-steps">${WO_STEPS.map((x) => `<li>${x.name}</li>`).join('')}</ol>
+          <ol class="wo-steps">${WO_ZONES.map((x, i) => `<li data-z="${i}">${i ? x : 'Door lock'}</li>`).join('')}</ol>
+          <div class="wo-devices">
+            <figure class="wo-dev wo-dev--watch"><div class="wo-watch"><div class="wo-wscreen" aria-live="polite"></div></div><figcaption>Her watch</figcaption></figure>
+            <figure class="wo-dev"><div class="wo-phone"><div class="wo-pscreen wo-pscreen--near" aria-live="polite"></div></div><figcaption>A stranger’s phone nearby</figcaption></figure>
+            <figure class="wo-dev"><div class="wo-phone"><div class="wo-pscreen wo-pscreen--son" aria-live="polite"></div></div><figcaption>Her son’s phone</figcaption></figure>
+          </div>
         </div>`;
 
   function watchOut(box) {
-    const map = $('.wo-map', box);
-    const watch = $('.wo-watch', box);
-    const say = $('.wo-say', box);
-    const walker = $('.wo-walker', box);
-    const lock = $('.wo-lock', box);
-    const callLine = $('.wo-call-line', box);
+    const root = $('.wo', box);
+    const frame = $('.wo-frame', box);
+    const mapEl = $('.wo-map', box);
+    const door = $('.wo-door', box);
+    const watch = $('.wo-wscreen', box);
+    const near = $('.wo-pscreen--near', box);
+    const son = $('.wo-pscreen--son', box);
     const steps = $$('.wo-steps li', box);
-    const face = $('.wo-face', box);
-    const needle = $('.wo-needle', box);
-    const arrow = $('.wo-arrow', box);
+    const qs = $$('.wo-q', box);
+    const answers = [];
+    let clock = 14 * 60 + 12;
+    const now = () => `${Math.floor(clock / 60)}:${String(clock % 60).padStart(2, '0')}`;
+    const feed = [];
+    // her son's phone: wandering arrives quietly; only QuickCall and the emergency call are real alarms
+    const notify = (ic, text, loud) => {
+      feed.unshift({ ic, text, loud, at: now() });
+      son.innerHTML = `<p class="wo-ptime">${now()}</p>${feed.map((n) => `<div class="wo-note${n.loud ? ' is-loud' : ''}">${icon(n.ic)}<div><p>${n.text}</p><span>${n.at}, ${n.loud ? 'alarm' : 'silent'}</span></div></div>`).join('')}`;
+    };
+    const W = {
+      locked: () => `${icon('lock')}<b>Door locked</b><span>Answer the door first</span>`,
+      tap: () => `${icon('nfc')}<b>Tap me on the reader</b><span>The door opens only for me</span>`,
+      safe: () => `${icon('house')}<b>Safe zone</b><span>${now()}</span>`,
+      compass: (deg, m) => `<i class="wo-arrow" style="transform: rotate(${deg.toFixed(0)}deg)">${icon('navigation-2')}</i><b>Home, ${m} m</b><span>${icon('vibrate')}“Let’s head home.”</span>`,
+      people: () => `${icon('share-2')}<b>SOS shared</b><span>with 3 phones within 10 m</span>`,
+      call: () => `${icon('audio-lines')}<b>Minjun is talking</b><span>No need to answer</span>`,
+      sos: () => `${icon('siren')}<b>Calling 112</b><span>Sharing her location</span>`,
+    };
+    const nearIdle = () => `<p class="wo-ptime">${now()}</p><p class="wo-idle">No alerts</p>`;
+    const nearSos = () => `<p class="wo-ptime">${now()}</p>
+      <div class="wo-sos">
+        <p class="wo-sos-head">${icon('message-circle-warning')}<span>AirDrop from a Watch-Out watch</span></p>
+        <p class="wo-sos-title">Someone within 10 m may need help</p>
+        <p>Ms. Lee, 79, has dementia and may be lost. She is wearing ${answers[1] || 'a blue jacket'}.</p>
+        <p>Please speak slowly and calmly. Crowds and loud voices upset her.</p>
+        <span class="wo-sos-call">${icon('phone-call')}Call her son, Minjun</span>
+        <p class="wo-sos-foot">${icon('shield-plus')}<span>First responders: tap her watch for medical details.</span></p>
+      </div>`;
+    watch.innerHTML = W.locked();
+    near.innerHTML = nearIdle();
+    son.innerHTML = `<p class="wo-ptime">${now()}</p><p class="wo-idle">Mom is at home</p>`;
+
+    let me = null;
     let open = false;
-    let at = { x: WO.home.x, y: WO.home.y + 12 };
-    let level = -1;
-    const icon = (k) => { face.dataset.icon = k; };
-    icon('lock');
-    const show = () => {
-      const dx = WO.home.x - at.x;
-      const dy = WO.home.y - at.y;
-      const d = Math.hypot(dx, dy);
-      const next = d <= WO.safe ? 0 : Math.min(4, 1 + Math.floor((d - WO.safe) / WO.band));
-      // the compass on the watch, and the arrow by the person, point the way home
-      const deg = (Math.atan2(dy, dx) * 180) / Math.PI + 90;
-      needle.setAttribute('transform', `rotate(${deg.toFixed(1)})`);
-      arrow.setAttribute('transform', `rotate(${deg.toFixed(1)})`);
-      walker.setAttribute('transform', `translate(${at.x.toFixed(1)} ${at.y.toFixed(1)})`);
-      callLine.setAttribute('d', `M${WO.home.x} ${WO.home.y}L${at.x.toFixed(1)} ${at.y.toFixed(1)}`);
-      if (next === level) return;
-      level = next;
-      box.dataset.level = String(level);
-      steps.forEach((li, k) => li.classList.toggle('is-on', k <= level));
-      icon(['ok', 'compass', 'people', 'call', 'sos'][level]);
-      say.textContent = level === 0 ? 'In your safe zone' : WO_STEPS[level].watch;
-    };
-    const unlock = () => {
-      if (open) return;
+    // the door: two calm questions, then the watch on the reader
+    qs.forEach((q, i) => $$('button', q).forEach((b) => b.addEventListener('click', () => {
+      answers[i] = b.dataset.a;
+      $$('button', q).forEach((x) => x.classList.toggle('is-on', x === b));
+      if (i === 0) qs[1].hidden = false;
+      else {
+        $('.wo-tap', box).hidden = false;
+        watch.innerHTML = W.tap();
+      }
+    })));
+    $('.wo-reader', box).addEventListener('click', () => {
+      if (open || answers.length < 2) return;
       open = true;
-      box.classList.add('is-open');
-      lock.classList.add('is-open');
+      clock += 2;
+      door.classList.add('is-open');
+      watch.innerHTML = W.safe();
       steps[0].classList.add('is-on');
-      say.textContent = 'Door open';
-      icon('ok');
-      map.classList.add('is-free');
-      setTimeout(() => { if (level < 0) show(); }, calm() ? 0 : 700);
-    };
-    watch.addEventListener('click', unlock);
-    watch.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); unlock(); } });
-    lock.addEventListener('click', unlock);
-    const toMap = (e) => {
-      const pt = map.createSVGPoint();
-      pt.x = e.clientX;
-      pt.y = e.clientY;
-      const p = pt.matrixTransform(map.getScreenCTM().inverse());
-      return { x: Math.min(WO.w - 10, Math.max(10, p.x)), y: Math.min(WO.h - 10, Math.max(10, p.y)) };
-    };
-    let dragging = false;
-    map.addEventListener('pointerdown', (e) => {
-      if (!open) return;
-      dragging = true;
-      capture(map, e);
-      at = toMap(e);
-      show();
+      root.dataset.level = '0';
+      notify('door-open', `Mom went out at ${now()}, going to ${answers[0]}, wearing ${answers[1]}.`, false);
+      if (me) {
+        me.dragging.enable();
+        me.getElement().classList.add('is-free');
+      }
+      setTimeout(() => { door.hidden = true; }, calm() ? 0 : 450);
     });
-    map.addEventListener('pointermove', (e) => {
-      if (!dragging) return;
-      at = toMap(e);
-      show();
+
+    loadLeaflet().then((L) => {
+      const home = L.latLng(WO.home);
+      const map = L.map(mapEl, { zoomControl: false, zoomSnap: 0.05, dragging: false, scrollWheelZoom: false, doubleClickZoom: false, touchZoom: false, boxZoom: false, keyboard: false });
+      map.attributionControl.setPrefix(false);
+      L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Dark_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+        maxNativeZoom: 16,
+        maxZoom: 19,
+        attribution: 'Tiles © Esri, HERE, Garmin, © <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors',
+      }).addTo(map);
+      // the outer ring fills the height of the map
+      map.fitBounds(home.toBounds(WO.rings[3] * 2 + 120), { padding: [4, 4] });
+      const north = (r) => L.latLng(home.lat + r / 111320, home.lng);
+      const by = (p, east, up) => L.latLng(p.lat + up / 111320, p.lng + east / (111320 * Math.cos((p.lat * Math.PI) / 180)));
+      WO.rings.forEach((r, i) => L.circle(home, { radius: r, className: `wo-ring wo-ring--${i}`, interactive: false }).addTo(map));
+      const label = (at, i) => L.marker(at, { interactive: false, keyboard: false, icon: L.divIcon({ className: `wo-zone wo-zone--${i}`, html: `<span>${WO_ZONES[i]}</span>`, iconSize: null }) }).addTo(map);
+      WO.rings.forEach((r, i) => label(north(r - 34), i));
+      // past the last ring: to the side on a wide map, below it on a narrow one
+      label(mapEl.clientWidth > mapEl.clientHeight * 1.2 ? by(home, WO.rings[3] + 150, 0) : north(-(WO.rings[3] + 70)), 4);
+      L.marker(home, { interactive: false, keyboard: false, icon: L.divIcon({ className: 'wo-home', html: icon('house'), iconSize: [30, 30] }) }).addTo(map);
+      // three people with phones a few steps from her, drawn a little apart so they can be seen at this scale
+      const SPOTS = [[24, -10], [-22, -16], [6, 24]];
+      const crowd = SPOTS.map(([dx, dy]) => L.marker(home, { interactive: false, keyboard: false, icon: L.divIcon({ className: 'wo-near', html: '<span></span>', iconSize: [12, 12], iconAnchor: [6 - dx, 6 - dy] }) }));
+      const line = L.polyline([home, home], { className: 'wo-line', interactive: false });
+      me = L.marker(by(home, 0, -14), { draggable: true, autoPan: false, keyboard: true, title: 'Ms. Lee', icon: L.divIcon({ className: 'wo-me', html: '<span></span>', iconSize: [24, 24] }) }).addTo(map);
+      if (open) me.getElement().classList.add('is-free');
+      else me.dragging.disable();
+      const bearing = (a, b) => {
+        const r = Math.PI / 180;
+        const y = Math.sin((b.lng - a.lng) * r) * Math.cos(b.lat * r);
+        const x = Math.cos(a.lat * r) * Math.sin(b.lat * r) - Math.sin(a.lat * r) * Math.cos(b.lat * r) * Math.cos((b.lng - a.lng) * r);
+        return (Math.atan2(y, x) / r + 360) % 360;
+      };
+      let level = 0;
+      let reached = 0;
+      const update = () => {
+        // she stays inside the map
+        const size = map.getSize();
+        const at = map.latLngToContainerPoint(me.getLatLng());
+        const kept = L.point(Math.min(size.x - 16, Math.max(16, at.x)), Math.min(size.y - 16, Math.max(16, at.y)));
+        if (!kept.equals(at)) me.setLatLng(map.containerPointToLatLng(kept));
+        const p = me.getLatLng();
+        const d = home.distanceTo(p);
+        const next = WO.rings.findIndex((r) => d <= r);
+        const lv = next < 0 ? 4 : next;
+        crowd.forEach((m) => m.setLatLng(p));
+        line.setLatLngs([home, p]);
+        if (lv === 1) watch.innerHTML = W.compass(bearing(p, home), Math.round(d / 10) * 10);
+        if (lv === level) return;
+        // each step of help she passes is told to her son in order, even when she is dragged past several at once
+        const NOTES = [null,
+          ['bell', 'Mom left her safe zone. Her watch is guiding her home with vibration and voice.', false],
+          ['share-2', 'She is still out, so an SOS went to 3 phones near her.', false],
+          ['audio-lines', 'QuickCall: no one has helped yet, so you are talking to her through her watch.', true],
+          ['siren', '112 was called, and her live location is shared.', true]];
+        for (let k = reached + 1; k <= lv; k += 1) {
+          clock += [0, 4, 5, 4, 3][k];
+          notify(...NOTES[k]);
+        }
+        reached = Math.max(reached, lv);
+        if (lv === 0 && level > 0) {
+          clock += 3;
+          notify('house', 'Mom is back in her safe zone.', false);
+        }
+        level = lv;
+        root.dataset.level = String(lv);
+        steps.forEach((li, k) => li.classList.toggle('is-on', k <= lv));
+        if (lv >= 2) crowd.forEach((m) => m.addTo(map));
+        else crowd.forEach((m) => m.remove());
+        if (lv >= 3) line.addTo(map);
+        else line.remove();
+        me.getElement().classList.toggle('is-sos', lv === 4);
+        if (lv === 0) watch.innerHTML = W.safe();
+        if (lv === 1) {
+          watch.innerHTML = W.compass(bearing(p, home), Math.round(d / 10) * 10);
+        }
+        if (lv === 2) {
+          watch.innerHTML = W.people();
+        }
+        if (lv === 3) {
+          watch.innerHTML = W.call();
+        }
+        if (lv === 4) {
+          watch.innerHTML = W.sos();
+        }
+        near.innerHTML = lv >= 2 ? nearSos() : nearIdle();
+      };
+      me.on('drag', update);
+      me.on('dragstart', () => me.getElement().classList.remove('is-free'));
+      // the keyboard moves her 30 m at a time
+      me.getElement().addEventListener('keydown', (e) => {
+        const step = { ArrowLeft: [-30, 0], ArrowRight: [30, 0], ArrowUp: [0, 30], ArrowDown: [0, -30] }[e.key];
+        if (!step || !open) return;
+        e.preventDefault();
+        me.setLatLng(by(me.getLatLng(), step[0], step[1]));
+        update();
+      });
+      setTimeout(() => map.invalidateSize(), 60);
+    }).catch(() => {
+      mapEl.classList.add('is-off');
+      mapEl.textContent = 'The map could not load.';
     });
-    map.addEventListener('pointerup', () => { dragging = false; });
-    map.addEventListener('pointercancel', () => { dragging = false; });
-    map.addEventListener('keydown', (e) => {
-      const step = { ArrowLeft: [-10, 0], ArrowRight: [10, 0], ArrowUp: [0, -10], ArrowDown: [0, 10] }[e.key];
-      if (!step || !open) return;
-      e.preventDefault();
-      at = { x: Math.min(WO.w - 10, Math.max(10, at.x + step[0])), y: Math.min(WO.h - 10, Math.max(10, at.y + step[1])) };
-      show();
-    });
-    opened(box, [map, watch]);
+    opened(box, [frame, $('.wo-devices', box)]);
   }
 
   CH.challenge = {
@@ -636,7 +754,7 @@
       add(body, `
         <p class="rv-text">Each of these started when I saw people struggling and asked myself, “How can I help these people, and what should I do?” For Watch-Out, which took first place at ACM CHI, it was elderly people with dementia who wander off and get lost.</p>
         <div class="demo-box wo-box">
-        ${gateHtml('Watch-Out', 'Tap the watch to open the door, then drag the person away from home. Help is added one step at a time, and emergency services are called only last.')}
+        ${gateHtml('Watch-Out', 'A sample case: Ms. Lee, 79, has dementia and wants to go out. Answer the door’s questions and tap her watch on the reader. Then drag her away from home on the map, and see what her watch, a stranger’s phone nearby and her son’s phone show.')}
         ${WO_HTML}
         </div>
         <p class="rv-text">My team built Watch-Out, a smartwatch and a door lock that add help only as the risk rises, so people with dementia can still go out on their own.</p>
@@ -1249,7 +1367,7 @@
       svg.classList.add('is-done');
       run.parentElement.remove();
       const shown = add(body, `${beats([
-        { media: '<video src="assets/figures/story/hg-dagger.mp4" poster="assets/figures/robotis/hg-dagger-operation-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Operating the HG-DAgger system on the AI Worker"></video>', text: 'Your correction was a small version of HG-DAgger, a form of human-in-the-loop learning, and I built the system that runs it on the real robot. I stop the robot just before it fails and correct it by hand. From that, it learns a way to finish the task even from a wrong state its first demonstrations never showed it, which opens up the bottleneck of learning from demonstrations alone. With 30 demonstrations and 13 corrections, the AI Worker learned a long peg-and-screw task.' },
+        { media: '<video src="assets/figures/story/hg-dagger.mp4" poster="assets/figures/robotis/hg-dagger-operation-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Operating the HG-DAgger system on the AI Worker"></video>', text: 'Your correction was a small version of HG-DAgger, the human-in-the-loop system I built for the real robot. Corrected just before it fails, the robot learns to recover from wrong states its demonstrations never showed it. With 30 demonstrations and 13 corrections, the AI Worker learned a long peg-and-screw task.' },
         { media: '<video src="assets/figures/robotis/prior-act-td3-rollout.mp4" poster="assets/figures/robotis/prior-act-td3-rollout-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Prior-ACT placing a bottle in the basket on the real AI Worker"></video>', text: 'I also built Prior-ACT, which lets an ACT policy choose how to move from what its camera sees, and trained it with off-policy RL in a simulation calibrated to the real robot. Back on the real AI Worker, it improved far more than TurboVLA, a vision-language-action model.' },
       ])}
         <figure class="result">
