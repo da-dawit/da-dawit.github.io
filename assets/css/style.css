@@ -2503,3 +2503,19 @@ details.jr-civic > p { margin-top: 12px; }
 
 /* About: a portrait photo is shown whole in the gallery frame, on dark, like the videos */
 .jr-gallery__main img.is-tall { object-fit: contain; background: #111; }
+
+/* Research: PDPM on its own row, the other three published projects in one row below it */
+.rcards + .rcards--three { margin-top: clamp(28px, 3vw, 40px); }
+/* at tablet width the third card would sit alone, so it spans the row like PDPM, picture beside the words */
+@media (min-width: 761px) and (max-width: 1000px) {
+  .rcards--three > .rcard:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    gap: clamp(20px, 3vw, 40px);
+    align-items: stretch;
+  }
+  .rcards--three > .rcard:last-child:nth-child(odd) .rcard__media { aspect-ratio: auto; min-height: 260px; border-bottom: 0; border-right: 1px solid var(--hair); }
+  .rcards--three > .rcard:last-child:nth-child(odd) .rcard__body { justify-content: center; padding: 28px 32px 28px 0; }
+  .rcards--three > .rcard:last-child:nth-child(odd) .rcard__more { margin-top: 0; }
+}

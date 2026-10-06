@@ -10,8 +10,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap">
-  <link rel="stylesheet" href="assets/css/style.css?v=202610052222">
-  <script src="assets/js/main.js?v=202610052222" defer></script>
+  <link rel="stylesheet" href="assets/css/style.css?v=202610061200">
+  <script src="assets/js/main.js?v=202610061200" defer></script>
 </head>
 <body id="top">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -86,10 +86,11 @@
         </header>
         <div class="rcards reveal">
           <a class="rcard rcard--wide" href="#pdpm"><span class="rcard__media"><img src="assets/figures/home/pdpm-architecture-card.jpg" width="960" height="540" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Computer architecture, 2026</span><span class="rcard__title">PDPM: A Morphable RISC-V Pipeline</span><span class="rcard__desc">An RV32IM core that switches between 3, 5, and 7 stages while it runs, chosen by a 10-weight perceptron: 94.28% accuracy at +0.107% overhead on 301 benchmarks.</span><span class="rcard__meta">IEEE ICCD 2026, first author <span class="badge">Accepted (26% acceptance)</span></span><span class="rcard__more">Read more</span></span></a>
+        </div>
+        <div class="rcards rcards--three reveal">
           <a class="rcard" href="#iphoneme"><span class="rcard__media"><img src="assets/figures/iphoneme/slide-to-unlock.jpg" width="1270" height="700" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Brain-computer interfaces, 2026</span><span class="rcard__title">iPhoneme</span><span class="rcard__desc">Turning brain signals into text for people with ALS: 92.14% phoneme accuracy on the T15 dataset, about 3 points above the prior state of the art.</span><span class="rcard__meta">arXiv preprint, equal-contribution first author</span><span class="rcard__more">Read more</span></span></a>
           <a class="rcard" href="#watch-out"><span class="rcard__media"><img src="assets/figures/home/chi-winner.jpg" width="960" height="540" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Human-computer interaction, 2025</span><span class="rcard__title">Watch-Out</span><span class="rcard__desc">A wearable safety system for people with Alzheimer’s who wander. Instead of locking them in, a smart door lock lets them leave wearing the watch.</span><span class="rcard__meta">ACM CHI 2025 Extended Abstracts, Student Design Competition <span class="badge">1st Place (1 in 84)</span></span><span class="rcard__more">Read more</span></span></a>
           <a class="rcard" href="#smart-window"><span class="rcard__media"><img src="assets/figures/window/window-demo-poster.jpg" width="1280" height="720" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">IoT and disaster response, 2025</span><span class="rcard__title">Smart Emergency Window</span><span class="rcard__desc">A security window that opens itself in any disaster situation, made for semi-basement homes. Fire and water sensors trigger motors that release the bars within three seconds, with a manual release if the power fails.</span><span class="rcard__meta">JKSCI 2025, two papers and a Korean patent application <span class="badge">Excellence Paper Award</span></span><span class="rcard__more">Read more</span></span></a>
-          <a class="rcard" href="#shower"><span class="rcard__media rcard__media--light"><img src="assets/figures/shower/shower-module-cad.png" width="1090" height="676" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">IoT and sustainability, 2023</span><span class="rcard__title">Hydroelectric Shower Module</span><span class="rcard__desc">A 3D-printed module that turns a running shower into electricity for an Arduino IoT system that opens the valve only when someone is near.</span><span class="rcard__meta">Korea Association for Science and Creativity, 2023 <span class="badge">KSME Gold Prize</span></span><span class="rcard__more">Read more</span></span></a>
         </div>
       </div>
     </section>
@@ -227,7 +228,6 @@
               <ul class="tree__leaves">
                 <li><a href="#watch-out"><span class="tree__name">Watch-Out</span><span class="tree__meta">ACM CHI 2025</span></a></li>
                 <li><a href="#smart-window"><span class="tree__name">Smart Emergency Window</span><span class="tree__meta">JKSCI 2025</span></a></li>
-                <li><a href="#shower"><span class="tree__name">Hydroelectric Shower</span><span class="tree__meta">2023</span></a></li>
               </ul>
             </li>
           </ul>
@@ -532,42 +532,6 @@
             <li>Excellence Paper Award for Paper I; Korean patent application filed in 2026.</li>
           </ul>
           <div class="project__role"><span>My role</span>Paper I: SolidWorks design, including the gear assembly for the upper rack-and-pinion section and its manual emergency release, building and assembling the acrylic prototype, and programming the IoT sensors. Paper II (first author): the AI system, a neural-network classifier on the home sensor data and a BERT model with haversine-distance and magnitude features for forecasts and alerts, combined with news broadcasts into one threat assessment.</div>
-        </div>
-      </article>
-    </div>
-  </dialog>
-  <dialog class="modal" id="shower" aria-label="Hydroelectric Shower Module">
-    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-    <div class="modal__inner">
-      <article class="project">
-        <header class="project__meta reveal">
-          <p class="project__kicker">IoT and sustainability, 2023</p>
-          <h3 class="project__title">Hydroelectric Shower Module</h3>
-          <p class="project__tagline">Generating electricity from a running shower.</p>
-          <p class="project__venue">Korea Association for Science and Creativity, 2023</p>
-          <div class="project__badges"></div>
-          <div class="project__links"><a class="pill-link" href="assets/papers/KASC_2023_Hydroelectric-Shower-Module.pdf" target="_blank" rel="noopener">Paper (English)</a><a class="pill-link" href="https://github.com/da-dawit/iot_shower_faucet" target="_blank" rel="noopener">Code</a><a class="pill-link" href="publications.html#shower">Citation</a></div>
-          <p class="project__note">Originally published in Korean; the linked PDF is my English version with larger, updated figures.</p>
-        </header>
-        <div class="project__body reveal">
-          <figure class="fig"><a href="assets/figures/shower/shower-module-cad.png" target="_blank" rel="noopener"><img src="assets/figures/shower/shower-module-cad.png" width="1090" height="676" loading="lazy" alt="SolidWorks views of the shower module: propellers inside a transparent tube, gear holder, gears, axis, and generator"></a><figcaption>The SolidWorks model: propellers inside the tube turn the axis and gears that drive a 6-9 V generator.</figcaption></figure>
-          <h4 class="project__h">The problem</h4>
-          <p>Korea ranks third in the world in electricity use per person, yet households generate almost none of their own. Standing in the shower, I wondered whether the falling water could be put to work.</p>
-          <h4 class="project__h">Approach</h4>
-          <p>A 3D-printed tube screws onto the shower faucet. Water spins propellers on an axle that drives a small generator (up to 9 V at about 6,000 rpm) through a gear train. The electricity charges a battery that powers an Arduino IoT system: an ultrasonic sensor turns the valve on only when someone is within 15 cm (an LED stood in for the valve in the prototype), and a Bluetooth app (MIT App Inventor) and an LCD show the live voltage.</p>
-          <figure class="fig fig--center" style="--maxw: 380px"><a href="assets/figures/shower/shower-iot.png" target="_blank" rel="noopener"><img src="assets/figures/shower/shower-iot.png" width="698" height="596" loading="lazy" alt="Diagram of the IoT system: the generator charges a rechargeable battery that powers an Arduino and a motor driver; the Arduino reads an ultrasonic sensor, switches the valve, drives an LCD, and runs a DC motor"></a><figcaption>The IoT system: the generator charges a battery that powers the Arduino, which reads the ultrasonic sensor, switches the “valve,” shows the voltage on an LCD, and drives a DC motor that stood in for the water in tests.</figcaption></figure>
-          <p>Most of the work was iteration. 3D-printed propellers were too fragile, so we switched to fixed-pitch LEGO blades and tested their angle. Bevel gears were too hard to stabilize, so we used spur gears and compared gear ratios, reading the generator’s voltage on an Arduino while a DC motor turned the axle at a steady 15 rpm. An oil seal replaced the bearings to stop leaks while letting the axle turn freely.</p>
-          <figure class="fig fig-pair" style="--cols: 1.485fr 1.426fr .794fr"><a href="assets/figures/shower/shower-v2-side.png" target="_blank" rel="noopener"><img src="assets/figures/shower/shower-v2-side.png" width="778" height="524" loading="lazy" alt="Side view of the redesigned module: propellers on a shaft inside the tube, the gear, and the generator in an enclosed housing"></a><a href="assets/figures/shower/shower-v2-iso.png" target="_blank" rel="noopener"><img src="assets/figures/shower/shower-v2-iso.png" width="830" height="582" loading="lazy" alt="Isometric view of the redesigned module with the gear housing around the shaft"></a><a href="assets/figures/shower/shower-v2-front.png" target="_blank" rel="noopener"><img src="assets/figures/shower/shower-v2-front.png" width="346" height="436" loading="lazy" alt="Front view of the redesigned module, looking down the shaft at the gear inside the housing"></a><figcaption>The redesign in SolidWorks: side, isometric, and front views of the reinforced gear housing.</figcaption></figure>
-          <p>The next design encloses the gears in a reinforced gear housing that holds the shaft in line, so the axle no longer shakes as the water drives it and the gears stay meshed.</p>
-          <h4 class="project__h">Results</h4>
-          <figure class="fig fig--center" style="--maxw: 380px"><a href="assets/figures/shower/shower-gear-ratios.png" target="_blank" rel="noopener"><img src="assets/figures/shower/shower-gear-ratios.png" width="740" height="646" loading="lazy" alt="Line chart of generator voltage over time for gear ratios 5:1, 5:3, 2:1, 3:1, and 1:1 at 15 rpm; the 2:1 line stays highest, around 0.2 V"></a><figcaption>Generator voltage over time for each gear ratio, with the axle turned at 15 rpm. 2:1 (green) stays highest.</figcaption></figure>
-          <ul class="bullets">
-            <li>Of five gear ratios (5:1, 5:3, 2:1, 3:1, and 1:1), 2:1 generated the most, up to 0.25 V, while no other ratio passed 0.2 V. We had expected 5:1 to win, but more revolutions of the generator did not mean more energy. The result held across three repeated runs.</li>
-            <li>Blades slanted at 75° spun fastest; at 30° and 45° the gears kept stalling. A wider tube kept the water moving, where a narrower one slowed it.</li>
-            <li>A working prototype: water spins the propellers and gears, and the IoT system turns the valve on only when someone is close, with the voltage shown live on an LCD and a phone.</li>
-          </ul>
-          <p class="after-list">Initial testing left two problems: the gears and axles were not held firmly enough, so the gears jammed and the generator sometimes stalled, and the rough 3D-printed tube added friction. The next version addresses both with the reinforced gear housing that supports the generator and axles, a tube of smooth plastic or light metal, and custom propellers in place of the LEGO blades.</p>
-          <div class="project__role"><span>My role</span>Led the project end to end: the pipe’s curve and shape for the water flow, and the blades’ placement and angle, found through experiments and basic calculations; the SolidWorks design; the 3D-printed build and testing; and the Arduino-based valve and IoT system.</div>
         </div>
       </article>
     </div>
