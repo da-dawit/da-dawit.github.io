@@ -513,6 +513,11 @@
   const WO_ZONES = ['Safe zone', 'Compass', 'Bystanders', 'QuickCall', 'Emergency call'];
   const WO_HTML = `
         <div class="wo">
+          <div class="wo-top">
+          <div class="wo-side">
+            <figure class="wo-dev wo-dev--watch"><div class="wo-watch"><div class="wo-wscreen" aria-live="polite"></div></div><figcaption>Her watch</figcaption></figure>
+            <ol class="wo-steps">${WO_ZONES.map((x, i) => `<li data-z="${i}">${i ? x : 'Door lock'}</li>`).join('')}</ol>
+          </div>
           <div class="wo-frame">
             <div class="wo-map" role="application" aria-label="A map of a neighbourhood in Seoul, with her home and the zones around it. Drag her marker, or focus it and use the arrow keys."></div>
             <div class="wo-door">
@@ -526,9 +531,8 @@
               </div>
             </div>
           </div>
-          <ol class="wo-steps">${WO_ZONES.map((x, i) => `<li data-z="${i}">${i ? x : 'Door lock'}</li>`).join('')}</ol>
+          </div>
           <div class="wo-devices">
-            <figure class="wo-dev wo-dev--watch"><div class="wo-watch"><div class="wo-wscreen" aria-live="polite"></div></div><figcaption>Her watch</figcaption></figure>
             <figure class="wo-dev"><div class="wo-phone"><div class="wo-pscreen wo-pscreen--near" aria-live="polite"></div></div><figcaption>A stranger’s phone nearby</figcaption></figure>
             <figure class="wo-dev"><div class="wo-phone"><div class="wo-pscreen wo-pscreen--son" aria-live="polite"></div></div><figcaption>Her son’s phone</figcaption></figure>
           </div>
@@ -543,6 +547,22 @@
     const near = $('.wo-pscreen--near', box);
     const son = $('.wo-pscreen--son', box);
     const steps = $$('.wo-steps li', box);
+    const top = $('.wo-top', box);
+    const devices = $('.wo-devices', box);
+    let refit = () => {};
+    // the whole demo fits on one screen below the bar: the map gets the height left after the watch, the phones and
+    // the gaps (never shorter than the watch column beside it, nor taller than 420px)
+    const fit = () => {
+      if (!root.isConnected || !root.offsetHeight) return;
+      const bar = $('.st-top');
+      const room = window.innerHeight - (bar ? bar.offsetHeight : 0) - 20;
+      const side = $('.wo-side', box);
+      const beside = side.offsetTop === mapEl.closest('.wo-frame').offsetTop;
+      const h = Math.round(Math.min(420, Math.max(beside ? side.offsetHeight : 200, mapEl.offsetHeight + room - root.offsetHeight)));
+      if (Math.abs(mapEl.offsetHeight - h) < 2) return;
+      mapEl.style.height = `${h}px`;
+      refit();
+    };
     const qs = $$('.wo-q', box);
     const answers = [];
     let clock = 14 * 60 + 12;
@@ -583,9 +603,10 @@
       probe.style.cssText = `position: absolute; visibility: hidden; height: auto; width: ${near.offsetWidth}px`;
       probe.innerHTML = nearSos();
       near.parentElement.appendChild(probe);
-      const h = Math.max(252, Math.ceil(probe.offsetHeight));
+      const h = Math.max(window.innerHeight < 760 ? 220 : 252, Math.ceil(probe.offsetHeight));
       probe.remove();
       [near, son].forEach((el) => { el.style.height = `${h}px`; });
+      fit();
     };
     let phoneTimer = 0;
     window.addEventListener('resize', () => {
@@ -656,8 +677,8 @@
       WO.rings.forEach((r, i) => L.circle(home, { radius: r, className: `wo-ring wo-ring--${i}`, interactive: false }).addTo(map));
       const label = (at, i) => L.marker(at, { interactive: false, keyboard: false, icon: L.divIcon({ className: `wo-zone wo-zone--${i}`, html: `<span>${WO_ZONES[i]}</span>`, iconSize: null }) }).addTo(map);
       WO.rings.forEach((r, i) => label(north(r - 34), i));
-      // past the last ring: to the side on a wide map, below it on a narrow one
-      label(mapEl.clientWidth > mapEl.clientHeight * 1.2 ? by(home, WO.rings[3] + 150, 0) : north(-(WO.rings[3] + 70)), 4);
+      // past the last ring: in the top-right corner, which is outside it whatever the map's shape
+      label(by(home, (WO.rings[3] + 190) * Math.SQRT1_2, (WO.rings[3] + 190) * Math.SQRT1_2), 4);
       L.marker(home, { interactive: false, keyboard: false, icon: L.divIcon({ className: 'wo-home', html: icon('house'), iconSize: [30, 30] }) }).addTo(map);
       // people out in the neighbourhood stay where they are; her SOS reaches only the few near her (within 10 m in
       // reality, drawn as about 200 m at this scale so it can be seen)
@@ -757,12 +778,21 @@
         me.setLatLng(by(me.getLatLng(), step[0], step[1]));
         update();
       });
-      setTimeout(() => map.invalidateSize(), 60);
+      refit = () => {
+        map.invalidateSize();
+        map.fitBounds(home.toBounds(WO.rings[3] * 2 + 120), { padding: [4, 4] });
+        if (open) update();
+      };
+      setTimeout(() => { fit(); refit(); }, 60);
     }).catch(() => {
       mapEl.classList.add('is-off');
       mapEl.textContent = 'The map could not load.';
     });
-    opened(box, [frame, $('.wo-devices', box)]);
+    opened(box, [top, devices]).then(() => {
+      const bar = $('.st-top');
+      const y = root.getBoundingClientRect().top + window.scrollY - (bar ? bar.offsetHeight : 0) - 10;
+      window.scrollTo({ top: Math.max(0, y), behavior: calm() ? 'auto' : 'smooth' });
+    });
   }
 
   CH.challenge = {
@@ -1453,6 +1483,8 @@
       const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
       const GOAL = 'HELLO WORLD';
       const DWELL = 800;
+      // a touch screen has no pointer and no Space bar: there, a finger is the gaze and a Speak button is the phoneme
+      const touch = matchMedia('(pointer: coarse)').matches || (navigator.maxTouchPoints > 0 && !matchMedia('(pointer: fine)').matches);
       body.innerHTML = `
         <p class="sc-lede" data-lede>${ALS}</p>
         <div class="eyes" tabindex="0" aria-label="Gaze keyboard. Use the arrow keys to move your gaze.">
@@ -1464,12 +1496,14 @@
             <div class="eyes-gate-card">
               <p class="eyes-gate-step" data-gate-step>1 of 2</p>
               <p class="eyes-gate-title" data-gate-title>Typing with your eyes</p>
-              <p class="eyes-gate-text" data-gate-text>On an eye-tracking keyboard, a key types when you look at it for 0.8 seconds. Your pointer stands in for your eyes. Type HELLO WORLD, and I will time you.</p>
+              <p class="eyes-gate-text" data-gate-text>${touch
+                ? 'On an eye-tracking keyboard, a key types when you look at it for 0.8 seconds. Here, your finger stands in for your eyes: rest it on a key until the key types. Type HELLO WORLD, and I will time you.'
+                : 'On an eye-tracking keyboard, a key types when you look at it for 0.8 seconds. Your pointer stands in for your eyes. Type HELLO WORLD, and I will time you.'}</p>
               <button class="btn btn--primary" type="button" data-gate>Start</button>
             </div>
           </div>
         </div>
-        <div class="sc-actions"><button class="btn btn--primary" type="button" data-speak hidden>Speak</button><button class="btn btn--primary" type="button" data-switch hidden>Now try it with iPhoneme</button><span class="sc-hint" data-hint aria-live="polite">Hold your pointer on a key until it types.</span></div>`;
+        <div class="sc-actions"><button class="btn btn--primary" type="button" data-speak hidden>Speak</button><button class="btn btn--primary" type="button" data-switch hidden>Now try it with iPhoneme</button><span class="sc-hint" data-hint aria-live="polite">${touch ? 'Rest your finger on a key until it types.' : 'Hold your pointer on a key until it types.'}</span></div>`;
       const eyes = $('.eyes', body);
       const keys = $$('.key', body);
       const typed = $('.eyes-typed', body);
@@ -1480,6 +1514,8 @@
       const lede = $('[data-lede]', body);
       const speakBtn = $('[data-speak]', body);
       const switchBtn = $('[data-switch]', body);
+      // on a touch screen, Speak sits right under the keys, so a finger goes key, Speak, key, Speak
+      if (touch) $('.eyes-keys', body).after(speakBtn);
       // The lede is rewritten twice as the chapter goes on. It keeps its first (longest) height so the keyboard
       // under it never moves, and each new text fades in where the old one was.
       lede.style.minHeight = `${lede.offsetHeight}px`;
@@ -1725,6 +1761,8 @@
       });
 
       eyes.addEventListener('pointermove', (e) => {
+        // tapping Speak must not move the gaze off the key it is about to type
+        if (e.target instanceof Element && e.target.closest('[data-speak]')) return;
         const hit = doc.elementFromPoint(e.clientX, e.clientY);
         const key = hit ? hit.closest('.key') : null;
         if (key && eyes.contains(key)) setTarget(key);
@@ -1779,8 +1817,8 @@
         gated = true;
         $('[data-gate-step]', body).textContent = '2 of 2';
         $('[data-gate-title]', body).textContent = 'Typing with iPhoneme';
-        $('[data-gate-text]', body).textContent = matchMedia('(pointer: coarse)').matches
-          ? 'Now your gaze only points at a key. In iPhoneme, the key types when a silent phoneme, a sound you only think of saying, is decoded from your brain signals. Here, tapping Speak stands in for that decoded phoneme. Type HELLO WORLD again.'
+        $('[data-gate-text]', body).textContent = touch
+          ? 'Now your gaze only points at a key. In iPhoneme, the key types when a silent phoneme, a sound you only think of saying, is decoded from your brain signals. Here, the Speak button under the keys stands in for that decoded phoneme: touch a key to point at it, then tap Speak to type it. Type HELLO WORLD again.'
           : 'Now your gaze only points at a key. In iPhoneme, the key types when a silent phoneme, a sound you only think of saying, is decoded from your brain signals. Here, pressing Space stands in for that decoded phoneme. Type HELLO WORLD again.';
         openGate();
         mode = 'speak';
@@ -1797,13 +1835,14 @@
         speakBtn.hidden = false;
         eyes.focus({ preventScroll: true });
         say('With iPhoneme, your gaze only points at a key, and a silent phoneme decoded from brain signals types it.');
-        hint.textContent = matchMedia('(pointer: coarse)').matches ? 'Touch a key to look at it, then tap Speak, the decoded phoneme.' : 'Point at a key, then press Space, the decoded phoneme.';
+        hint.textContent = touch ? 'Touch a key to point at it, then tap Speak to type it.' : 'Point at a key, then press Space, the decoded phoneme.';
       });
 
       await finished;
       stopFrames();
       doc.removeEventListener('keydown', onSpace);
       $('.sc-actions', body).remove();
+      speakBtn.remove();
       fixate(null, endAt);
       if (target) target.classList.remove('is-gaze');
       eyes.classList.add('is-done');
@@ -1816,7 +1855,7 @@
           <p><span>Eye-tracking keyboard</span><b>${sec(dwellTime)}</b></p>
           <p><span>iPhoneme</span><b>${sec(speakTime)}</b></p>
         </div>
-        <p class="rv-text">Here, the Space key stood in for one silent phoneme decoded from brain signals, the way a click or a keyboard shortcut works for anyone else. In iPhoneme, one phoneme that is rarely used and easy to tell apart could mean click, and another could mean drag. The goal is to let people with ALS use a computer the way everyone else uses a mouse, a keyboard or a touch screen, with as low a barrier as possible.</p>
+        <p class="rv-text">Here, ${touch ? 'the Speak button' : 'the Space key'} stood in for one silent phoneme decoded from brain signals, the way a click or a keyboard shortcut works for anyone else. In iPhoneme, one phoneme that is rarely used and easy to tell apart could mean click, and another could mean drag. The goal is to let people with ALS use a computer the way everyone else uses a mouse, a keyboard or a touch screen, with as low a barrier as possible.</p>
         <p class="rv-text">I built the decoder for iPhoneme, which turns a speech implant’s signals into phonemes with 92.14% accuracy on the T15 dataset, about 3 points above the previous best. In the keyboard my teammate and I designed, a silent sound picks a key 3 to 10 times faster than a held gaze.</p>
         <p class="rv-meta">“iPhoneme: Brain-to-Text Communication for ALS Using ConformerXL Decoding,” arXiv:2604.16441, April 2026, equal-contribution first author</p>`);
     },
