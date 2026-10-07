@@ -1456,14 +1456,14 @@
       svg.classList.add('is-done');
       run.parentElement.remove();
       const shown = add(body, `${beats([
-        { media: '<video src="assets/figures/story/hg-dagger.mp4" poster="assets/figures/robotis/hg-dagger-operation-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Operating the HG-DAgger system on the AI Worker"></video>', text: 'Your correction was a small version of HG-DAgger, the human-in-the-loop system I built for the real robot. Corrected just before it fails, the robot learns to recover from wrong states its demonstrations never showed it. With 30 demonstrations and 13 corrections, the AI Worker learned a long peg-and-screw task.' },
+        { media: '<video src="assets/figures/story/hg-dagger.mp4" poster="assets/figures/robotis/hg-dagger-operation-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Operating the HG-DAgger system on the AI Worker"></video>', text: 'Your correction was a small version of HG-DAgger, the human-in-the-loop system I built for the real robot. Corrected just before it fails, the robot learns to recover from wrong states its demonstrations never showed it. With 31 demonstrations and 13 corrections, the AI Worker learned a long peg-and-screw task.' },
         { media: '<video src="assets/figures/robotis/prior-act-td3-rollout.mp4" poster="assets/figures/robotis/prior-act-td3-rollout-poster.jpg" muted loop playsinline autoplay preload="metadata" aria-label="Prior-ACT placing a bottle in the basket on the real AI Worker"></video>', text: 'I also built Prior-ACT, which lets an ACT policy choose how to move from what its camera sees, and trained it with off-policy RL in a simulation calibrated to the real robot. Back on the real AI Worker, it improved far more than TurboVLA, a vision-language-action model.' },
       ])}
         <figure class="result">
           <p class="result-head">Success on the real AI Worker, before and after training in simulation</p>
           <div class="result-rows">
-            <div class="result-row"><span class="result-name">Prior-ACT, which I built</span><span class="result-bar" style="--a: .60; --b: .82"><i></i><b></b></span><span class="result-val">60% → ≈82%</span></div>
-            <div class="result-row"><span class="result-name">TurboVLA</span><span class="result-bar" style="--a: .16; --b: .30"><i></i><b></b></span><span class="result-val">16% → ≈30%</span></div>
+            <div class="result-row"><span class="result-name">Prior-ACT, which I built</span><span class="result-bar" style="--a: .60; --b: .82"><i></i><b></b></span><span class="result-val">60% → 82%</span></div>
+            <div class="result-row"><span class="result-name">TurboVLA</span><span class="result-bar" style="--a: .17; --b: .30"><i></i><b></b></span><span class="result-val">17% → ≈30%</span></div>
           </div>
         </figure>
         <p class="rv-text">ROBOTIS also published my benchmark of four of 2026’s newest vision-language-action and world models as its AI MANIPULATOR #13 video, and merged five of my pull requests.</p>
