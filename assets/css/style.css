@@ -300,7 +300,8 @@ h1, h2, h3, h4 { margin: 0; }
 .nav__link[aria-current="page"]::after { transform: scaleX(1); background: var(--accent); }
 
 /* the CV sits apart as a small outlined button */
-.nav__link--cv {
+.nav__link--cv,
+.nav__link--btn {
   padding: 6px 12px;
   border: 1px solid var(--ink);
   border-radius: var(--radius);
@@ -308,8 +309,10 @@ h1, h2, h3, h4 { margin: 0; }
   font-weight: 500;
   transition: background-color .2s ease, color .2s ease;
 }
-.nav__link--cv::after { display: none; }
-.nav__link--cv:hover { background: var(--ink); color: var(--bg); }
+.nav__link--cv::after,
+.nav__link--btn::after { display: none; }
+.nav__link--cv:hover,
+.nav__link--btn:hover { background: var(--ink); color: var(--bg); }
 
 .nav-toggle {
   display: none;
@@ -371,7 +374,8 @@ h1, h2, h3, h4 { margin: 0; }
   }
   .nav__link::after { display: none; }
   .nav__link[aria-current="page"] { font-weight: 600; box-shadow: inset 3px 0 0 var(--accent); padding-left: 12px; }
-  .nav__link--cv { margin-top: 16px; padding: 12px 16px; border-bottom: 1px solid var(--ink); text-align: center; }
+  .nav__link--cv,
+  .nav__link--btn { margin-top: 16px; padding: 12px 16px; border-bottom: 1px solid var(--ink); text-align: center; }
 }
 
 /* Home: hero
