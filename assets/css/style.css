@@ -420,6 +420,14 @@ h1, h2, h3, h4 { margin: 0; }
   color: var(--accent-ink);
 }
 
+.hero__contact {
+  margin: 6px 0 0;
+  font-family: var(--mono);
+  font-size: .85rem;
+}
+.hero__contact a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--hair-2); text-underline-offset: 3px; }
+.hero__contact a:hover { color: var(--accent-ink); text-decoration-color: currentColor; }
+
 .hero__actions {
   display: flex;
   flex-wrap: wrap;
@@ -1812,6 +1820,8 @@ html.modal-open { overflow: hidden; }
 @media (max-width: 760px) {
   .idea { grid-template-columns: 1fr; }
 }
+
+.ideas__intro.phd { margin: clamp(40px, 5vw, 56px) 0 0; }
 
 .closing {
   display: flex;

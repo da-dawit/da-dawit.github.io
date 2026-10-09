@@ -4,51 +4,315 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dawit Chun</title>
-  <meta name="description" content="Who is Dawit Chun? A robot learning researcher's story, played as a game of bingo. Prospective robotics PhD student, Fall 2027.">
+  <meta name="description" content="Dawit Chun, robot learning researcher and prospective PhD student for Fall 2027. Vision-language-action models, world models, and robot manipulation.">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <script>document.documentElement.classList.add('js')</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,700..800;1,62..125,700..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400;1,700&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap">
-  <link rel="stylesheet" href="assets/css/story.css?v=202610072200">
-  <script src="assets/js/story.js?v=202610072200" defer></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap">
+  <link rel="stylesheet" href="assets/css/style.css?v=202610090100">
+  <script src="assets/js/main.js?v=202610090100" defer></script>
 </head>
-<body class="story-body">
-  <header class="st-top">
-    <a class="st-brand" href="home.html">Dawit Chun</a>
-    <a class="skip-site" href="home.html">I just want to see his website <span aria-hidden="true">→</span></a>
+<body id="top">
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <div class="container site-header__inner">
+      <a class="brand" href="index.html">Dawit Chun</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="site-nav" aria-label="Open menu">
+        <span class="nav-toggle__bar"></span>
+        <span class="nav-toggle__bar"></span>
+      </button>
+      <nav class="nav" id="site-nav" aria-label="Primary">
+        <ul class="nav__list">
+          <li><a class="nav__link" href="index.html" aria-current="page">Home</a></li>
+          <li><a class="nav__link" href="research.html">Research</a></li>
+          <li><a class="nav__link" href="publications.html">Publications</a></li>
+          <li><a class="nav__link" href="honors.html">Honors</a></li>
+          <li><a class="nav__link" href="teaching.html">Teaching &amp; Service</a></li>
+          <li><a class="nav__link" href="journey.html">About</a></li>
+          <li><a class="nav__link" href="story.html">My Story</a></li>
+          <li><a class="nav__link nav__link--cv" href="assets/CV_DawitChun.pdf" target="_blank" rel="noopener">CV <span aria-hidden="true">↗</span></a></li>
+        </ul>
+      </nav>
+    </div>
   </header>
 
-  <main class="st" id="story">
-    <div class="st-cardcol">
-      <div class="bc" id="card" role="group" aria-label="Dawit’s bingo card">
-        <div class="bc-head" id="card-head" aria-hidden="true"></div>
-        <div class="bc-grid" id="card-grid"><svg class="bc-lines" id="card-lines" aria-hidden="true"></svg></div>
+  <main id="main">
+    <section class="hero">
+      <div class="container hero__grid">
+        <div class="hero__text">
+          <h1 class="hero__title intro" style="--i: 0">I want to make robots <em>think and learn</em> like us.</h1>
+          <p class="hero__lede intro" style="--i: 2">I’m a senior at <strong>Taejae University</strong> studying Data Science/AI and Natural Sciences, deeply in love with robot learning: vision-language-action models, world models, and manipulation.</p>
+          <p class="hero__story intro" style="--i: 3">Beyond my focus, I love robots as a whole: I have also designed circuit boards, mechanisms, and a RISC-V processor, and I would be glad to grow in any area of robotics.</p>
+          <p class="hero__story intro" style="--i: 4">I joined Taejae’s first cohort at 15. My dream is a robot built for <strong>any application</strong>, from search-and-rescue to robots in people’s homes.</p>
+          <p class="hero__status intro" style="--i: 5">Prospective robotics PhD student, Fall 2027</p>
+          <p class="hero__contact intro" style="--i: 5"><a href="mailto:chundawit@taejae.ac.kr">chundawit@taejae.ac.kr</a></p>
+          <div class="hero__actions intro" style="--i: 6">
+            <a class="btn btn--solid" href="research.html">Research</a>
+            <a class="btn" href="publications.html">Publications</a>
+            <a class="btn" href="assets/CV_DawitChun.pdf" target="_blank" rel="noopener">CV <span class="btn__ext" aria-hidden="true">↗</span></a>
+            <a class="btn" href="https://github.com/da-dawit" target="_blank" rel="noopener">GitHub <span class="btn__ext" aria-hidden="true">↗</span></a>
+            <a class="btn" href="story.html">My Story</a>
+          </div>
+        </div>
+        <figure class="hero__portrait intro" style="--i: 2">
+          <img src="assets/figures/home/portrait.jpg" width="716" height="806" alt="Dawit Chun smiling at an outdoor table, with trees and plants behind him">
+        </figure>
       </div>
+    </section>
+
+    <section class="section" id="featured" aria-labelledby="featured-title">
+      <div class="container">
+        <header class="bar reveal">
+          <h2 class="bar__title" id="featured-title">Featured research &amp; publications</h2>
+          <p class="bar__links"><a class="link-arrow bar__link" href="research.html">All research</a><a class="link-arrow bar__link" href="publications.html">All publications</a></p>
+        </header>
+        <ol class="works">
+          <li class="work reveal">
+            <a class="work__media" href="research.html#robot-learning" tabindex="-1" aria-hidden="true"><video data-teaser muted loop playsinline preload="metadata" width="960" height="540" poster="assets/figures/home/robotis-teaser-poster.jpg"><source src="assets/figures/home/robotis-teaser.mp4" type="video/mp4"></video></a>
+            <div class="work__body">
+              <p class="work__label">ROBOTIS, 2026</p>
+              <h3 class="work__title"><a href="research.html#robot-learning">VLA and World Models for Robot Manipulation</a></h3>
+              <p class="work__meta">Research intern, Humanoid Software Team. Nine weeks on three real robots: 2026’s newest VLA and world models, Prior-ACT, sim-to-real off-policy RL, and HG-DAgger.</p>
+              <div class="work__links"><a class="pill-link pill-link--accent" href="research.html#robot-learning">View research →</a><a class="pill-link" href="https://www.youtube.com/watch?v=lZhRQvXYnh8" target="_blank" rel="noopener">Video</a><a class="pill-link" href="https://docs.robotis.com/docs/systems/omy/resources/technical_story/vla_lerobotnative" target="_blank" rel="noopener">Docs</a></div>
+            </div>
+          </li>
+          <li class="work reveal">
+            <a class="work__media work__media--light" href="research.html#pdpm" tabindex="-1" aria-hidden="true"><img src="assets/figures/home/pdpm-architecture-card.jpg" width="960" height="540" loading="lazy" alt=""></a>
+            <div class="work__body">
+              <p class="work__label">IEEE ICCD 2026</p>
+              <h3 class="work__title"><a href="research.html#pdpm">PDPM: Perceptron-Driven Pipeline Morphing for Adaptive RISC-V Processors</a></h3>
+              <p class="work__authors"><strong>Dawit Chun</strong>, Minhee Jun</p>
+              <div class="work__links"><span class="badge">First author, accepted (26% acceptance)</span><a class="pill-link" href="assets/papers/PDPM_ICCD2026.pdf" target="_blank" rel="noopener">PDF</a><a class="pill-link" href="https://github.com/da-dawit/pdpm-riscv" target="_blank" rel="noopener">Code</a><a class="pill-link pill-link--accent" href="research.html#pdpm">Project →</a></div>
+            </div>
+          </li>
+          <li class="work reveal">
+            <a class="work__media" href="research.html#watch-out" tabindex="-1" aria-hidden="true"><img src="assets/figures/home/chi-winner.jpg" width="960" height="540" loading="lazy" alt=""></a>
+            <div class="work__body">
+              <p class="work__label">ACM CHI 2025</p>
+              <h3 class="work__title"><a href="research.html#watch-out">Watch-Out: Real-Time Tracking and Assistance for Wandering Alzheimer’s Patients Using Wearable Technology</a></h3>
+              <p class="work__authors">Dahee Chun, <strong>Dawit Chun</strong>, Yoonmin Cha, Lina Jellibi, Sung Jun Park</p>
+              <p class="work__note"><em>Extended Abstracts</em>, Student Design Competition</p>
+              <div class="work__links"><span class="badge">1st Place (1 in 84)</span><a class="pill-link" href="assets/papers/CHI-EA_2025_Watch-Out.pdf" target="_blank" rel="noopener">PDF</a><a class="pill-link" href="https://www.youtube.com/watch?v=WSm2qbQmpsE" target="_blank" rel="noopener">Video</a><a class="pill-link" href="https://drive.google.com/file/d/1smQo4gkjn_XBv_LhGBViDvRF5Brs_aeZ/view?usp=sharing" target="_blank" rel="noopener">CHI video</a><a class="pill-link" href="https://doi.org/10.1145/3706599.3720308" target="_blank" rel="noopener">DOI</a><a class="pill-link pill-link--accent" href="research.html#watch-out">Project →</a></div>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="vision" aria-labelledby="vision-title">
+      <div class="container">
+        <header class="bar reveal">
+          <h2 class="bar__title" id="vision-title">Research vision</h2>
+          <a class="link-arrow bar__link" href="#vision-essay">Read the full vision</a>
+        </header>
+        <div class="vision">
+          <div class="vision__intro reveal">
+            <p class="vision__q">What does it mean to be intelligent?</p>
+            <p class="vision__lead">Most robots today repeat what they were trained on. I think three things are missing.</p>
+          </div>
+          <ol class="theses">
+            <li class="thesis reveal">
+              <span class="thesis__num">01</span>
+              <h3 class="thesis__name">Isomorphic thinking</h3>
+              <p>Knowing objects and actions by what they do to the robot’s own body.</p>
+              <a class="thesis__link link-arrow" href="research.html#off-policy-rl"><span>In my work:</span> off-policy RL on a real robot</a>
+            </li>
+            <li class="thesis reveal">
+              <span class="thesis__num">02</span>
+              <h3 class="thesis__name">Intuition</h3>
+              <p>A small forward model that predicts what each action will do before the robot moves.</p>
+              <a class="thesis__link link-arrow" href="research.html#benchmarking"><span>In my work:</span> VLA and world models</a>
+            </li>
+            <li class="thesis reveal">
+              <span class="thesis__num">03</span>
+              <h3 class="thesis__name">Emerging Emotions</h3>
+              <p>A slow internal state that sets how boldly the robot explores, regulated first by a parent model and later by itself.</p>
+              <a class="thesis__link link-arrow" href="research.html#igen"><span>In my work:</span> IGEN</a>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="honors" aria-labelledby="honors-title">
+      <div class="container">
+        <header class="bar reveal">
+          <h2 class="bar__title" id="honors-title">Selected honors</h2>
+          <a class="link-arrow bar__link" href="honors.html">All honors</a>
+        </header>
+        <ol class="honors reveal">
+          <li class="honor"><a class="honor__media" href="honors.html#talent-award" tabindex="-1" aria-hidden="true"><img src="assets/figures/home/honor-talent.jpg" width="960" height="540" loading="lazy" alt=""></a><span class="honor__year">2025</span><h3 class="honor__name"><a href="honors.html#talent-award">Talent Award of Korea</a></h3><p class="honor__meta">Minister of Education Award, one of 60 recipients in the university and young adult category</p></li>
+          <li class="honor"><a class="honor__media" href="honors.html#chi-2025" tabindex="-1" aria-hidden="true"><img src="assets/figures/home/honor-chi.jpg" width="960" height="540" loading="lazy" alt=""></a><span class="honor__year">2025</span><h3 class="honor__name"><a href="honors.html#chi-2025">1st Place, ACM CHI Student Design Competition</a></h3><p class="honor__meta">Watch-Out, first of 84 teams</p></li>
+          <li class="honor"><a class="honor__media" href="honors.html#iro-gold-2024" tabindex="-1" aria-hidden="true"><img src="assets/figures/home/honor-iro.jpg" width="960" height="540" loading="lazy" alt=""></a><span class="honor__year">2024</span><h3 class="honor__name"><a href="honors.html#iro-gold-2024">Gold Medal, International Robot Olympiad</a></h3><p class="honor__meta">AI Autonomous Driving (Senior), Athens</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="media" aria-labelledby="media-title">
+      <div class="container">
+        <header class="bar reveal">
+          <h2 class="bar__title" id="media-title">Media</h2>
+        </header>
+        <ol class="media reveal">
+          <li class="media__item"><time datetime="2026-08-25">Aug 2026</time><div><p class="media__src">Veritas Alpha <span class="media__kind">Article in Korean</span></p><a class="media__title" href="https://www.veritas-a.com/news/articleView.html?idxno=624492" target="_blank" rel="noopener">Taejae student Dawit Chun’s paper accepted as a regular paper at ICCD 2026, proposing an adaptive RISC-V processor architecture</a></div></li>
+          <li class="media__item"><time datetime="2026-08-24">Aug 2026</time><div><p class="media__src">ROBOTIS <span class="media__kind">Video</span></p><a class="media__title" href="https://www.youtube.com/watch?v=lZhRQvXYnh8" target="_blank" rel="noopener">AI MANIPULATOR #13: Running Next-Generation LeRobot Policies on OMY</a><p class="media__note">Built from my evaluations of 2026’s VLA and world models.</p></div></li>
+          <li class="media__item"><time datetime="2026-06-30">Jun 2026</time><div><p class="media__src">The Korea Economic Daily <span class="media__kind">Article in Korean</span></p><a class="media__title" href="https://www.hankyung.com/article/202606306715O" target="_blank" rel="noopener">Ubion provides DeepCo Bot free for an elementary school AI class, with a path to international competitions</a></div></li>
+          <li class="media__item"><time datetime="2026-06-19">Jun 2026</time><div><p class="media__src">Seoul Shinmun <span class="media__kind">Article in Korean</span></p><a class="media__title" href="https://go.seoul.co.kr/news/newsView.php?id=20260619500173" target="_blank" rel="noopener">AI, taught by a science talent who grew up in Geumcheon</a></div></li>
+        </ol>
+        <p class="media__more reveal"><a class="link-arrow" href="#all-media">All media coverage (13)</a></p>
+      </div>
+    </section>
+
+  <dialog class="modal" id="vision-essay" aria-label="Research vision">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <p class="modal__kicker">Research vision</p>
+      <h2 class="essay__title">What does it mean to be intelligent?</h2>
+      <p class="essay__lead">Since my first year of university, one question has been behind everything I’ve worked on: what is so different about how humans think compared to robots? Intelligence is hard to define. Like “love,” we nod at the word and move on. But I believe finding the right definition is how we find the next path for robotics.</p>
+
+        <div class="argument">
+          <div class="reveal">
+            <img class="photo" src="assets/images/Chinese%20Room%20Test.png" width="1100" height="628" loading="lazy" alt="Illustration of Searle’s Chinese Room: a person inside a room uses a rule book to turn the Chinese characters passed in into replies passed out">
+          </div>
+          <div class="reveal">
+            <p class="argument__label">John Searle’s Chinese Room</p>
+            <p>Give the room a Chinese sentence, and the machine inside follows a huge rule book to produce a reply. From the outside, the person receiving it thinks, “this machine <strong>knows</strong> Chinese.”</p>
+            <p>That is exactly the part we need to figure out. Do robots know the world? Can they separate their own identity and compare it with the environment? Turing tried to answer this with the <strong>Turing test</strong>.</p>
+          </div>
+        </div>
+
+        <div class="argument">
+          <div class="reveal">
+            <p class="argument__label">Douglas Hofstadter’s <em>Gödel, Escher, Bach</em></p>
+            <p>My favorite book. Hofstadter says,</p>
+            <blockquote class="pull-quote">Intelligence is defined by the <strong>ease</strong> of switching between <strong>I (Intelligence)</strong> and <strong>M (Machine)</strong> Mode…</blockquote>
+          </div>
+          <div class="figure-pair reveal">
+            <img class="photo" src="assets/images/GEB.png" width="402" height="616" loading="lazy" alt="Cover of Gödel, Escher, Bach: an Eternal Golden Braid by Douglas R. Hofstadter">
+            <img class="photo" src="assets/images/hofstadter.png" width="894" height="490" loading="lazy" alt="Douglas Hofstadter in his study">
+          </div>
+        </div>
+
+        <div class="ideas">
+          <div class="ideas__intro reveal">
+            <h3 class="ideas__title">What I think robots are missing</h3>
+            <p class="ideas__lead">An intelligent system can think out of the box, <strong>purposely putting itself out of distribution</strong>. Most robots today stay in M mode, repeating what they were trained on. So how does a robot get an “I” mode? I think it needs three things.</p>
+          </div>
+          <ol class="ideas__list">
+            <li class="idea reveal">
+              <div><span class="idea__num">01</span>
+              <h4 class="idea__name">Isomorphic thinking</h4></div>
+              <p>We decode new knowledge through what we already remember: “1, 2, 3, 4 …” can feel like walking up stairs. A robot should map the world onto its own <strong>embodiment</strong> the same way, knowing objects and actions by what they do to its body: contact, force, displacement. VLAs trained on demonstrations map pixels to actions instead, and in my tests one that succeeded at the center of a table failed a few centimeters off it. The robot’s own rollouts, through RL or teacher-student training, can help close that gap.</p>
+            </li>
+            <li class="idea reveal">
+              <div><span class="idea__num">02</span>
+              <h4 class="idea__name">Intuition</h4></div>
+              <p>Kahneman’s System 1: fast heuristics and <strong>gut feeling</strong>. For a robot, that could be a small forward model that predicts what each candidate action will do to its body and the scene before it moves, cheap enough to run at every step. Large language models in today’s robots mostly name the target or condition visual features. When instructions are scarce or vague, a robot should still infer what to do from its own predictions, without retraining.</p>
+            </li>
+            <li class="idea reveal">
+              <div><span class="idea__num">03</span>
+              <h4 class="idea__name">Emerging Emotions</h4></div>
+              <p>Emotions could emerge through parent-child relationships, since that is how we learn them: a parent soothes a crying baby until the child can calm itself. In a robot, an emotion could be a slow internal state that sets how boldly it explores, regulated first by a parent model and later by itself. In a full sensor suit, impact becomes <strong>pain</strong>, strain becomes fatigue, and low battery becomes hunger. Pain should weaken motors and add sensor noise rather than subtract reward, growing as the robot nears breaking, a mild form of death.</p>
+            </li>
+          </ol>
+        </div>
+
+        <div class="closing reveal">
+          <p class="closing__text">With this big dream in hand, I’ve been <strong>inserting (some) intelligence into machines!</strong></p>
+          <a class="link-arrow link-arrow--strong" href="research.html">Research</a>
+        </div>
+
+        <nav class="tree tree--rail reveal" aria-label="How my research and work connect">
+          <p class="tree__root">Robots that think and learn like us</p>
+          <ul class="tree__branches">
+            <li class="tree__branch tree__branch--main">
+              <p class="tree__label">Robot learning</p>
+              <ul class="tree__leaves">
+                <li><a href="research.html#benchmarking"><span class="tree__name">VLA and world models</span><span class="tree__meta">ROBOTIS, 2026</span></a></li>
+                <li><a href="research.html#prior-act"><span class="tree__name">Prior-ACT</span><span class="tree__meta">ROBOTIS, 2026</span></a></li>
+                <li><a href="research.html#off-policy-rl"><span class="tree__name">Sim-to-real off-policy RL</span><span class="tree__meta">ROBOTIS, 2026</span></a></li>
+                <li><a href="research.html#hg-dagger"><span class="tree__name">Human-in-the-loop and HG-DAgger</span><span class="tree__meta">ROBOTIS, 2026</span></a></li>
+                <li><a href="research.html#igen"><span class="tree__name">IGEN</span><span class="tree__meta">Ongoing</span></a></li>
+              </ul>
+            </li>
+            <li class="tree__branch">
+              <p class="tree__label">Autonomous robots</p>
+              <ul class="tree__leaves">
+                <li><a href="research.html#ubion"><span class="tree__name">DeepCo car and board</span><span class="tree__meta">Ubion, 2024–25</span></a></li>
+              </ul>
+            </li>
+            <li class="tree__branch">
+              <p class="tree__label">Computer architecture</p>
+              <ul class="tree__leaves">
+                <li><a href="research.html#pdpm"><span class="tree__name">PDPM</span><span class="tree__meta">IEEE ICCD 2026</span></a></li>
+              </ul>
+            </li>
+            <li class="tree__branch">
+              <p class="tree__label">Brain-computer interfaces</p>
+              <ul class="tree__leaves">
+                <li><a href="research.html#iphoneme"><span class="tree__name">iPhoneme</span><span class="tree__meta">arXiv 2026</span></a></li>
+              </ul>
+            </li>
+            <li class="tree__branch">
+              <p class="tree__label">Assistive and safety systems</p>
+              <ul class="tree__leaves">
+                <li><a href="research.html#watch-out"><span class="tree__name">Watch-Out</span><span class="tree__meta">ACM CHI 2025</span></a></li>
+                <li><a href="research.html#smart-window"><span class="tree__name">Smart Emergency Window</span><span class="tree__meta">JKSCI 2025</span></a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
     </div>
-    <section class="st-stage" id="stage" aria-label="The story"></section>
+  </dialog>
+  <dialog class="modal modal--list" id="all-media" aria-label="Media coverage">
+    <button class="modal__close" type="button" aria-label="Close"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="modal__inner">
+      <header class="bar">
+        <h2 class="bar__title">Media coverage</h2>
+      </header>
+      <ol class="media">
+        <li class="media__item"><time datetime="2026-08-25">Aug 2026</time><div><p class="media__src">Veritas Alpha <span class="media__kind">Article in Korean</span></p><a class="media__title" href="https://www.veritas-a.com/news/articleView.html?idxno=624492" target="_blank" rel="noopener">Taejae student Dawit Chun’s paper accepted as a regular paper at ICCD 2026, proposing an adaptive RISC-V processor architecture</a></div></li>
+        <li class="media__item"><time datetime="2026-08-24">Aug 2026</time><div><p class="media__src">ROBOTIS <span class="media__kind">Video</span></p><a class="media__title" href="https://www.youtube.com/watch?v=lZhRQvXYnh8" target="_blank" rel="noopener">AI MANIPULATOR #13: Running Next-Generation LeRobot Policies on OMY</a><p class="media__note">Built from my evaluations of 2026’s VLA and world models.</p></div></li>
+        <li class="media__item"><time datetime="2026-06-30">Jun 2026</time><div><p class="media__src">The Korea Economic Daily <span class="media__kind">Article in Korean</span></p><a class="media__title" href="https://www.hankyung.com/article/202606306715O" target="_blank" rel="noopener">Ubion provides DeepCo Bot free for an elementary school AI class, with a path to international competitions</a></div></li>
+        <li class="media__item"><time datetime="2026-06-19">Jun 2026</time><div><p class="media__src">Seoul Shinmun <span class="media__kind">Article in Korean</span></p><a class="media__title" href="https://go.seoul.co.kr/news/newsView.php?id=20260619500173" target="_blank" rel="noopener">AI, taught by a science talent who grew up in Geumcheon</a></div></li>
+        <li class="media__item"><time datetime="2026-06-18">Jun 2026</time><div><p class="media__src">Munhwa Ilbo <span class="media__kind">Article in Korean</span></p><a class="media__title" href="https://v.daum.net/v/20260618075342421" target="_blank" rel="noopener">Geumcheon-gu: “Science talents who grew up here are giving back”</a></div></li>
+        <li class="media__item"><time datetime="2026-06-18">Jun 2026</time><div><p class="media__src">Edaily <span class="media__kind">Photo article in Korean</span></p><a class="media__title" href="https://edaily.co.kr/News/Read?mediaCodeNo=257&amp;newsId=03001206645483032" target="_blank" rel="noopener">[Photo] The Geumcheon Science Cube Talent-Sharing Program</a></div></li>
+        <li class="media__item"><time datetime="2026-01-05">Jan 2026</time><div><p class="media__src">eToday <span class="media__kind">Article in Korean</span></p><a class="media__title" href="https://www.etoday.co.kr/news/view/2542319" target="_blank" rel="noopener">Taejae first-cohort student Dawit Chun receives the ‘2025 Talent Award of Korea’</a></div></li>
+        <li class="media__item"><time datetime="2025-12-30">Dec 2025</time><div><p class="media__src">Electronic Times <span class="media__kind">Article in Korean</span></p><a class="media__title" href="https://www.etnews.com/20251230000252" target="_blank" rel="noopener">[Edu Plus] Taejae University first-cohort student Dawit Chun wins the ‘2025 Talent Award of Korea’</a></div></li>
+        <li class="media__item"><time datetime="2025-05-30">May 2025</time><div><p class="media__src">The Chosun Ilbo <span class="media__kind">Article in Korean</span></p><a class="media__title" href="https://n.news.naver.com/article/023/0003908242?sid=102" target="_blank" rel="noopener">A semester in Japan, a semester in the U.S.: a university that learns in the field around the world</a></div></li>
+        <li class="media__item"><time datetime="2025-05-01">May 2025</time><div><p class="media__src">Taejae University <span class="media__kind">Video</span></p><a class="media__title" href="https://www.youtube.com/watch?v=WSm2qbQmpsE" target="_blank" rel="noopener">TAEJAE UNIVERSITY Wins First Place at CHI 2025 Student Design Competition!</a></div></li>
+        <li class="media__item"><time datetime="2024-09-18">Sep 2024</time><div><p class="media__src">JoongAng Ilbo <span class="media__kind">Article in Korean</span></p><a class="media__title" href="https://v.daum.net/v/PvgEpZ6FW7" target="_blank" rel="noopener">“The biggest risk of my life”: one year of the ‘Taejae experiment’ through the eyes of 16-year-old twins</a></div></li>
+        <li class="media__item"><time datetime="2023-08-30">Aug 2023</time><div><p class="media__src">Yonhap News TV <span class="media__kind">Video in Korean</span></p><a class="media__title" href="https://www.yonhapnewstv.co.kr/news/MYH20230830022600641" target="_blank" rel="noopener">Taejae holds its first entrance ceremony: can it get past the walls of conventional university education?</a></div></li>
+        <li class="media__item"><time datetime="2023-08-30">Aug 2023</time><div><p class="media__src">The Herald Business <span class="media__kind">Article in Korean</span></p><a class="media__title" href="https://v.daum.net/v/4uaEW0bDFK" target="_blank" rel="noopener">‘Taejae,’ Korea’s answer to Minerva University, opens</a></div></li>
+      </ol>
+    </div>
+  </dialog>
   </main>
 
-  <article class="ns">
-    <h1>Who is Dawit Chun?</h1>
-    <p>I’m a senior at Taejae University in Seoul, applying to robotics PhD programs for fall 2027. Have you ever played bingo? I’d like to introduce myself with one. Each tile is a value that shaped my life and my wish to become a robotics engineer. Five in a line make a bingo.</p>
-    <h2>Courage</h2>
-    <p>Before university, I left the usual path through school to study for my own dream. People around me worried, and some said it out loud: “What can a kid even do?” and “Isn’t he just a guinea pig?” But I had a pioneer’s vision. Because it was my own choice, I had to carry its weight, like running a marathon. At 15, I entered Taejae University, Korea’s first innovative university, as the youngest student in its first cohort, with the highest entrance score. Taejae’s students move to cities around the world and take on local problems as civic projects. Taejae took a brave first step toward the future of education, and I knocked on its door. So I fill my first tile with Courage.</p>
-    <h2>Challenge</h2>
-    <p>Through countless challenges and failures, I have proved what I can do: a robot contest grand prize (2021), the KSME Gold Prize (2022), gold at the Aramco Coding World Cup (2023), gold at the International Robot Olympiad in Athens (2024), 1st of 84 at the ACM CHI 2025 Student Design Competition (2025), and a first-author paper at IEEE ICCD (2026). Each award came from a real problem: people trapped in semi-basement homes during monsoon floods, energy, and elderly people with dementia who wander. So I fill my second tile with Challenge.</p>
-    <h2>Innovation</h2>
-    <p>To me, first place at the International Robot Olympiad did not mean being called the best. What the win gave me was a clear idea of what to do next. At Ubion, I helped build new AI learning kits, the DeepCo self-driving car and the DeepCo Board, so that more students in Korea could get close to AI and go on to world competitions themselves. So I fill this tile with Innovation.</p>
-    <h2>Responsibility</h2>
-    <p>I tried to let go of a narrow, selfish view and remember the wider world. Through the Oxford-Stanford-Taejae Fellowship, I went to Oxford as one of Korea’s representatives in a debate on the UN Sustainable Development Goals, and in August 2025 my teammate and I won the AI policy debate in Seoul against students from Oxford and Stanford, then presented our recommendations to Korea’s Deputy Prime Minister. I wrote about these experiences in two chapters of a book published with Korea’s Office for Government Policy Coordination. So I fill this tile with Responsibility.</p>
-    <h2>Sharing</h2>
-    <p>Thinking about it, what good is it to keep everything I had seen outside Korea, and outside my own small world, to myself? Why not share it back? We gave our whole $2,000 debate prize to WWF Korea. I taught about 30 science teachers in Cambodia over two summers with KOICA, and now robots are taught in classrooms across Cambodia. Since 2021, I have kept Korean sponsors in touch with the children they support through U9 Change. I gave my Talent Award of Korea prize to a scholarship foundation in Geumcheon. And very recently, I didn’t want it to end there, so I taught 20 elementary students in Geumcheon how to train a self-driving car’s AI, the very thing I won my gold medal for. So I fill the last tile of my first line with Sharing.</p>
-    <h2>Technology</h2>
-    <p>At ROBOTIS in summer 2026, I built the teleoperation system for HG-DAgger, a form of human-in-the-loop learning: 31 demonstrations and one round of 13 corrections taught the AI Worker a long peg-and-screw task. The same sim-to-real off-policy RL raised Prior-ACT, which I built, from 60% to 82%, and TurboVLA only from 17% to about 30%.</p>
-    <h2>Compassion</h2>
-    <p>Between 173,000 and 232,500 people with ALS cannot speak. I built iPhoneme’s decoder, which reads a 256-electrode speech implant at 92.14% phoneme accuracy on the T15 dataset, about 3 points above the previous best.</p>
-    <h2>A bigger bingo</h2>
-    <p>I expect to graduate in June 2027. At ROBOTIS, TurboVLA succeeded only with bottles within 1 to 2 cm of the table’s center, and I think the limit was its base representation. As a PhD student in your lab, I want to work on robot manipulation with vision-language-action and world models, and to be part of taking the next step toward AGI. My goal is to become a robot engineer who saves people.</p>
-    <p><a href="home.html">See the website</a></p>
-  </article>
+  <footer class="site-footer" id="contact">
+    <div class="container">
+      <div class="footer__grid">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <p class="footer__lead">Prospective PhD student in robotics, Fall 2027. Always happy to talk about robots.</p>
+          <a class="footer__email" href="mailto:dchun4748@gmail.com">dchun4748@gmail.com</a>
+        </div>
+        <ul class="footer__links">
+          <li><a href="mailto:chundawit@taejae.ac.kr">chundawit@taejae.ac.kr</a></li>
+          <li><a href="assets/CV_DawitChun.pdf" target="_blank" rel="noopener">CV (PDF) <span class="footer__arrow" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://github.com/da-dawit" target="_blank" rel="noopener">GitHub <span class="footer__arrow" aria-hidden="true">↗</span></a></li>
+          <li><a href="https://orcid.org/0009-0002-4563-363X" target="_blank" rel="noopener">ORCID <span class="footer__arrow" aria-hidden="true">↗</span></a></li>
+          <li><a href="story.html">My Story</a></li>
+          <li><span>Taejae University, Seoul</span></li>
+        </ul>
+      </div>
+      <div class="footer__bottom">
+        <span>© <span data-year>2026</span> Dawit Chun</span>
+        <a href="#top">Back to top ↑</a>
+      </div>
+    </div>
+  </footer>
 </body>
 </html>

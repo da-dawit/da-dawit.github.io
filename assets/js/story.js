@@ -2144,8 +2144,8 @@
         <div class="tour-info" aria-live="polite"></div>
       </div>
       <p class="sc-goal">My goal is to become <b>a robot engineer who saves people</b>.</p>
-      <div class="sc-actions sc-end"><a class="btn btn--primary" href="home.html">Enter the website</a><a class="btn" href="assets/CV_DawitChun.pdf" target="_blank" rel="noopener">Read my CV</a></div>
-      <p class="sc-links"><a href="research.html">Research</a><a href="mailto:dchun4748@gmail.com">dchun4748@gmail.com</a><a href="./">Play again</a></p>`);
+      <div class="sc-actions sc-end"><a class="btn btn--primary" href="index.html">Back to the website</a><a class="btn" href="assets/CV_DawitChun.pdf" target="_blank" rel="noopener">Read my CV</a></div>
+      <p class="sc-links"><a href="research.html">Research</a><a href="mailto:dchun4748@gmail.com">dchun4748@gmail.com</a><a href="story.html">Play again</a></p>`);
     store.set(KEY, 'done');
     // the route is drawn one leg at a time, and each city lights up as the line reaches it
     const legs = $$('.tour-leg', stage);
