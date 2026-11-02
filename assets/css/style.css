@@ -2579,3 +2579,56 @@ details.jr-civic > p { margin-top: 12px; }
 .chart__table th, .chart__table td { padding: 5px 10px 5px 0; border-bottom: 1px solid var(--hair); text-align: left; font-weight: 400; white-space: nowrap; }
 .chart__table thead th { color: var(--ink); font-weight: 600; }
 .chart svg .val { paint-order: stroke; stroke: #fff; stroke-width: 3px; stroke-linejoin: round; }
+
+/* Project windows: smaller headings, headline numbers, and folded detail
+   ========================================================================== */
+
+.project__sub {
+  margin: 30px 0 10px;
+  font-family: var(--sans);
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.3;
+  color: var(--ink);
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin: 18px 0 8px;
+}
+.stat {
+  padding: 14px 14px 12px;
+  border: 1px solid var(--hair);
+  border-radius: var(--radius);
+  background: #fff;
+}
+.stat__value { font-size: 1.75rem; font-weight: 600; line-height: 1.1; color: var(--ink); }
+.stat__label { margin-top: 8px; font-size: .78rem; line-height: 1.4; color: var(--muted); }
+@media (max-width: 720px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+.fold { margin: 22px 0; border-top: 1px solid var(--hair); border-bottom: 1px solid var(--hair); }
+.fold > summary {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 0;
+  list-style: none;
+  cursor: pointer;
+  font-size: .95rem;
+  font-weight: 500;
+  color: var(--ink);
+}
+.fold > summary::-webkit-details-marker { display: none; }
+.fold > summary::after { content: "+"; color: var(--accent-ink); font-weight: 600; }
+.fold[open] > summary::after { content: "\2212"; }
+.fold__body { padding: 4px 0 22px; }
+.fold__body > p, .fold__body > .bullets { color: var(--ink-2); }
+.fold__body > .fig, .fold__body > .fig-pair { margin: 22px 0; }
+.fold__body > .project__h:first-child { margin-top: 0; }
+
+/* A wide chart scrolls inside its own frame and must not stretch the window on a phone */
+.project__body, .project__meta, .fold, .fold__body, .chart, .chart__scroll, .chart__data { min-width: 0; max-width: 100%; }
