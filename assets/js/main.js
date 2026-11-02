@@ -50,6 +50,29 @@
     teasers.forEach((v) => watch.observe(v));
   }
 
+  // Charts: the value of whichever mark is under the pointer or keyboard focus
+  document.querySelectorAll('.chart').forEach((chart) => {
+    const tip = document.createElement('div');
+    tip.className = 'chart__tip';
+    tip.hidden = true;
+    chart.append(tip);
+    const show = (e) => {
+      const mark = e.target.closest('[data-tip]');
+      if (!mark) { tip.hidden = true; return; }
+      const box = chart.getBoundingClientRect();
+      const at = e.clientX ? { x: e.clientX, y: e.clientY } : mark.getBoundingClientRect();
+      tip.textContent = mark.dataset.tip;
+      tip.hidden = false;
+      const half = tip.offsetWidth / 2;
+      tip.style.left = `${Math.min(Math.max(at.x - box.left, half), box.width - half)}px`;
+      tip.style.top = `${at.y - box.top}px`;
+    };
+    chart.addEventListener('pointermove', show);
+    chart.addEventListener('focusin', show);
+    chart.addEventListener('pointerleave', () => { tip.hidden = true; });
+    chart.addEventListener('focusout', () => { tip.hidden = true; });
+  });
+
   // Click-to-load YouTube (no third-party iframe until someone asks for it)
   document.addEventListener('click', (e) => {
     const play = e.target.closest('.video__play');
