@@ -846,7 +846,7 @@
         ${gateHtml('Watch-Out', 'A sample case: Ms. Lee, 79, has dementia and wants to go out. Answer the door’s questions and tap her watch on the reader. Then drag her away from home on the map, and see what her watch, a stranger’s phone nearby and her son’s phone show.')}
         ${WO_HTML}
         </div>
-        <p class="rv-text">My team built Watch-Out, a smartwatch and a door lock that add help only as the risk rises, so people with dementia can still go out on their own. The reader sits where only a properly worn watch can reach it, so she always leaves wearing it, and her caregiver can help her put it on beforehand. If she can’t answer the door’s questions, she may not be ready to go out alone, so the door stays shut.</p>
+        <p class="rv-text">My team built Watch-Out, a smartwatch and a door lock that add help only as the risk rises, so people with dementia can still go out on their own. The reader sits where only a properly worn watch can reach it, so she always leaves wearing it, and her family can help her put it on beforehand. If she can’t answer the door’s questions, she may not be ready to go out alone, so the door stays shut.</p>
         ${fill('Challenge', 'my second tile')}`);
       watchOut($('.wo-box', body));
     },
