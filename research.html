@@ -19,8 +19,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=Newsreader:ital,opsz,wght@0,6..72,300..600;1,6..72,300..600&display=swap">
-  <link rel="stylesheet" href="assets/css/style.css?v=202611020200">
+  <link rel="stylesheet" href="assets/css/style.css?v=202611140100">
   <script src="assets/js/main.js?v=202611020200" defer></script>
+  <script src="assets/js/pdpm-data.js?v=202611140100" defer></script>
+  <script src="assets/js/pdpm.js?v=202611140100" defer></script>
 </head>
 <body id="top">
   <a class="skip-link" href="#main">Skip to content</a>
@@ -95,7 +97,7 @@
           <p class="lead">Before and alongside robotics, I built and published systems in computer architecture, brain-computer interfaces, assistive technology, and disaster response. Looking back, each is a small version of the same question about intelligence. PDPM is a processor that adapts itself to its workload, iPhoneme reads intent from the brain, and Watch-Out and the Smart Emergency Window sense danger and decide when to step in. Full citations are on the <a class="text-link" href="publications.html">Publications</a> page.</p>
         </header>
         <div class="rcards reveal">
-          <a class="rcard" href="#pdpm"><span class="rcard__media"><img src="assets/figures/home/pdpm-architecture-card.jpg" width="960" height="540" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Computer architecture, 2026</span><span class="rcard__title">PDPM: A Morphable RISC-V Pipeline</span><span class="rcard__desc">An RV32IM core that switches between 3, 5, and 7 stages while it runs, chosen by a 10-weight perceptron: 94.28% accuracy at +0.107% overhead on 301 benchmarks.</span><span class="rcard__meta">IEEE ICCD 2026, first author <span class="badge">Accepted (26% acceptance)</span></span><span class="rcard__more">Read more</span></span></a>
+          <a class="rcard" href="#pdpm"><span class="rcard__media"><img src="assets/figures/home/pdpm-architecture-card.jpg" width="960" height="540" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Computer architecture, 2026</span><span class="rcard__title">PDPM: A Morphable RISC-V Pipeline</span><span class="rcard__desc">An RV32IM core that changes between 3, 5 and 7 pipeline stages while it runs. A 10-weight perceptron predicts two cycle ratios and picks the fastest depth, matching the oracle on 94.28% of 301 benchmarks at +0.107% overhead.</span><span class="rcard__meta">IEEE ICCD 2026, first author <span class="badge">Accepted (26% acceptance)</span></span><span class="rcard__more">Read more</span></span></a>
           <a class="rcard" href="#iphoneme"><span class="rcard__media"><img src="assets/figures/iphoneme/slide-to-unlock.jpg" width="1270" height="700" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Brain-computer interfaces, 2026</span><span class="rcard__title">iPhoneme</span><span class="rcard__desc">Turning brain signals into text for people with ALS: 92.14% phoneme accuracy on the T15 dataset, about 3 points above the prior state of the art.</span><span class="rcard__meta">arXiv preprint, equal-contribution first author</span><span class="rcard__more">Read more</span></span></a>
           <a class="rcard" href="#watch-out"><span class="rcard__media"><img src="assets/figures/home/chi-winner.jpg" width="960" height="540" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Human-computer interaction, 2025</span><span class="rcard__title">Watch-Out</span><span class="rcard__desc">A wearable safety system for people with Alzheimer’s who wander. Instead of locking them in, a smart door lock lets them leave wearing the watch.</span><span class="rcard__meta">ACM CHI 2025 Extended Abstracts, Student Design Competition <span class="badge">1st Place (1 in 84)</span></span><span class="rcard__more">Read more</span></span></a>
           <a class="rcard" href="#smart-window"><span class="rcard__media"><img src="assets/figures/window/window-demo-poster.jpg" width="1280" height="720" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">IoT and disaster response, 2025</span><span class="rcard__title">Smart Emergency Window</span><span class="rcard__desc">A security window that opens itself in any disaster situation, made for semi-basement homes. Fire and water sensors trigger motors that release the bars within three seconds, with a manual release if the power fails.</span><span class="rcard__meta">JKSCI 2025, two papers and a Korean patent application <span class="badge">Excellence Paper Award</span></span><span class="rcard__more">Read more</span></span></a>
@@ -392,35 +394,108 @@
         <header class="project__meta reveal">
           <p class="project__kicker">Computer architecture, 2026</p>
           <h3 class="project__title">PDPM</h3>
-          <p class="project__tagline">A RISC-V processor that changes its own pipeline depth while it runs, steered by a perceptron.</p>
-          <p class="project__venue">IEEE ICCD 2026, first author</p>
+          <p class="project__tagline">A RISC-V processor that changes its own pipeline depth while it runs, chosen by a 10-weight perceptron.</p>
+          <p class="project__venue">IEEE ICCD 2026, first author, with Minhee Jun</p>
           <div class="project__badges"><span class="badge">Accepted (26% acceptance)</span></div>
           <div class="project__links"><a class="pill-link" href="assets/papers/PDPM_ICCD2026.pdf" target="_blank" rel="noopener">Paper</a><a class="pill-link" href="https://github.com/da-dawit/pdpm-riscv" target="_blank" rel="noopener">Code</a><a class="pill-link" href="publications.html#pdpm">Citation</a></div>
         </header>
         <div class="project__body reveal">
-          <figure class="fig"><a href="assets/figures/pdpm/pdpm-architecture.png" target="_blank" rel="noopener"><img src="assets/figures/pdpm/pdpm-architecture.png" width="3767" height="1629" loading="lazy" alt="PDPM block diagram: a seven-stage RISC-V datapath with bypass multiplexers, and the ratio-regression predictor that selects pipeline mode and clock"></a><figcaption>(a) The morphable datapath. Blue stages exist only in the 7-stage mode; bypass multiplexers collapse the rest. (b) The 10-weight ratio-regression head that picks the depth.</figcaption></figure>
+          <figure class="fig chart pdpm">
+            <div class="chart__scroll" data-pdpm="morph"><img class="pdpm-fallback" src="assets/figures/pdpm/pdpm-architecture.png" width="3767" height="1629" loading="lazy" alt="PDPM block diagram: a seven-stage RISC-V datapath with bypass multiplexers, and the predictor that selects the pipeline mode"></div>
+            <figcaption>One seven-stage datapath holds all three depths. Four bypass multiplexers (orange when on) make pipeline registers transparent: five stages skip the IF and EX splits, and three stages also merge ID with EX and MEM with WB. To switch, fetch holds, the pipeline drains, and the bypass signals change on one clock edge. A taken branch flushes the instructions behind it, 1 cycle at three stages and 5 at seven.</figcaption>
+          </figure>
+
           <h4 class="project__h">The problem</h4>
-          <p>Pipeline depth is fixed when a processor is designed, but the depth that runs a program fastest changes with the workload, and even between phases of one program. Deeper pipelines allow faster clocks but pay more for every branch; shallower ones do the opposite.</p>
-          <h4 class="project__h">Approach</h4>
-          <p>I built an RV32IM core as a seven-stage superset whose four bypass multiplexers collapse it to 3, 5, or 7 stages at runtime, with architectural state preserved. Every 200 instructions, a 10-weight int8 perceptron head reads four counters (how often branches flush the pipeline, how sensitive the program is to depth, how often loads stall, and how long the program has run), predicts two cycle ratios between depths, and picks the depth with the lowest predicted execution time. A confidence gate and a 16-entry phase memory stop it from switching back and forth.</p>
-          <p>Instead of a configuration label, the head learns the quantity the runtime actually optimizes. Because it predicts ratios, moving to a new clock plan changes two constants, with no retraining, and the same holds for energy. An ablation shows this is where the gain comes from: a 3-class depth classifier reaches 90.73%, and swapping its labels for the two ratio targets lifts it to 94.28% with fewer weights. Paired over 45 trials, that is 3.11 points more accurate (95% CI 1.78 to 4.48, p = 1.3×10⁻⁴), and its errors cost less, 167 at a mean 1.10% of execution time against 251 at 1.50%. A larger model does not help: a small MLP reaches only 71.70%.</p>
-          <p>The predictor fits in 478 LUTs, 0.75% of the Artix-7 FPGA. The core can also reconfigure its own clock through the FPGA’s clock manager, relocking in about 21.5 µs. The full artifact is open source, with 71 automated checks that reproduce every number in the paper.</p>
+          <p>Execution time is instruction count × cycles per instruction ÷ clock, and pipeline depth pulls the last two in opposite directions. A deeper pipeline has shorter stages and a faster clock, but in a small core with no branch predictor every taken branch flushes the instructions behind it, and the flush grows with depth. Branch-light code wants seven stages and branch-heavy code wants three. Chips have shipped with anywhere from 2 to 31 stages, and Hartstein and Puzak showed in 2002 that the best depth depends on the workload, yet every one of those chips fixes its depth at design time.</p>
+          <figure class="fig chart pdpm">
+            <div class="chart__scroll" data-pdpm="tradeoff"></div>
+            <figcaption>Effective time per instruction, CPI ÷ clock, for each depth as the share of taken branches grows. Flush penalties are the measured 1, 2 and 5 cycles; clocks are the analytical plan, 1.1, 1.3 and 1.5× a common base. Seven stages are fastest below about 6%, three stages above about 22%. Drag across the chart to move the line.</figcaption>
+          </figure>
+          <p>The best depth also depends on the clock plan. Under one shared clock almost every kernel prefers three stages. At the clocks my FPGA build actually reaches, five stages win, and when deeper pipelines clock faster, as the analytical plan assumes, seven do. It even changes inside one program: an SSM block from the deployment suite runs best at three stages, then five, then three again. So the depth has to be chosen at runtime, and the choice has to survive a change of clock plan.</p>
+          <figure class="fig chart pdpm">
+            <div class="chart__scroll" data-pdpm="plans"></div>
+            <figcaption>The 300 edge-AI kernels of the deployment suite, one column each, colored by their fastest depth. The cycle counts are measured once; between plans only each depth's clock changes. Below, the mean time each policy spends above the per-kernel best. Every fixed depth is best under one plan and up to 20.6% worse under another. PDPM keeps its weights frozen and changes two constants per plan.</figcaption>
+          </figure>
+
+          <h4 class="project__h">One datapath, three depths</h4>
+          <p>I wrote the RV32IM core in Verilog, about 4,000 lines, as a seven-stage superset: IF1, IF2, ID, EX1, EX2, MEM and WB. Three, five and seven stages are the three symmetric bypass settings of that one datapath. Four or six stages would need asymmetric merges and their own hazard logic, and would add no operating point the three do not already cover. All modes share the register file and memory, so a depth switch moves no architectural state and costs a drain of at most seven cycles. Changing the clock is a separate and slower step. The core reprograms the FPGA's clock manager (MMCM) and waits about 21.5 µs for it to relock, which a 200-instruction window cannot pay back, so the clock follows the plan while the depth follows the program.</p>
+
+          <h4 class="project__h">Predicting two ratios instead of twelve classes</h4>
+          <p>My first predictor was a classifier over (depth, clock) pairs, three depths at four clock rungs. But a depth's cycle count does not change with the clock, so a slower rung can only lose, and nine of the twelve classes can never be the answer. Since time is cycles ÷ clock, I divided each depth's time by the five-stage time. The program's length cancels, and what remains are two cycle ratios, C3/C5 and C7/C5, that do not depend on the clock plan at all. Every 200 instructions the head reads four counters (branch-flush rate β, the cycle sensitivity to depth ρ, load-use stall rate σ, and log program length ℓ), regresses the two ratios, divides them by the plan's constants, and picks the smallest. A confidence margin and a 16-entry phase memory keep it from switching back and forth.</p>
+          <figure class="fig chart pdpm">
+            <div class="chart__scroll" data-pdpm="decide"></div>
+            <figcaption>One kernel from the deployment suite, a 4-bit grouped matrix-vector product. Left, its twelve (depth, clock) choices: with the cycles fixed, only each depth at its own maximum clock (ringed) can win. Right, its two ratios divided by each plan's constants. The prediction stays the same while the chosen depth follows the plan: three stages at one clock, five at the FPGA's clocks, seven when deeper clocks run faster.</figcaption>
+          </figure>
+          <p>The weight count drops from 60 int8 weights to 10, but the accuracy gain comes from the target itself. A 3-class depth classifier with the same features, folds and seeds reaches 90.73%; replacing its labels with the two ratio targets lifts it to 94.28%. A ratio also carries the size of each mistake into the loss, where a label treats every mistake alike, so the regressor's errors are cheaper: 167 errors at a mean 1.10% of execution time, against 251 at 1.50%. In hardware the head needs no multiplier. Each event that fires adds its weight to a running sum, so the prediction is ready the moment the window closes, and because the hardware head regresses the log of each ratio, a clock plan becomes two added constants.</p>
+
           <h4 class="project__h">Results</h4>
-          <ul class="bullets">
-            <li><strong>94.28%</strong> configuration accuracy at +0.107% mean overhead on 301 benchmarks, with 10 weights instead of a 12-class classifier’s 60. Using only features a deployed chip can observe: 89.40% at +0.255%.</li>
-            <li>On 340 edge-inference programs (attention, GEMM, state-space models, VLA heads), it matched the per-phase oracle depth on <strong>313 of 315</strong> phases and finished 0.44% faster than the best fixed depth per program.</li>
-            <li>Against the strongest static configuration, always running five stages at 1.3× clock, PDPM cuts mean overhead from +2.57% to +0.107%. The static choice exceeds 5% overhead on 94 of 301 benchmarks (up to 48.7%); PDPM exceeds it on none.</li>
-            <li>Runs closed-loop on a Xilinx Artix-7 at 87.1 MHz with the three-depth head (the CPU was first brought up on a Lattice iCE40). Its committed state is byte-identical to a fixed-depth reference on all 641 programs.</li>
-          </ul>
-          <h4 class="project__h">Tested on 2026 edge AI</h4>
-          <p>The deployment suite is 340 programs of 2026 edge-inference computation, written in C at microcontroller scale: 16 KB of memory and integer arithmetic only. 300 are kernels from 44 families, spanning attention, quantized dense algebra, convolution, state-space and recurrent sequence models, decoding, retrieval, and robotic action heads. The other 40 chain those kernels into ten model types at four shapes each, giving 315 labeled phases. The suite shares no program with the 301 benchmarks used to compare predictors.</p>
-          <p>The best depth depends on the workload and the clock plan together. At one clock, the 300 kernels split 286/14/0 across 3, 5, and 7 stages; under the analytical clock plan they split 8/73/219, led by attention, GEMV/GEMM, MoE routing, RoPE/YaRN, and the Mamba scan, which win by up to 11.3% over five stages. A wrong fixed depth costs up to 78.9% on a single kernel. A head fitted only on the isolated kernels follows the depth changes inside the 40 model programs it has never seen, settling within about 200 cycles, and matches the per-phase best depth on 313 of 315 phases. Letting the clock follow the depth is worth a further 5.8% on these kernels, and 5.1% once the measured relock is charged.</p>
-          <figure class="fig"><a href="assets/figures/pdpm/pdpm-decision-boundary.png" target="_blank" rel="noopener"><img src="assets/figures/pdpm/pdpm-decision-boundary.png" width="1502" height="790" loading="lazy" alt="Scatter plot of CPI ratio against branch-flush rate for 301 fitted benchmarks and 300 held-out 2026 edge-AI kernels, colored by best depth, with the learned two-dimensional boundaries and the analytical branch-rate thresholds"></a><figcaption>Every program by its branch-flush rate β and cross-depth CPI ratio ρ, colored by its best depth. The learned boundaries (dashed) sort 92.7% of the 301 fitted benchmarks and 87.3% of the 300 held-out 2026 kernels correctly. The analytical branch-rate thresholds (solid) miss most of this structure: all 37 kernels past β = 55% are best in seven stages, and a branch-rate threshold calls every one of them three-stage.</figcaption></figure>
-          <figure class="fig fig--center" style="--maxw: 460px"><a href="assets/figures/pdpm/pdpm-overhead.png" target="_blank" rel="noopener"><img src="assets/figures/pdpm/pdpm-overhead.png" width="1204" height="982" loading="lazy" alt="Charts comparing PDPM with always running five stages: per-benchmark overhead by oracle class, and the number of benchmarks above each overhead threshold"></a><figcaption>Against always running five stages at 1.3× clock, PDPM keeps overhead near zero: 2 of 301 benchmarks exceed 2%, and none exceed 5%.</figcaption></figure>
+          <p>Two suites test two different things. The coverage suite, 301 programs under nested 5-fold cross-validation, keeps all three depths contested (60, 141 and 100 programs prefer each), so predictor designs compete there. The deployment suite is 340 programs of 2026 edge inference that I wrote in C at microcontroller scale, 16 KB of memory and integer arithmetic only: 300 kernels from 44 families, from attention and quantized GEMM to Mamba scans and robotic action heads, and 40 pipelines that chain them into ten model types. The two suites share no program.</p>
+          <div class="ptable">
+            <table>
+              <thead><tr><th>Policy</th><th>Overhead</th><th>Accuracy</th><th>Weights</th></tr></thead>
+              <tbody>
+                <tr><th colspan="4">Coverage suite, 301 programs, against the per-window oracle</th></tr>
+                <tr><td>Always 5 stages at 1.3× (best static)</td><td>+2.572%</td><td>46.84%</td><td>—</td></tr>
+                <tr><td>UCB1 bandit, 12 arms</td><td>+23.565%</td><td>9.24%</td><td>—</td></tr>
+                <tr><td>12-class perceptron classifier</td><td>+0.232%</td><td>91.62%</td><td>60</td></tr>
+                <tr><td>3-class depth classifier</td><td>+0.178%</td><td>90.73%</td><td>15</td></tr>
+                <tr><td>MLP, 7→4→12</td><td></td><td>71.70%</td><td>92</td></tr>
+                <tr class="is-us"><td>PDPM, trace ρ (ceiling)</td><td>+0.107%</td><td>94.28%</td><td>10</td></tr>
+                <tr class="is-us"><td>PDPM, proxy ρ̂ a running core can measure</td><td>+0.255%</td><td>89.40%</td><td>10</td></tr>
+              </tbody>
+            </table>
+          </div>
+          <p>Against the strongest static configuration PDPM's overhead is 24× lower, and the mean is not hiding a tail: 8 of 301 programs exceed 0.5% overhead under PDPM, against 149 for always running five stages at 1.3×. Bigger models do not help with 301 labeled points; the MLP loses more than 20 points to the 12-class linear classifier. A branch-rate threshold does not work either, because the boundary between depths is two-dimensional, in branch rate and depth sensitivity together.</p>
+          <figure class="fig"><a href="assets/figures/pdpm/pdpm-decision-boundary.png" target="_blank" rel="noopener"><img src="assets/figures/pdpm/pdpm-decision-boundary.png" width="1502" height="790" loading="lazy" alt="Scatter plot of CPI ratio against branch-flush rate for 301 fitted benchmarks and 300 held-out 2026 edge-AI kernels, colored by best depth, with the learned two-dimensional boundaries and the analytical branch-rate thresholds"></a><figcaption>Every program by branch-flush rate β and cycle sensitivity ρ, colored by its best depth. The learned boundaries (dashed) place 92.7% of the 301 fitted benchmarks and 87.3% of the 300 held-out kernels correctly. All 37 kernels past β = 55% are best at seven stages, which a branch-rate threshold (solid) would call three.</figcaption></figure>
+          <p>The harder test is the 40 pipelines, which neither head saw. The head was fitted only on the isolated kernels, yet it follows the depth changes inside these programs, settling within about 200 cycles of each kernel boundary.</p>
+          <figure class="fig chart pdpm">
+            <div class="chart__scroll" data-pdpm="traces"></div>
+            <figcaption>Depth over time inside two unseen pipelines. Upper lane, the fastest depth for each phase; lower lane, the depth the hardware head served. The SSM block runs three, five, three stages. Speech 2 is the same program under three clock plans, and the head follows three different depth patterns with the same weights.</figcaption>
+          </figure>
+          <div class="ptable">
+            <table>
+              <thead><tr><th>Policy, 40 unseen pipelines</th><th>Overhead</th><th>Phases on the best depth</th></tr></thead>
+              <tbody>
+                <tr><td>Always 7 stages</td><td>+17.107%</td><td></td></tr>
+                <tr><td>Always 5 stages</td><td>+3.124%</td><td></td></tr>
+                <tr><td>Always 3 stages (best static)</td><td>+0.209%</td><td></td></tr>
+                <tr><td>Depth-3 decision tree</td><td>+0.211%</td><td>301 / 315</td></tr>
+                <tr class="is-us"><td>PDPM, fit on the kernels</td><td>−0.437%</td><td>313 / 315</td></tr>
+              </tbody>
+              <caption>Fixed clock, against a per-program oracle that keeps the best single depth for each program. A negative overhead is only possible by switching depth inside a program.</caption>
+            </table>
+          </div>
+
           <h4 class="project__h">On the FPGA</h4>
-          <p>On the Artix-7, the predictor drives the mode controller from the core’s own counters, with no host in the loop. The ordered sequence of every register write and store matched a fixed-depth reference on all 301 benchmarks, 300 kernels, and 40 model programs, at 10- and 40-cycle memory latency, across 144 to 1,315 self-initiated depth switches. A separate bitstream let the core retune its own clock alongside its depth through the MMCM, over 470 switches, with relock measured at 21.08 to 21.44 µs.</p>
-          <p>Retargeting the constants to measured power per mode (0.448, 0.365, and 0.413 mW/MHz) takes the closed loop from +0.454% to −0.265% of a per-program energy reference, with the weights untouched. On the twelve Embench IoT 1.0 programs that fit the runtime, accuracy holds at 93.3%. And because constant propagation removes any mode the frozen controller cannot reach, freezing the third output lets synthesis reclaim the seven-stage datapath, a 24% area reduction from changing ten weights.</p>
-          <div class="project__role"><span>My role</span>Everything from RTL to results: the Verilog core and controller, the benchmark suites, training and evaluation, and FPGA bring-up.</div>
+          <p>I brought the CPU up on a Lattice iCE40 and moved it to a Xilinx Artix-7 once the benchmarks needed 16 KB memories. There the hardware head drives the mode controller from the core's own counters, with no host in the loop. The one-ratio head closes timing at 90.32 MHz and the three-depth head at 87.1 MHz. The predictor takes 478 LUTs and 192 flip-flops, 0.75% of the device, and no DSP. To check correctness more strictly than a checksum, I recorded the ordered sequence of every register write and store and compared it with a fixed-depth run of the same binary. They were identical on all 641 programs, across 144 to 1,315 self-initiated depth switches. Morphing changes when results appear, never what they are. A separate bitstream lets the core retune its own clock alongside its depth through the MMCM; the switch counter reached 470, and relock measured 21.08 to 21.44 µs.</p>
+          <p>The result I find most interesting came from synthesis. At one clock the head never picks seven stages, so with the weights frozen the mode bit that selects it is a constant, and the tools removed the whole seven-stage datapath, 24% of the design, without any edit to the RTL. In a morphable core the policy and the datapath cannot be separated, and depth becomes a parameter of the policy. When a clock plan makes seven stages worth having, reinstating the second output keeps that datapath, and the controller selects it on the board.</p>
+
+          <details class="fold">
+            <summary>Statistics behind the ablation</summary>
+            <div class="fold__body">
+              <p>Every number comes from nested cross-validation: an outer 5-fold split wrapping an inner 3-fold split, repeated over three fold permutations and three weight initializations, for 45 outer trials per model. The family-selection rule was committed before any outer-test result was seen. Because the 3-class classifier and the regressor see identical folds, seeds and training sets, they can be compared trial by trial. Paired over the 45 trials, regression is 3.11 points more accurate (95% bootstrap CI 1.78 to 4.48, Wilcoxon p = 1.3×10⁻⁴) at 0.072 points lower overhead (p = 1.2×10⁻⁵). Its 90th-percentile error costs 2.30% of execution time against 3.14%. Outer-test accuracy matches inner validation, so the weights depend on the features rather than on benchmark identity.</p>
+              <p>Trace ρ needs both the three- and seven-stage cycle counts of the same window, which a running core cannot have. The deployable input ρ̂ is a cubic polynomial in β plus a stall term, its shape taken from the Taylor expansion of the analytical relation; it tracks ρ at r = 0.959 out of fold and costs 4.9 points of accuracy.</p>
+            </div>
+          </details>
+          <details class="fold">
+            <summary>Energy, other benchmarks, slower memory</summary>
+            <div class="fold__body">
+              <p>The same formulation retargets to energy. Per-mode dynamic power measures 0.448, 0.365 and 0.413 mW/MHz, and folding those into the two constants takes the closed loop from +0.454% to −0.265% of a per-program energy reference, with the weights untouched. On the twelve Embench IoT 1.0 programs that fit the runtime, accuracy holds at 93.3%. Letting the clock follow the depth is worth a further 5.8% on the deployment kernels, and 5.1% once the measured relock is charged. With slower memory the depths separate further: at a 10-cycle miss latency seven stages win outright on 28 of the 301 programs, and on 56 of 298 at 240 cycles, by up to 23.7%.</p>
+            </div>
+          </details>
+          <details class="fold">
+            <summary>Limitations and next steps</summary>
+            <div class="fold__body">
+              <p>Depth sensitivity ρ is exact only with both modes measured, and the single-mode proxy costs 4.9 points; probing the other depth at runtime is in the RTL but does not pay at these margins. Closing that gap cheaply is the open problem. Memory is single-cycle in the main results, and the core implements the unprivileged RV32IM datapath, without precise exceptions, interrupts or virtual memory. Those are the next steps toward full applications.</p>
+            </div>
+          </details>
+          <details class="fold">
+            <summary>The architecture figure from the paper</summary>
+            <div class="fold__body">
+              <figure class="fig"><a href="assets/figures/pdpm/pdpm-architecture.png" target="_blank" rel="noopener"><img src="assets/figures/pdpm/pdpm-architecture.png" width="3767" height="1629" loading="lazy" alt="PDPM block diagram: a seven-stage RISC-V datapath with bypass multiplexers, and the ratio-regression predictor that selects pipeline mode and clock"></a><figcaption>(a) The morphable datapath. Blue stages exist only in the seven-stage mode; bypass multiplexers collapse the rest. (b) Per-window event counters feed the two-output ratio head, whose smallest predicted time drives the mode controller.</figcaption></figure>
+            </div>
+          </details>
+          <div class="project__role"><span>My role</span>Everything from RTL to results: the Verilog core and controller, the benchmark suites, training and evaluation, and FPGA bring-up. The artifact is open source and reproduces every number in the paper.</div>
         </div>
       </article>
     </div>

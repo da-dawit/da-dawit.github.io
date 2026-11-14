@@ -2632,3 +2632,61 @@ details.jr-civic > p { margin-top: 12px; }
 
 /* A wide chart scrolls inside its own frame and must not stretch the window on a phone */
 .project__body, .project__meta, .fold, .fold__body, .chart, .chart__scroll, .chart__data { min-width: 0; max-width: 100%; }
+
+/* PDPM window: interactive figures (assets/js/pdpm.js) and results tables
+   ========================================================================== */
+
+.pdpm .chart__scroll { padding: 14px 14px 12px; }
+.pdpm-seg { display: flex; flex-wrap: wrap; gap: 6px; margin: 0 0 12px; }
+.pdpm-seg button,
+.pdpm-replay {
+  padding: 4px 11px;
+  border: 1px solid var(--hair-2);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--ink-2);
+  font: inherit;
+  font-size: .8rem;
+  line-height: 1.5;
+  cursor: pointer;
+}
+.pdpm-seg button:hover, .pdpm-replay:hover { border-color: var(--ink-2); }
+.pdpm-seg button[aria-pressed="true"] { background: var(--ink); border-color: var(--ink); color: #fff; }
+.pdpm-replay { margin-top: 8px; }
+.pdpm-range { display: flex; align-items: center; gap: 12px; margin-top: 10px; font-size: .85rem; color: var(--ink-2); }
+.pdpm-range input { flex: 1; min-width: 120px; accent-color: var(--ink); }
+.pdpm-range output { min-width: 3.4em; text-align: right; font-variant-numeric: tabular-nums; color: var(--ink); }
+
+.chart svg .tok { transition: transform var(--dur, 400ms) linear, opacity .25s ease; }
+.chart svg .tok--alu { fill: #3d4046; }
+.chart svg .tok--mem { fill: #fff; stroke: #3d4046; stroke-width: 2; }
+.chart svg .tok--br { fill: var(--accent); }
+.chart svg .tok--sq { fill: #fff; stroke: #b9b5ab; stroke-width: 1.5; stroke-dasharray: 3 2; }
+.chart svg .pdpm-reg { fill: #15171a; stroke: #15171a; stroke-width: 1; transition: fill .45s ease, stroke .45s ease; }
+.chart svg .pdpm-reg.is-off { fill: #fff; stroke: #b9b5ab; stroke-dasharray: 3 2; }
+.chart svg .pdpm-byp path { fill: none; stroke: #d6d2c8; stroke-width: 1.4; transition: stroke .45s ease, fill .45s ease; }
+.chart svg .pdpm-byp path:last-child { fill: #fff; }
+.chart svg .pdpm-byp.is-on path { stroke: var(--accent); }
+.chart svg .pdpm-byp.is-on path:last-child { fill: var(--accent-soft); }
+.chart svg .pdpm-draw { stroke-dasharray: 1; stroke-dashoffset: 0; transition: stroke-dashoffset 1.6s var(--ease); }
+.chart svg.is-hidden .pdpm-draw { stroke-dashoffset: 1; }
+.chart svg .pdpm-col { transition: fill .5s ease; }
+.chart svg .pdpm-slide { transition: transform .8s var(--ease); }
+.chart svg .pdpm-pt { transition: opacity .45s ease; }
+.chart svg.is-waiting .pdpm-pt { opacity: 0; }
+.chart svg .pdpm-pt.is-dom { opacity: .16; }
+.chart svg .pdpm-keep { opacity: 0; transition: opacity .4s ease .2s; }
+.chart svg .pdpm-pt:not(.is-in) .pdpm-keep,
+.chart svg:not(.is-waiting) .pdpm-pt.is-in .pdpm-keep { opacity: 1; }
+.chart svg .pdpm-late, .chart svg .pdpm-playhead { transition: opacity .4s ease; }
+
+.ptable { margin: 26px 0 24px; overflow-x: auto; }
+.ptable table { width: 100%; border-collapse: collapse; font-size: .86rem; font-variant-numeric: tabular-nums; border-top: 1.5px solid var(--ink); border-bottom: 1.5px solid var(--ink); }
+.ptable th, .ptable td { padding: 6px 10px; text-align: right; white-space: nowrap; font-weight: 400; color: var(--ink-2); }
+.ptable th:first-child, .ptable td:first-child { text-align: left; padding-left: 0; white-space: normal; }
+.ptable thead th { color: var(--ink); font-weight: 600; border-bottom: 1px solid var(--ink); }
+.ptable tbody th { padding-top: 12px; color: var(--ink); font-weight: 600; text-align: left; }
+.ptable tr.is-us td { background: var(--surface); color: var(--ink); }
+.ptable tr.is-us td:first-child { padding-left: 8px; }
+.ptable td:first-child { padding-left: 8px; }
+.ptable caption { caption-side: bottom; padding-top: 8px; text-align: left; color: var(--muted); font-size: .8rem; }
