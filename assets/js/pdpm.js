@@ -517,6 +517,67 @@
     watch(host, () => { if (!played) { played = true; play(); } });
   };
 
+  /* ---------------------------------------------------------------- talk animations (mp4) */
+  const animPlayer = (fig) => {
+    const video = fig.querySelector('video');
+    const note = fig.querySelector('.pdpm-anim__note');
+    // full paths written out so the deploy scanner finds every clip
+    const CLIPS = {
+      'datapath-p3': 'assets/figures/pdpm/anim/datapath-p3.mp4',
+      'datapath-p5': 'assets/figures/pdpm/anim/datapath-p5.mp4',
+      'datapath-p7': 'assets/figures/pdpm/anim/datapath-p7.mp4',
+      'timing-p3': 'assets/figures/pdpm/anim/timing-p3.mp4',
+      'timing-p5': 'assets/figures/pdpm/anim/timing-p5.mp4',
+      'timing-p7': 'assets/figures/pdpm/anim/timing-p7.mp4',
+      'switch-datapath': 'assets/figures/pdpm/anim/switch-datapath.mp4',
+      'switch-timing': 'assets/figures/pdpm/anim/switch-timing.mp4',
+    };
+    const MODES = [
+      ['p3', '3 stages', 'Three stages: all four bypass multiplexers on, merging the pipeline into IF, ID + EX and MEM + WB. A taken branch flushes one cycle.'],
+      ['p5', '5 stages', 'Five stages: the IF and EX splits are bypassed, which gives the classic five-stage RISC-V pipeline. A taken branch flushes two cycles.'],
+      ['p7', '7 stages', 'Seven stages: nothing is bypassed. IF1 and IF2, and EX1 and EX2, split the work of fetch and execute, and a taken branch flushes five cycles.'],
+      ['switch', 'Switching', 'A live run from five to seven to three stages and back. At each switch, fetch holds, the pipeline drains, and the bypass signals flip on one clock edge.'],
+    ];
+    const VIEWS = [['datapath', 'Datapath'], ['timing', 'Timing diagram']];
+    let mode = 'p3', view = 'datapath', visible = false;
+    const bar = document.createElement('div');
+    bar.className = 'pdpm-anim__bar';
+    const group = (items, label, pick) => {
+      const g = document.createElement('div');
+      g.className = 'pdpm-seg';
+      g.setAttribute('role', 'group');
+      g.setAttribute('aria-label', label);
+      const btns = items.map(([key, text]) => {
+        const b = document.createElement('button');
+        b.type = 'button';
+        b.textContent = text;
+        b.addEventListener('click', () => pick(key));
+        g.appendChild(b);
+        return [key, b];
+      });
+      bar.appendChild(g);
+      return (key) => btns.forEach(([k, b]) => b.setAttribute('aria-pressed', String(k === key)));
+    };
+    const show = () => {
+      const file = mode === 'switch' ? `switch-${view}` : `${view}-${mode}`;
+      markMode(mode); markView(view);
+      note.textContent = MODES.find((m) => m[0] === mode)[2];
+      if (!video.src.endsWith(CLIPS[file])) {
+        video.src = CLIPS[file];
+        video.load();
+      }
+      if (visible && !still) video.play().catch(() => {});
+    };
+    const markMode = group(MODES.map(([k, t]) => [k, t]), 'Depth', (k) => { mode = k; show(); });
+    const markView = group(VIEWS, 'View', (k) => { view = k; show(); });
+    fig.prepend(bar);
+    video.removeAttribute('controls');
+    video.addEventListener('click', () => (video.paused ? video.play().catch(() => {}) : video.pause()));
+    show();
+    watch(video, () => { visible = true; if (!still) video.play().catch(() => {}); }, () => { visible = false; video.pause(); });
+  };
+  document.querySelectorAll('[data-pdpm-anim]').forEach(animPlayer);
+
   const run = { morph, tradeoff, plans, decide, traces };
   document.querySelectorAll('[data-pdpm]').forEach((host) => {
     const f = run[host.dataset.pdpm];

@@ -2693,3 +2693,7 @@ details.jr-civic > p { margin-top: 12px; }
 
 /* ICCD 2026 section at the top of the PDPM window */
 .project__body > .project__h--first { margin-top: 0; }
+.pdpm-anim__bar { display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 0 0 10px; }
+.pdpm-anim__bar .pdpm-seg { margin: 0; }
+.pdpm-anim video { cursor: pointer; background: #fff; }
+.pdpm-anim__note { margin: 10px 0 0; min-height: 3.2em; color: var(--ink-2); font-size: .9rem; line-height: 1.55; }
