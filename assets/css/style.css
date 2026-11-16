@@ -2691,6 +2691,5 @@ details.jr-civic > p { margin-top: 12px; }
 .ptable td:first-child { padding-left: 8px; }
 .ptable caption { caption-side: bottom; padding-top: 8px; text-align: left; color: var(--muted); font-size: .8rem; }
 
-/* ICCD 2026: conference section on Home and at the top of the PDPM window */
+/* ICCD 2026 section at the top of the PDPM window */
 .project__body > .project__h--first { margin-top: 0; }
-.lead.iccd__lead { margin: 0 0 30px; }
