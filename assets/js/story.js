@@ -1463,7 +1463,7 @@
           <p class="result-head">Success on the real AI Worker, before and after training in simulation</p>
           <div class="result-rows">
             <div class="result-row"><span class="result-name">Prior-ACT, which I built</span><span class="result-bar" style="--a: .60; --b: .82"><i></i><b></b></span><span class="result-val">60% → 82%</span></div>
-            <div class="result-row"><span class="result-name">TurboVLA</span><span class="result-bar" style="--a: .17; --b: .30"><i></i><b></b></span><span class="result-val">17% → ≈30%</span></div>
+            <div class="result-row"><span class="result-name">TurboVLA</span><span class="result-bar" style="--a: .17; --b: .30"><i></i><b></b></span><span class="result-val">17% → 30%</span></div>
           </div>
         </figure>
         <p class="rv-text">ROBOTIS also published my benchmark of four of 2026’s newest vision-language-action and world models as its AI MANIPULATOR #13 video, and merged five of my pull requests.</p>
@@ -1856,7 +1856,7 @@
           <p><span>iPhoneme</span><b>${sec(speakTime)}</b></p>
         </div>
         <p class="rv-text">Here, ${touch ? 'the Speak button' : 'the Space key'} stood in for one silent phoneme decoded from brain signals, the way a click or a keyboard shortcut works for anyone else. In iPhoneme, one phoneme that is rarely used and easy to tell apart could mean click, and another could mean drag. The goal is to let people with ALS use a computer the way everyone else uses a mouse, a keyboard or a touch screen, with as low a barrier as possible.</p>
-        <p class="rv-text">I built the decoder for iPhoneme, which turns a speech implant’s signals into phonemes with 92.14% accuracy on the T15 dataset, about 3 points above the previous best. In the keyboard my teammate and I designed, a silent sound picks a key 3 to 10 times faster than a held gaze.</p>
+        <p class="rv-text">I built the decoder for iPhoneme, which turns a speech implant’s signals into phonemes at a 7.86% phoneme error rate on held-out sessions of the T15 dataset. In the keyboard my teammate and I designed, a silent sound picks a key 3 to 10 times faster than a held gaze.</p>
         <p class="rv-meta">“iPhoneme: Brain-to-Text Communication for ALS Using ConformerXL Decoding,” arXiv:2604.16441, April 2026, equal-contribution first author</p>`);
     },
   };
