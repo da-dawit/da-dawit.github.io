@@ -2066,7 +2066,7 @@
 
   const TOUR = [
     { city: 'Seoul', when: '2023 to 2024', at: [889.9, 106.0], pic: 'assets/figures/journey/seoul-2023/prototype-ecosort.jpg', text: 'Taejae’s home campus. My first civic project was on plastic food delivery containers.' },
-    { city: 'Tokyo', when: 'Spring 2025', at: [932.3, 113.8], pic: 'assets/figures/journey/tokyo/yokohama.jpg', text: 'I studied at Kanda University and presented Watch-Out at CHI 2025 in Yokohama.' },
+    { city: 'Tokyo', when: 'Spring 2025', at: [932.3, 113.8], pic: 'assets/figures/journey/tokyo/yokohama.jpg', text: 'I studied at Kanda University of International Studies and presented Watch-Out at CHI 2025 in Yokohama.' },
     { city: 'San Francisco', when: 'Fall 2025', at: [58.6, 105.1], pic: 'assets/figures/journey/san-francisco/usf.jpg', text: 'At the University of San Francisco, I took Intro to Digital Electronics and Silicon Valley Immersion, started building PDPM, and was a physics teaching assistant.' },
     { city: 'New York', when: 'Spring 2026', at: [220.0, 92.9], pic: 'assets/figures/journey/new-york/skyline-court.jpg', text: 'At Pace University, I took Artificial Intelligence and US History, and turned PDPM into a paper with Professor Minhee Jun.' },
     { city: 'Shenzhen', when: 'Now', at: [846.9, 168.6], pic: 'assets/figures/story/shenzhen.jpg', text: 'This semester, with a new civic project in progress.' },
