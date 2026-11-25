@@ -2130,7 +2130,7 @@
     await wait(M.long);
     await scene(`
       <h2 class="sc-title">A bigger bingo.</h2>
-      <p class="sc-lede">When I was 15, people asked what a kid could even do. I have stamped seven tiles since then, and now the card has grown to 100. I have penciled in ${chosen[0]} and ${chosen[1]}, and I expect to graduate in June 2027.</p>
+      <p class="sc-lede">When I was 15, people asked what a kid could even do. I have stamped seven tiles since then, and now the card has grown to 100. I have penciled in ${chosen[0]} and ${chosen[1]}, and I expect to graduate in August 2027.</p>
       <p class="sc-lede">As a PhD student in your lab, I want to work on robot manipulation with vision-language-action and world models, and to be part of taking the next step toward AGI.</p>
       <div class="tour" aria-label="My cohort’s cities: Seoul, Tokyo, San Francisco, New York and Shenzhen">
         <p class="tour-legend">Taejae’s Global Rotation</p>
