@@ -138,7 +138,7 @@
           <p class="lead">In IGEN, a parent agent raises a child across generations, and the child is MU, My Understanding, a simulated agent. It knows objects by what touching them did to its body, imagines what an action will do before taking it, and uses surprise to decide how far to trust each memory. These are the three things I think robots are missing, built into one agent I can test piece by piece.</p>
         </header>
         <div class="rcards reveal">
-          <a class="rcard rcard--wide" href="#igen"><span class="rcard__media"><img src="assets/figures/igen/igen-architecture.png" width="1576" height="824" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Ongoing, reinforcement learning</span><span class="rcard__title">IGEN</span><span class="rcard__desc">MU (My Understanding), a simulated agent that learns from its own play. A parent seemed to help until a bug in my own surprise rule turned out to explain much of it; where the parent shows how to move, it still pays. On CausalWorld worlds it has never seen, MU scores 0.882 on pushing and 0.644 on picking with a hand-designed grip, above all nine model-free 2020 baselines.</span><span class="rcard__meta">Intergenerational Affective Meta-Reinforcement Learning</span><span class="rcard__more">Read more</span></span></a>
+          <a class="rcard rcard--wide" href="#igen"><span class="rcard__media"><img src="assets/figures/igen/igen-architecture.png" width="1576" height="824" alt="" loading="lazy"></span><span class="rcard__body"><span class="rcard__kicker">Ongoing, reinforcement learning</span><span class="rcard__title">IGEN</span><span class="rcard__desc">MU (My Understanding), a simulated agent that learns from its own play. A parent seemed to help until a bug in my own surprise rule turned out to explain most of it; where the parent shows how to move, it still pays. On CausalWorld worlds it has never seen, MU scores 0.882 on pushing and 0.644 on picking with a hand-designed grip, above all nine model-free 2020 baselines.</span><span class="rcard__meta">Intergenerational Affective Meta-Reinforcement Learning</span><span class="rcard__more">Read more</span></span></a>
         </div>
       </div>
     </section>
@@ -673,7 +673,7 @@
                 <tr class="is-us"><td>After the fix, raised by a parent (10 new paired runs)</td><td>1.4</td><td>2.9</td></tr>
                 <tr><td>After the fix, no parent</td><td>2.6</td><td>2.9</td></tr>
               </tbody>
-              <caption>First-generation children. Before the fix, the parent’s protection while it watched is clear, and the extra breakage after it left is probably real. After the fix, the extra breakage is gone; the remaining gap while it watches (1.4 against 2.6) is not significant over ten runs.</caption>
+              <caption>First-generation children, paired runs. Before the fix, the parent’s protection while it watched is clear, and so is the extra breakage after it left. After the fix, the extra breakage is gone, and the parent’s advantage while it watches shrinks to 1.4 against 2.6.</caption>
             </table>
           </div>
           <h4 class="project__h">Results</h4>
