@@ -121,12 +121,12 @@
         <div class="vision">
           <div class="vision__intro reveal">
             <p class="vision__q">What does it mean to be intelligent?</p>
-            <p class="vision__lead">Most robots today repeat what they were trained on. I think three things are missing.</p>
+            <p class="vision__lead">Most robots today repeat what they were trained on and cannot tell when that training no longer applies. After a surprise, should a robot reuse what it knows, probe for more information, or ask for help? I think three things are missing.</p>
           </div>
           <ol class="theses">
             <li class="thesis reveal">
               <span class="thesis__num">01</span>
-              <h3 class="thesis__name">Isomorphic thinking</h3>
+              <h3 class="thesis__name">Analogies through the body</h3>
               <p>Knowing objects and actions by what they do to the robot’s own body.</p>
               <a class="thesis__link link-arrow" href="research.html#off-policy-rl"><span>In my work:</span> off-policy RL on a real robot</a>
             </li>
@@ -138,8 +138,8 @@
             </li>
             <li class="thesis reveal">
               <span class="thesis__num">03</span>
-              <h3 class="thesis__name">Emerging Emotions</h3>
-              <p>A slow internal state that sets how boldly the robot explores, regulated first by a parent model and later by itself.</p>
+              <h3 class="thesis__name">Knowing when to trust experience</h3>
+              <p>A slow internal state, shaped by surprise, that sets how much the robot trusts each memory and how boldly it explores, regulated first by a parent model and later by itself.</p>
               <a class="thesis__link link-arrow" href="research.html#igen"><span>In my work:</span> IGEN</a>
             </li>
           </ol>
@@ -197,8 +197,7 @@
         <div class="argument">
           <div class="reveal">
             <p class="argument__label">Douglas Hofstadter’s <em>Gödel, Escher, Bach</em></p>
-            <p>My favorite book. Hofstadter says,</p>
-            <blockquote class="pull-quote">Intelligence is defined by the <strong>ease</strong> of switching between <strong>I (Intelligence)</strong> and <strong>M (Machine)</strong> Mode…</blockquote>
+            <p>My favorite book. Hofstadter describes two ways of working on a problem. In <strong>M-mode (mechanical)</strong>, you follow the rules from inside the system. In <strong>I-mode (intelligent)</strong>, you step outside the system and look for patterns. For him, being able to jump out of the task you are doing is an inherent part of intelligence.</p>
           </div>
           <div class="figure-pair reveal">
             <img class="photo" src="assets/images/GEB.png" width="402" height="616" loading="lazy" alt="Cover of Gödel, Escher, Bach: an Eternal Golden Braid by Douglas R. Hofstadter">
@@ -209,12 +208,12 @@
         <div class="ideas">
           <div class="ideas__intro reveal">
             <h3 class="ideas__title">What I think robots are missing</h3>
-            <p class="ideas__lead">An intelligent system can think out of the box, <strong>purposely putting itself out of distribution</strong>. Most robots today stay in M mode, repeating what they were trained on. So how does a robot get an “I” mode? I think it needs three things.</p>
+            <p class="ideas__lead">An intelligent system can think out of the box, <strong>purposely putting itself out of distribution</strong>. Most robots today stay in M-mode, repeating what they were trained on, and cannot tell when that training no longer applies. The question behind my research is what a robot should do after a surprise: <strong>reuse what it knows, probe for more information, or ask for help</strong>. Answering it takes an I-mode, and I think a robot needs three things.</p>
           </div>
           <ol class="ideas__list">
             <li class="idea reveal">
               <div><span class="idea__num">01</span>
-              <h4 class="idea__name">Isomorphic thinking</h4></div>
+              <h4 class="idea__name">Analogies through the body</h4></div>
               <p>We decode new knowledge through what we already remember: “1, 2, 3, 4 …” can feel like walking up stairs. A robot should map the world onto its own <strong>embodiment</strong> the same way, knowing objects and actions by what they do to its body: contact, force, displacement. VLAs trained on demonstrations map pixels to actions instead, and in my tests one that succeeded at the center of a table failed a few centimeters off it. The robot’s own rollouts, through RL or teacher-student training, can help close that gap.</p>
             </li>
             <li class="idea reveal">
@@ -224,8 +223,8 @@
             </li>
             <li class="idea reveal">
               <div><span class="idea__num">03</span>
-              <h4 class="idea__name">Emerging Emotions</h4></div>
-              <p>Emotions could emerge through parent-child relationships, since that is how we learn them: a parent soothes a crying baby until the child can calm itself. In a robot, an emotion could be a slow internal state that sets how boldly it explores, regulated first by a parent model and later by itself. In a full sensor suit, impact becomes <strong>pain</strong>, strain becomes fatigue, and low battery becomes hunger. Pain should weaken motors and add sensor noise rather than subtract reward, growing as the robot nears breaking, a mild form of death.</p>
+              <h4 class="idea__name">Knowing when to trust experience</h4></div>
+              <p>We first learn to steady ourselves through others: a parent soothes a crying baby until the child can calm itself. In a robot, a slow internal state could set how much it trusts each memory and how boldly it explores, regulated first by a parent model and later by itself. In my project MU, the first piece is <strong>surprise</strong>: it sets how much each remembered experience is trusted. In a full sensor suit, impact becomes <strong>pain</strong>, strain becomes fatigue, and low battery becomes hunger. Pain should weaken motors and add sensor noise rather than subtract reward, growing as the robot nears breaking, a mild form of death.</p>
             </li>
           </ol>
         </div>
